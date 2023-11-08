@@ -1,0 +1,29 @@
+:root {
+    --primary-color: #EF759A;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration-line: none;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    background: #222;
+    font-size: 1.6rem;
+    font-family: 'Nunito', sans-serif;
+}
+
+h1 {
+    font-size: 39px;
+}
+
+h2 {
+    font-size: 33px;
+}
