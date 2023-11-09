@@ -1,12 +1,22 @@
 :root {
     --primary-color: #EF759A;
+    --header-height: 80px;
+    --sidebar-width: 216px;
 }
 
 * {
     box-sizing: border-box;
 }
 
+.line-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: var(--line-clamp, 1);
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
 a {
+    color: #fff;
     text-decoration-line: none;
 }
 
@@ -26,4 +36,22 @@ h1 {
 
 h2 {
     font-size: 33px;
+}
+
+button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.content {
+    max-width: 1600px;
+    padding: 0 24px;
+    margin: auto;
+}
+
+@media only screen and (max-width: 720px) {
+    .content {
+        padding: 0 12px;
+    }
 }

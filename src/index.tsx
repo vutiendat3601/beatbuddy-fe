@@ -4,13 +4,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import GlobalStyle from './components/global-style/GlobalStyle';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Header from './layouts/main-layout/header/Header';
+import MainLayout from './layouts/main-layout/MainLayout';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 const router = createBrowserRouter([
   {
-    element: <App />,
+    element: <MainLayout />,
     path: '/',
   },
 ]);
