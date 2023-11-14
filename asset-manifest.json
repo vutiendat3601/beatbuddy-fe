@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.36e03175.css",
-    "main.js": "/static/js/main.479f6c46.js",
+    "main.css": "/static/css/main.425e13d5.css",
+    "main.js": "/static/js/main.1edc96b9.js",
     "static/js/787.b4a74039.chunk.js": "/static/js/787.b4a74039.chunk.js",
     "static/media/muon-roi-ma-sao-con-remix.mp3": "/static/media/muon-roi-ma-sao-con-remix.fdee641f6c5478e358f4.mp3",
     "static/media/thumb-02.jpg": "/static/media/thumb-02.5d3b06350cdcf4c3b7db.jpg",
@@ -57,12 +57,12 @@
     "static/media/close.svg": "/static/media/close.0a34ba91233b6974002cef0f5837bc88.svg",
     "static/media/chevron-left.svg": "/static/media/chevron-left.013afe52363b51da9d4df2dffb936f28.svg",
     "static/media/plus.svg": "/static/media/plus.98cd834c1353da24cbd781a984f44a2d.svg",
-    "main.36e03175.css.map": "/static/css/main.36e03175.css.map",
-    "main.479f6c46.js.map": "/static/js/main.479f6c46.js.map",
+    "main.425e13d5.css.map": "/static/css/main.425e13d5.css.map",
+    "main.1edc96b9.js.map": "/static/js/main.1edc96b9.js.map",
     "787.b4a74039.chunk.js.map": "/static/js/787.b4a74039.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.36e03175.css",
-    "static/js/main.479f6c46.js"
+    "static/css/main.425e13d5.css",
+    "static/js/main.1edc96b9.js"
   ]
 }
