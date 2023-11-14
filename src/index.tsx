@@ -1,10 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import GlobalStyle from './components/global-style/GlobalStyle';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Header from './layouts/main-layout/header/Header';
 import MainLayout from './layouts/main-layout/MainLayout';
 
 const root = ReactDOM.createRoot(
@@ -12,7 +10,11 @@ const root = ReactDOM.createRoot(
 );
 const router = createBrowserRouter([
   {
-    element: <MainLayout />,
+    element: (
+      <MainLayout>
+        <p>Lorem ipsum dolor sit amet.</p>
+      </MainLayout>
+    ),
     path: '/',
   },
 ]);
