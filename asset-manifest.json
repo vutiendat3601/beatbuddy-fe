@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/beatbuddy-fe/static/css/main.0d8afb93.css",
-    "main.js": "/beatbuddy-fe/static/js/main.92dfed40.js",
+    "main.js": "/beatbuddy-fe/static/js/main.88d78413.js",
     "static/js/787.b4a74039.chunk.js": "/beatbuddy-fe/static/js/787.b4a74039.chunk.js",
     "static/media/muon-roi-ma-sao-con-remix.mp3": "/beatbuddy-fe/static/media/muon-roi-ma-sao-con-remix.fdee641f6c5478e358f4.mp3",
     "static/media/thumb-02.jpg": "/beatbuddy-fe/static/media/thumb-02.5d3b06350cdcf4c3b7db.jpg",
@@ -40,8 +40,8 @@
     "static/media/Nunito-ExtraLight.woff2": "/beatbuddy-fe/static/media/Nunito-ExtraLight.8805f90e138c72fdb552.woff2",
     "static/media/avatar.svg": "/beatbuddy-fe/static/media/avatar.c768870b47c91c7d0bc76d878f8773d9.svg",
     "static/media/logo.svg": "/beatbuddy-fe/static/media/logo.3c321400f84314e439623cf0e75928f6.svg",
-    "static/media/shuffle.svg": "/beatbuddy-fe/static/media/shuffle.f78fc77720e217403453b96c9b58c64c.svg",
-    "static/media/repeat.svg": "/beatbuddy-fe/static/media/repeat.2fbb8f7b61598d06826bd2fc64b1e038.svg",
+    "static/media/shuffle.svg": "/beatbuddy-fe/static/media/shuffle.77fa214d2be96e74a71b360374acf09e.svg",
+    "static/media/repeat.svg": "/beatbuddy-fe/static/media/repeat.4da6209d93716a94e328415e00ec2edf.svg",
     "index.html": "/beatbuddy-fe/index.html",
     "static/media/playing-queue.svg": "/beatbuddy-fe/static/media/playing-queue.f03d44ce2c533c352e7f519a997b1686.svg",
     "static/media/music-library.svg": "/beatbuddy-fe/static/media/music-library.7c79c7905fabfa4f142a31e71428eae6.svg",
@@ -58,11 +58,11 @@
     "static/media/chevron-left.svg": "/beatbuddy-fe/static/media/chevron-left.013afe52363b51da9d4df2dffb936f28.svg",
     "static/media/plus.svg": "/beatbuddy-fe/static/media/plus.98cd834c1353da24cbd781a984f44a2d.svg",
     "main.0d8afb93.css.map": "/beatbuddy-fe/static/css/main.0d8afb93.css.map",
-    "main.92dfed40.js.map": "/beatbuddy-fe/static/js/main.92dfed40.js.map",
+    "main.88d78413.js.map": "/beatbuddy-fe/static/js/main.88d78413.js.map",
     "787.b4a74039.chunk.js.map": "/beatbuddy-fe/static/js/787.b4a74039.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.0d8afb93.css",
-    "static/js/main.92dfed40.js"
+    "static/js/main.88d78413.js"
   ]
 }
