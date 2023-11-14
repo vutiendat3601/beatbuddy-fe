@@ -1,0 +1,113 @@
+.media {
+  background: #222;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  height: 80px;
+  .thumb {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  .like-btn {
+    cursor: pointer;
+  }
+  .track {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    .info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 360px;
+      gap: 6px;
+      a:hover {
+        text-decoration-line: underline;
+      }
+      .name,
+      .artist {
+        display: -webkit-box;
+        line-height: 18px;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .name {
+        color: #fff;
+        font-family: Nunito;
+        font-size: 1.6rem;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+      }
+      .artist {
+        font-size: 1.4rem;
+        color: #eee;
+      }
+    }
+  }
+}
+
+.control {
+  flex: 1;
+  //   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  .row-top {
+    display: flex;
+    justify-content: center;
+    .control-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      margin: 0 12px;
+      &.rounded {
+        border: 1px solid #fff;
+      }
+    }
+  }
+
+  .progress {
+    display: flex;
+    align-items: center;
+    width: 68%;
+    margin: 0 auto;
+    .progressbar {
+      position: relative;
+      margin: 0 4px;
+      flex: 1;
+      height: 4px;
+      background: #aaa;
+      border-radius: 9999px;
+      .played {
+        position: absolute;
+        left: 0;
+        height: 4px;
+        border-radius: 9999px;
+        background: var(--primary-color);
+      }
+      .overlay {
+        position: absolute;
+        height: 24px;
+        left: 0;
+        right: 0;
+        transform: translateY(calc(-50%));
+        border-radius: 9999px;
+        background: transparent;
+        cursor: pointer;
+      }
+    }
+  }
+}

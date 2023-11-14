@@ -3,6 +3,7 @@ import styles from './Button.module.css';
 import { Link } from 'react-router-dom';
 
 interface ButtonProps {
+  className?: string;
   disabled?: boolean;
   link?: string;
   children?: any;
@@ -10,11 +11,12 @@ interface ButtonProps {
 
 const css = classNames.bind(styles);
 function Button({
+  className,
   disabled = false,
   link,
   children,
 }: ButtonProps): JSX.Element {
-  const classes = css('btn', { disabled });
+  const classes = css('btn', { disabled }, className);
   let comp: JSX.Element = <button className={classes}>{children}</button>;
 
   // ## Contain link
