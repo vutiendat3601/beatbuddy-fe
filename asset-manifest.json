@@ -1,9 +1,8 @@
 {
   "files": {
-    "main.css": "/beatbuddy-fe/static/css/main.0d8afb93.css",
-    "main.js": "/beatbuddy-fe/static/js/main.88d78413.js",
+    "main.css": "/beatbuddy-fe/static/css/main.fd7da7cd.css",
+    "main.js": "/beatbuddy-fe/static/js/main.66b80193.js",
     "static/js/787.b4a74039.chunk.js": "/beatbuddy-fe/static/js/787.b4a74039.chunk.js",
-    "static/media/muon-roi-ma-sao-con-remix.mp3": "/beatbuddy-fe/static/media/muon-roi-ma-sao-con-remix.fdee641f6c5478e358f4.mp3",
     "static/media/thumb-02.jpg": "/beatbuddy-fe/static/media/thumb-02.5d3b06350cdcf4c3b7db.jpg",
     "static/media/muon-roi-ma-sao-con-remix-bomatela.jpg": "/beatbuddy-fe/static/media/muon-roi-ma-sao-con-remix-bomatela.49161b40ace4e2282b20.jpg",
     "static/media/Nunito-BlackItalic.woff": "/beatbuddy-fe/static/media/Nunito-BlackItalic.a53681837a440259db0c.woff",
@@ -41,7 +40,8 @@
     "static/media/avatar.svg": "/beatbuddy-fe/static/media/avatar.c768870b47c91c7d0bc76d878f8773d9.svg",
     "static/media/logo.svg": "/beatbuddy-fe/static/media/logo.3c321400f84314e439623cf0e75928f6.svg",
     "static/media/shuffle.svg": "/beatbuddy-fe/static/media/shuffle.77fa214d2be96e74a71b360374acf09e.svg",
-    "static/media/repeat.svg": "/beatbuddy-fe/static/media/repeat.4da6209d93716a94e328415e00ec2edf.svg",
+    "static/media/repeated.svg": "/beatbuddy-fe/static/media/repeated.6a005554972b72b925fbb6b6f5606acd.svg",
+    "static/media/repeat.svg": "/beatbuddy-fe/static/media/repeat.f839e6b465b699e65e78c7362a1fbd65.svg",
     "index.html": "/beatbuddy-fe/index.html",
     "static/media/playing-queue.svg": "/beatbuddy-fe/static/media/playing-queue.f03d44ce2c533c352e7f519a997b1686.svg",
     "static/media/music-library.svg": "/beatbuddy-fe/static/media/music-library.7c79c7905fabfa4f142a31e71428eae6.svg",
@@ -57,12 +57,12 @@
     "static/media/close.svg": "/beatbuddy-fe/static/media/close.0a34ba91233b6974002cef0f5837bc88.svg",
     "static/media/chevron-left.svg": "/beatbuddy-fe/static/media/chevron-left.013afe52363b51da9d4df2dffb936f28.svg",
     "static/media/plus.svg": "/beatbuddy-fe/static/media/plus.98cd834c1353da24cbd781a984f44a2d.svg",
-    "main.0d8afb93.css.map": "/beatbuddy-fe/static/css/main.0d8afb93.css.map",
-    "main.88d78413.js.map": "/beatbuddy-fe/static/js/main.88d78413.js.map",
+    "main.fd7da7cd.css.map": "/beatbuddy-fe/static/css/main.fd7da7cd.css.map",
+    "main.66b80193.js.map": "/beatbuddy-fe/static/js/main.66b80193.js.map",
     "787.b4a74039.chunk.js.map": "/beatbuddy-fe/static/js/787.b4a74039.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0d8afb93.css",
-    "static/js/main.88d78413.js"
+    "static/css/main.fd7da7cd.css",
+    "static/js/main.66b80193.js"
   ]
 }
