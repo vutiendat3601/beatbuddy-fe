@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/beatbuddy-fe/static/css/main.05eb3307.css",
-    "main.js": "/beatbuddy-fe/static/js/main.1b2dd31f.js",
+    "main.js": "/beatbuddy-fe/static/js/main.4f6df70f.js",
     "static/js/787.b4a74039.chunk.js": "/beatbuddy-fe/static/js/787.b4a74039.chunk.js",
     "static/media/muon-roi-ma-sao-con-remix-aSFkDfxcls.mp3": "/beatbuddy-fe/static/media/muon-roi-ma-sao-con-remix-aSFkDfxcls.fdee641f6c5478e358f4.mp3",
     "static/media/co-chac-yeu-la-day-remix-OpbfJFHse.mp3": "/beatbuddy-fe/static/media/co-chac-yeu-la-day-remix-OpbfJFHse.ee7a195d506b5ca0105c.mp3",
@@ -62,11 +62,11 @@
     "static/media/chevron-left.svg": "/beatbuddy-fe/static/media/chevron-left.013afe52363b51da9d4df2dffb936f28.svg",
     "static/media/plus.svg": "/beatbuddy-fe/static/media/plus.98cd834c1353da24cbd781a984f44a2d.svg",
     "main.05eb3307.css.map": "/beatbuddy-fe/static/css/main.05eb3307.css.map",
-    "main.1b2dd31f.js.map": "/beatbuddy-fe/static/js/main.1b2dd31f.js.map",
+    "main.4f6df70f.js.map": "/beatbuddy-fe/static/js/main.4f6df70f.js.map",
     "787.b4a74039.chunk.js.map": "/beatbuddy-fe/static/js/787.b4a74039.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.05eb3307.css",
-    "static/js/main.1b2dd31f.js"
+    "static/js/main.4f6df70f.js"
   ]
 }
