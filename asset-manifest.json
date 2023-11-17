@@ -1,8 +1,12 @@
 {
   "files": {
-    "main.css": "/beatbuddy-fe/static/css/main.fd7da7cd.css",
-    "main.js": "/beatbuddy-fe/static/js/main.66b80193.js",
+    "main.css": "/beatbuddy-fe/static/css/main.05eb3307.css",
+    "main.js": "/beatbuddy-fe/static/js/main.24b0af1c.js",
     "static/js/787.b4a74039.chunk.js": "/beatbuddy-fe/static/js/787.b4a74039.chunk.js",
+    "static/media/muon-roi-ma-sao-con-remix-aSFkDfxcls.mp3": "/beatbuddy-fe/static/media/muon-roi-ma-sao-con-remix-aSFkDfxcls.fdee641f6c5478e358f4.mp3",
+    "static/media/co-chac-yeu-la-day-remix-OpbfJFHse.mp3": "/beatbuddy-fe/static/media/co-chac-yeu-la-day-remix-OpbfJFHse.ee7a195d506b5ca0105c.mp3",
+    "static/media/noi-nay-co-anh-remix-DHjshdZsdhjkf.mp3": "/beatbuddy-fe/static/media/noi-nay-co-anh-remix-DHjshdZsdhjkf.979589ccfec4d1c8b6c6.mp3",
+    "static/media/chung-ta-cua-hien-tai-slkfjQCshfZ.mp3": "/beatbuddy-fe/static/media/chung-ta-cua-hien-tai-slkfjQCshfZ.1f2e2dee93672de57e46.mp3",
     "static/media/thumb-02.jpg": "/beatbuddy-fe/static/media/thumb-02.5d3b06350cdcf4c3b7db.jpg",
     "static/media/muon-roi-ma-sao-con-remix-bomatela.jpg": "/beatbuddy-fe/static/media/muon-roi-ma-sao-con-remix-bomatela.49161b40ace4e2282b20.jpg",
     "static/media/Nunito-BlackItalic.woff": "/beatbuddy-fe/static/media/Nunito-BlackItalic.a53681837a440259db0c.woff",
@@ -39,30 +43,30 @@
     "static/media/Nunito-ExtraLight.woff2": "/beatbuddy-fe/static/media/Nunito-ExtraLight.8805f90e138c72fdb552.woff2",
     "static/media/avatar.svg": "/beatbuddy-fe/static/media/avatar.c768870b47c91c7d0bc76d878f8773d9.svg",
     "static/media/logo.svg": "/beatbuddy-fe/static/media/logo.3c321400f84314e439623cf0e75928f6.svg",
-    "static/media/shuffle.svg": "/beatbuddy-fe/static/media/shuffle.77fa214d2be96e74a71b360374acf09e.svg",
-    "static/media/repeated.svg": "/beatbuddy-fe/static/media/repeated.6a005554972b72b925fbb6b6f5606acd.svg",
     "static/media/repeat.svg": "/beatbuddy-fe/static/media/repeat.f839e6b465b699e65e78c7362a1fbd65.svg",
+    "static/media/shuffle.svg": "/beatbuddy-fe/static/media/shuffle.88a27f3a3c19df4248f1759e6142acfa.svg",
     "index.html": "/beatbuddy-fe/index.html",
     "static/media/playing-queue.svg": "/beatbuddy-fe/static/media/playing-queue.f03d44ce2c533c352e7f519a997b1686.svg",
     "static/media/music-library.svg": "/beatbuddy-fe/static/media/music-library.7c79c7905fabfa4f142a31e71428eae6.svg",
+    "static/media/like.svg": "/beatbuddy-fe/static/media/like.b644c676a9c82a2af7e721beacf6b411.svg",
     "static/media/lyrics.svg": "/beatbuddy-fe/static/media/lyrics.6abe62541ab6d13a557cd02e27a8bc84.svg",
     "static/media/pause.svg": "/beatbuddy-fe/static/media/pause.a3fd1552134a7101520044fc6986ecd6.svg",
     "static/media/next.svg": "/beatbuddy-fe/static/media/next.142e41f193a78633fe909127d278708c.svg",
     "static/media/previous.svg": "/beatbuddy-fe/static/media/previous.9c80e9e7ba0e25d7517599c1da71dee4.svg",
     "static/media/play.svg": "/beatbuddy-fe/static/media/play.c63a4cd256716d3bcce1b9b1d4cb0f79.svg",
-    "static/media/like.svg": "/beatbuddy-fe/static/media/like.87b013d925d3b144c0aabd5656962da7.svg",
     "static/media/search.svg": "/beatbuddy-fe/static/media/search.5f878fec5d1a0995f6929c83d48c295f.svg",
+    "static/media/liked.svg": "/beatbuddy-fe/static/media/liked.d1e41dcc923a1cb43e7346cb66f5ed76.svg",
     "static/media/menu.svg": "/beatbuddy-fe/static/media/menu.d2d533057ef797a4ce0897fc78ae0e8f.svg",
     "static/media/home.svg": "/beatbuddy-fe/static/media/home.4663328e896cd4dd93b2fd2e90558b2d.svg",
     "static/media/close.svg": "/beatbuddy-fe/static/media/close.0a34ba91233b6974002cef0f5837bc88.svg",
     "static/media/chevron-left.svg": "/beatbuddy-fe/static/media/chevron-left.013afe52363b51da9d4df2dffb936f28.svg",
     "static/media/plus.svg": "/beatbuddy-fe/static/media/plus.98cd834c1353da24cbd781a984f44a2d.svg",
-    "main.fd7da7cd.css.map": "/beatbuddy-fe/static/css/main.fd7da7cd.css.map",
-    "main.66b80193.js.map": "/beatbuddy-fe/static/js/main.66b80193.js.map",
+    "main.05eb3307.css.map": "/beatbuddy-fe/static/css/main.05eb3307.css.map",
+    "main.24b0af1c.js.map": "/beatbuddy-fe/static/js/main.24b0af1c.js.map",
     "787.b4a74039.chunk.js.map": "/beatbuddy-fe/static/js/787.b4a74039.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.fd7da7cd.css",
-    "static/js/main.66b80193.js"
+    "static/css/main.05eb3307.css",
+    "static/js/main.24b0af1c.js"
   ]
 }
