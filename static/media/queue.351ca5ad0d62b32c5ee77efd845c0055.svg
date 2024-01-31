@@ -1,0 +1,33 @@
+<svg
+    width="22"
+    height="17"
+    viewBox="0 0 22 17"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+>
+    <path
+        d="M19.5 5.5L16 2.875V8.125L19.5 5.5Z"
+        fill="currentColor"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+    />
+    <path
+        d="M1 2H11"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+    />
+    <path
+        d="M1 9H11"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+    />
+    <path
+        d="M1 16H21"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+    />
+</svg>
