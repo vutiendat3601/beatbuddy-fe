@@ -9,7 +9,7 @@ interface Playback {
 
 const INITIAL_PLAYBACK: Playback = {
   currentSec: 0,
-  volume: 60,
+  volume: 0.6,
   track: null,
   isPlaying: false,
 };

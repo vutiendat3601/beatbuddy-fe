@@ -11,9 +11,9 @@ function MainLayout(): JSX.Element {
       <div className={css('header')}>
         <Header />
       </div>
-      <div className={css('audio-player')}>
+      <footer className={css('audio-player')}>
         <AudioPlayer />
-      </div>
+      </footer>
     </main>
   );
 }

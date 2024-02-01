@@ -1,0 +1,75 @@
+%flexAlignCenter {
+    display: flex;
+    align-items: center;
+}
+
+%flexContentCenter {
+    display: flex;
+    justify-content: center;
+}
+
+%flexCenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.track-card {
+    display: flex;
+    column-gap: 8px;
+    align-items: center;
+    padding: 12px;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+
+    &.mobile-player {
+        background: #454545;
+    }
+
+    &.mobile-player::after {
+        position: absolute;
+        display: block;
+        content: "";
+        height: 4px;
+        bottom: 0;
+        left: 0;
+        border-radius: 9999px;
+        // right: 1px;
+        width: var(--current-percent);
+        background: #fff;
+
+    }
+
+    .thumbnail {
+        border-radius: 4px;
+        width: 68px;
+        height: 68px;
+    }
+
+    .details {
+        display: flex;
+        flex-direction: column;
+        row-gap: 8px;
+    }
+
+    .love-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 4px;
+    }
+
+    .love-btn.loved svg {
+        fill: #43a1d5;
+    }
+
+    .love-btn.loved path {
+        stroke: #43a1d5;
+    }
+
+    .audio-control {
+        margin-left: auto;
+    }
+}

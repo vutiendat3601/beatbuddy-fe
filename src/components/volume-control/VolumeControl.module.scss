@@ -1,0 +1,29 @@
+%flexAlignCenter {
+    display: flex;
+    align-items: center;
+}
+
+%flexContentCenter {
+    display: flex;
+    justify-content: center;
+}
+
+%flexCenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.volume {
+    @extend %flexCenter;
+    column-gap: 4px;
+  }
+
+  .volume .icon {
+    display: flex;
+    align-items: center;
+  }
+
+  .volume .value {
+    width: 100px;
+  }

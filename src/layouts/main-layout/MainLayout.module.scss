@@ -14,5 +14,6 @@
 
   .audio-player {
     grid-area: audio-player;
+    padding: var(--bs-gutter-x) 0;
   }
 }

@@ -1,90 +1,40 @@
+@use '../../../scss/abstract';
+
 %flexAlignCenter {
   display: flex;
   align-items: center;
 }
+
 %flexContentCenter {
   display: flex;
   justify-content: center;
 }
+
 %flexCenter {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.track {
-  display: flex;
-  column-gap: 16px;
-  align-items: center;
-  .thumbnail {
-    border-radius: 4px;
-    width: 68px;
-    height: 68px;
-  }
-  .details {
-    display: flex;
-    flex-direction: column;
-    row-gap: 8px;
-  }
-  .loved-btn {
-    display: flex;
-    align-items: center;
-    width: 32px;
-    height: 32px;
-    padding: 4px;
-  }
+.audio-player {
+  // padding: 8px;
+  // border: 1px solid #fff;
 
-  .loved-btn.loved svg {
-    fill: #43a1d5;
-  }
-
-  .loved-btn.loved path {
-    stroke: #43a1d5;
+  @include abstract.screen(md) {
+    border: none;
   }
 }
 
 .controls {
   @extend %flexCenter;
   flex-direction: column;
-  row-gap: 8px;
-  height: 100%;
-
-  &-top {
-    @extend %flexCenter;
-    column-gap: 16px;
-    width: 100%;
-  }
-
-  .control {
-    color: #fff;
-    flex: none;
-    background: transparent;
-    &:hover {
-      opacity: 0.9;
-    }
-    &:disabled,
-    &[disabled] {
-      color: var(--disabled-color);
-    }
-  }
-
-  .play-btn {
-    @extend %flexCenter;
-    width: 32px;
-    height: 32px;
-    background: #fff;
-    border-radius: 50%;
-    padding-left: 2px;
-    color: #000;
-  }
-  .play-btn.playing {
-    padding-left: 0;
-  }
+  row-gap: 8px
 }
 
 .controls-progressbar {
   @extend %flexCenter;
   width: 100%;
+
   .start-time {
     text-align: right;
   }
@@ -103,6 +53,7 @@
     background: #666;
     border-radius: 9999px;
   }
+
   .progress::before {
     position: absolute;
     left: 0;
@@ -114,9 +65,11 @@
     width: var(--current-percent);
     background: #fff;
   }
+
   .progress:hover::before {
     background: var(--primary-color);
   }
+
   .progress:hover .progress-seek {
     visibility: visible;
   }
@@ -140,6 +93,7 @@
     visibility: hidden;
     z-index: 1;
   }
+
   .progress-seek::-webkit-slider-thumb {
     appearance: none;
     -webkit-appearance: none;
@@ -148,18 +102,6 @@
     background: var(--primary-color);
     border-radius: 50%;
   }
-  // .progress-seek::before {
-  //   position: absolute;
-  //   left: 0;
-  //   top: 0;
-  //   bottom: 0;
-  //   border-top-left-radius: 9999px;
-  //   border-bottom-left-radius: 9999px;
-  //   content: '';
-  //   display: block;
-  //   width: var(--current-percent);
-  //   background: var(--primary-color);
-  // }
 }
 
 .action {
@@ -174,16 +116,5 @@
 
   .queue-btn svg {
     color: var(--primary-color);
-  }
-  .volume {
-    @extend %flexCenter;
-    column-gap: 4px;
-  }
-  .volume .icon {
-    display: flex;
-    align-items: center;
-  }
-  .volume .value {
-    width: 100px;
   }
 }

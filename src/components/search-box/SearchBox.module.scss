@@ -19,38 +19,40 @@
     padding: 8px;
   }
 
-  .keyword:focus ~ .items {
+  .keyword:focus~.items {
     display: block;
     visibility: hidden;
     translate: 0 -1%;
     scale: 0.95;
   }
-  .keyword:not(:focus) ~ .cover {
+
+  .keyword:not(:focus)~.cover {
     visibility: hidden;
   }
-  .keyword:focus:not(:placeholder-shown) ~ .cover {
+
+  .keyword:focus:not(:placeholder-shown)~.cover {
     visibility: visible;
   }
 
-  .keyword:not(:placeholder-shown) ~ .items {
+  .keyword:not(:placeholder-shown)~.items {
     visibility: visible;
     display: block;
     scale: 1;
     translate: 0 0;
   }
 
-  .keyword:not(:focus) ~ .items {
+  .keyword:not(:focus)~.items {
     visibility: hidden;
   }
 
-  .keyword:not(:focus) ~ .items:hover {
+  .keyword:not(:focus)~.items:hover {
     visibility: visible;
   }
 
-  .keyword:not(:focus) ~ .items:hover ~ .cover {
+  .keyword:not(:focus)~.items:hover~.cover {
     visibility: visible;
   }
-  
+
   .items {
     // display: none;
     visibility: hidden;
@@ -59,14 +61,18 @@
     top: 100%;
     right: 0;
     left: 0;
-    height: 300px;
+    height: min(auto, 50vh);
     background: var(--search-box-bg-color);
     border-bottom-right-radius: var(--search-box-border-radius);
     border-bottom-left-radius: var(--search-box-border-radius);
     transition: scale 0.7s, translate 0.7s;
   }
 
-  .items ~ .cover {
+  .items~.cover {
+    visibility: hidden;
+  }
+
+  .cover {
     background: var(--search-box-bg-color);
     position: absolute;
     z-index: -1;
@@ -74,13 +80,14 @@
     bottom: 0;
     right: 0;
     left: 0;
-    visibility: hidden;
+    transition: visibility 0.2s;
   }
 
   .item {
     display: flex;
     align-items: center;
     padding: 4px 12px;
+
     &:hover {
       background: var(--primary-color);
     }
@@ -97,6 +104,7 @@
   .track-link {
     flex: 1;
   }
+
   .track-details {
     display: flex;
     align-items: center;
@@ -121,9 +129,11 @@
     overflow: hidden;
     padding: 2px 0;
   }
+
   .track-artists {
     padding: 2px 0;
   }
+
   .play-btn {
     margin-left: 4px;
     display: flex;
@@ -136,6 +146,7 @@
     background: var(--primary-color);
     color: #fff;
     border: 2px solid #fff;
+
     &:hover {
       color: var(--primary-color);
       background: #fff;
