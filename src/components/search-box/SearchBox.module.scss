@@ -1,3 +1,19 @@
+%flexAlignCenter {
+  display: flex;
+  align-items: center;
+}
+
+%flexContentCenter {
+  display: flex;
+  justify-content: center;
+}
+
+%flexCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .search-box {
   --search-box-border-radius: 20px;
   position: relative;
@@ -7,7 +23,7 @@
   border-radius: var(--search-box-border-radius);
   padding: 0 12px;
 
-  .keyword {
+  .keyword-inp {
     flex: 1;
     padding: 12px;
     font-size: 1.6rem;
@@ -19,58 +35,41 @@
     padding: 8px;
   }
 
-  .keyword:focus~.items {
-    display: block;
+  .keyword-inp:not(:focus)~.items:not(:hover),
+  .keyword-inp:not(:focus)~.items:not(:hover)~.cover {
+    display: none;
+    transition: none;
+  }
+
+  .items.hidden {
     visibility: hidden;
-    translate: 0 -1%;
     scale: 0.95;
+    z-index: -1;
+    transition: visibility 0.4s, scale 0.4s;
   }
 
-  .keyword:not(:focus)~.cover {
+  .items.hidden~.cover {
     visibility: hidden;
-  }
-
-  .keyword:focus:not(:placeholder-shown)~.cover {
-    visibility: visible;
-  }
-
-  .keyword:not(:placeholder-shown)~.items {
-    visibility: visible;
-    display: block;
-    scale: 1;
-    translate: 0 0;
-  }
-
-  .keyword:not(:focus)~.items {
-    visibility: hidden;
-  }
-
-  .keyword:not(:focus)~.items:hover {
-    visibility: visible;
-  }
-
-  .keyword:not(:focus)~.items:hover~.cover {
-    visibility: visible;
+    transition: visibility 0.3s;
   }
 
   .items {
-    // display: none;
-    visibility: hidden;
+    padding: 12px 0;
     overflow-y: auto;
     position: absolute;
     top: 100%;
     right: 0;
     left: 0;
-    height: min(auto, 50vh);
+    height: auto;
+    max-height: 50vh;
     background: var(--search-box-bg-color);
     border-bottom-right-radius: var(--search-box-border-radius);
     border-bottom-left-radius: var(--search-box-border-radius);
-    transition: scale 0.7s, translate 0.7s;
+    visibility: visible;
+    scale: 1;
+    transition: visibility 0.4s, scale 0.4s;
   }
 
-  .items~.cover {
-    visibility: hidden;
-  }
 
   .cover {
     background: var(--search-box-bg-color);
@@ -80,7 +79,8 @@
     bottom: 0;
     right: 0;
     left: 0;
-    transition: visibility 0.2s;
+    visibility: visible;
+    transition: visibility 0.1s;
   }
 
   .item {
@@ -89,7 +89,7 @@
     padding: 4px 12px;
 
     &:hover {
-      background: var(--primary-color);
+      background: var(--hover-bg-color);
     }
   }
 
@@ -97,7 +97,7 @@
     display: flex;
     width: 100%;
     align-items: center;
-    padding: 4px;
+    padding: 8px 4px;
     column-gap: 8px;
   }
 
@@ -134,22 +134,30 @@
     padding: 2px 0;
   }
 
-  .play-btn {
-    margin-left: 4px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    padding-left: 3px;
-    background: var(--primary-color);
-    color: #fff;
-    border: 2px solid #fff;
 
-    &:hover {
+  .controls {
+    @extend %flexAlignCenter;
+
+    .control {
+      @extend %flexCenter;
+      padding: 12px;
+    }
+
+    .play-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      padding: 0;
+      padding-left: 3px;
       color: var(--primary-color);
       background: #fff;
+
+      &:hover {
+        background: var(--primary-color);
+        color: #0f0f0f;
+      }
     }
   }
+
+
 }

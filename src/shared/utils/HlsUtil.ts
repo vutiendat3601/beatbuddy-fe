@@ -1,10 +1,11 @@
 import Hls from 'hls.js';
 
 interface HlsPlayer {
+  audioElemId: string;
   audioElem: HTMLMediaElement;
   hls: Hls | null;
   isHlsSupported: boolean;
-  loadSource: (src: string | undefined) => void;
+  loadSource: (src: string) => void;
 }
 
 function createHlsPlayer(audioElemId: string): HlsPlayer {
@@ -25,16 +26,20 @@ function createHlsPlayer(audioElemId: string): HlsPlayer {
   }
 
   return {
+    audioElemId,
     audioElem,
     hls,
     isHlsSupported,
-    loadSource(src: string | undefined) {
-      if (hls && src) {
-        if (isHlsSupported) {
-          hls.loadSource(src);
-        } else if (audioElem?.canPlayType('application/vnd.apple.mpegurl')) {
-          audioElem.src = src;
-        }
+    loadSource(src: string) {
+      // if (hls && src) {
+      if (isHlsSupported && hls) {
+        hls.loadSource(src);
+      } else if (audioElem.canPlayType('application/vnd.apple.mpegurl')) {
+        const audioElem = document.getElementById(
+          audioElemId
+        ) as HTMLAudioElement;
+        audioElem.src = src;
+        // }
       }
     },
   };

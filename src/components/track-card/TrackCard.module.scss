@@ -15,16 +15,20 @@
 }
 
 .track-card {
+    --name-trans-x-percent: calc(100% * -1);
+
     display: flex;
     column-gap: 8px;
     align-items: center;
     padding: 12px;
     border-radius: 4px;
     position: relative;
-    overflow: hidden;
 
     &.mobile-player {
-        background: #454545;
+        background: #353535;
+        .name, .artist {
+            user-select: none;
+        }
     }
 
     &.mobile-player::after {
@@ -35,22 +39,46 @@
         bottom: 0;
         left: 0;
         border-radius: 9999px;
-        // right: 1px;
         width: var(--current-percent);
         background: #fff;
-
     }
 
     .thumbnail {
         border-radius: 4px;
         width: 68px;
         height: 68px;
+        flex: none;
     }
 
     .details {
         display: flex;
         flex-direction: column;
         row-gap: 8px;
+        overflow: hidden;
+    }
+
+    .name,
+    .artist {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        line-height: 1.15;
+    }
+
+    .name-value,
+    .artist-value {
+        display: block;
+        translate: 0;
+        line-height: 1.15em;
+    }
+
+    .name-value.sliding {
+        transition: translate var(--name-trans-x-ms) linear;
+        translate: var(--name-trans-x-percent);
+    }
+
+    .artist-value.sliding {
+        transition: translate var(--artist-trans-x-ms) linear;
+        translate: var(--artist-trans-x-percent);
     }
 
     .love-btn {
@@ -70,6 +98,28 @@
     }
 
     .audio-control {
+        flex: none;
         margin-left: auto;
     }
 }
+
+
+// @keyframes trackNameSliding {
+//     0% {
+//         translate: 0;
+//         // rotate: 0;
+//     }
+
+//     // 25% {
+
+//     // }
+
+//     50% {
+//         --name-trans-x-percent: 268%;
+//     }
+
+//     100% {
+//         --name-trans-x-percent: 268%;
+//         translate: var(--name-trans-x-percent);
+//     }
+// }

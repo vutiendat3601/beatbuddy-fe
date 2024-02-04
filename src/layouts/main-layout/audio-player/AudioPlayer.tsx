@@ -2,7 +2,6 @@ import classNames from 'classnames/bind';
 import { useEffect, useRef } from 'react';
 import { ReactComponent as QueueIcon } from '../../../assets/icon/queue.svg';
 
-import AudioControl from '../../../components/audio-control/AudioControl';
 import TrackCard from '../../../components/track-card/TrackCard';
 import VolumeControl from '../../../components/volume-control/VolumeControl';
 import { AudioContextProps } from '../../../contexts/AudioContext';
@@ -19,6 +18,7 @@ import createHlsPlayer, { HlsPlayer } from '../../../shared/utils/HlsUtil';
 import { getObject, saveObject } from '../../../shared/utils/LocalStorageUtil';
 import formatDurationSec from '../../../shared/utils/TimeUtil';
 import style from './AudioPlayer.module.scss';
+import AudioControl from '../../../components/audio-control/AudioControl';
 
 const css = classNames.bind(style);
 
@@ -27,7 +27,7 @@ function AudioPlayer(): JSX.Element {
 
   const { queue, playback } = audioContext;
   const { track, currentSec, isPlaying } = playback;
-  const { playedTracks } = queue;
+  const { playedTracks, repeatMode } = queue;
   // ## useRef
   const hlsPlayerRef = useRef<HlsPlayer>();
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -195,7 +195,7 @@ function AudioPlayer(): JSX.Element {
       updatedTrack = updatedPlayedTracks.shift();
       updatedTracks = [...updatedPlayedTracks];
       updatedPlayedTracks = [];
-      isPlaying = queue.repeatMode !== 'all';
+      isPlaying = repeatMode !== 'all';
     }
     dispatchAudio({
       type: 'update_session',
@@ -224,6 +224,8 @@ function AudioPlayer(): JSX.Element {
 
   function handleShuffle() {}
 
+  function handleRepeat() {}
+
   return (
     <div
       className={css('audio-player')}
@@ -236,8 +238,8 @@ function AudioPlayer(): JSX.Element {
         } as React.CSSProperties
       }
     >
-      <div className="row row-cols-1 row-cols-md-2">
-        <div className="col col-12 col-md-5 col-lg-4">
+      <div className="row">
+        <div className="col-12 col-md-5 col-lg-3">
           <div className="d-md-none">
             <TrackCard
               variant="mobile-player"
@@ -254,7 +256,7 @@ function AudioPlayer(): JSX.Element {
             <TrackCard variant="default" track={track} />
           </div>
         </div>
-        <div className="col col-md-7 col-lg-6 d-none d-md-block">
+        <div className="d-none d-md-block col-md-7 col-lg-6">
           <div className={css('controls')}>
             <div className={css('controls-top')}>
               <AudioControl
@@ -276,6 +278,10 @@ function AudioPlayer(): JSX.Element {
                       ? playedTracks.length === 0 &&
                         audio.currentTime <= PLAYBACK_PLAY_START_AFTER_SEC
                       : false,
+                  },
+                  repeat: {
+                    onRepeat: handleRepeat,
+                    repeatMode,
                   },
                 }}
               />
@@ -304,7 +310,7 @@ function AudioPlayer(): JSX.Element {
             </div>
           </div>
         </div>
-        <div className="col col-lg-2 d-none d-lg-block">
+        <div className="col-lg-3 d-none d-lg-block">
           <div className={css('action')}>
             <div className="utils">
               <button className={css('queue-btn')}>

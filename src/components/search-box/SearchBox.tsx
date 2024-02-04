@@ -2,6 +2,7 @@ import classNames from 'classnames/bind';
 import { useEffect, useRef, useState } from 'react';
 import { ReactComponent as ClearIcon } from '../../assets/icon/clear.svg';
 import { ReactComponent as PlayIcon } from '../../assets/icon/play.svg';
+import { ReactComponent as MenuIcon } from '../../assets/icon/menu.svg';
 import { ReactComponent as SearchIcon } from '../../assets/icon/search.svg';
 import { AudioContextProps } from '../../contexts/AudioContext';
 import useAudioContext from '../../hooks/useAudioContext';
@@ -18,11 +19,13 @@ function SearchBox() {
   const { queue, playback } = audioContext;
   const { track } = playback;
 
+  const keywordInpRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     if (keyword.length > 0) {
       searchIdRef.current = setTimeout(() => {
         async function search() {
-          const search = await searchService.search(keyword, 0);
+          const search = await searchService.search(keyword, 0, 10);
           setSearch(search);
         }
         search();
@@ -36,6 +39,7 @@ function SearchBox() {
   }
 
   function handlePlay(targetTrack: Track) {
+    keywordInpRef.current?.focus();
     const { playedTracks } = queue;
 
     let updatedPlayedTracks = [...playedTracks];
@@ -56,7 +60,8 @@ function SearchBox() {
     <div className={css('search-box')}>
       <SearchIcon className={css('icon')} />
       <input
-        className={css('keyword')}
+        ref={keywordInpRef}
+        className={css('keyword-inp')}
         type="text"
         placeholder="Search for track, artist"
         value={keyword}
@@ -69,7 +74,12 @@ function SearchBox() {
       >
         <ClearIcon className={css('icon')} />
       </button>
-      <ul className={css('items')}>
+      <ul
+        className={css('items', {
+          hidden: keyword.length === 0,
+        })}
+        onClick={() => keywordInpRef.current && keywordInpRef.current.focus()}
+      >
         {keyword.length > 0 && (
           <li key={keyword} className={css('item')}>
             <a href="#!" className={css('keyword-item')}>
@@ -79,7 +89,7 @@ function SearchBox() {
         )}
         {search?.track?.items
           .filter((track) => track.isPlayable)
-          .filter((_track, index) => index < 5)
+          // .filter((_track, index) => index < 5)
           .map((track) => (
             <li className={css('item')} key={track.id}>
               <div className={css('track-details')}>
@@ -108,12 +118,17 @@ function SearchBox() {
                   </p>
                 </div>
               </div>
-              <button
-                className={css('play-btn')}
-                onClick={() => handlePlay(track)}
-              >
-                <PlayIcon />
-              </button>
+              <div className={css('controls')}>
+                <button
+                  className={`${css('control', 'play-btn')}`}
+                  onClick={() => handlePlay(track)}
+                >
+                  <PlayIcon />
+                </button>
+                <button className={`${css('control')}`}>
+                  <MenuIcon />
+                </button>
+              </div>
             </li>
           ))}
       </ul>

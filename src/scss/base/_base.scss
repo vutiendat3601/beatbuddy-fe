@@ -49,6 +49,7 @@ a {
   color: inherit;
   text-decoration-line: none;
 }
+
 input {
   margin: 0;
   padding: 0;
@@ -63,6 +64,7 @@ input[type='range'] {
   height: 8px;
   accent-color: var(--primary-color);
 }
+
 button {
   border: none;
   outline: none;
@@ -71,6 +73,13 @@ button {
   cursor: pointer;
   color: #fff;
 }
+button[hidden] {
+  display: none;
+}
+button[hidden]>* {
+  display: none;
+}
+
 button:disabled,
 button[disabled] {
   cursor: not-allowed;
@@ -87,6 +96,7 @@ button[disabled] {
   font-size: var(--text-desc-font-size);
   font-weight: var(--text-desc-font-weight);
 }
+
 .text-link {
   text-decoration-line: none;
 }

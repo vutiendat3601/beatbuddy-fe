@@ -7,11 +7,10 @@ import { ReactComponent as PreviousIcon } from '../../assets/icon/previous.svg';
 import { ReactComponent as RepeatIcon } from '../../assets/icon/repeat.svg';
 import { ReactComponent as ShuffleIcon } from '../../assets/icon/shuffle.svg';
 import style from './AudioControl.module.scss';
-import { useEffect } from 'react';
 
 const css = classNames.bind(style);
 
-interface AudioControl {
+interface AudioControlFunction {
   play?: {
     onPlay: () => void;
     isPlaying: boolean;
@@ -43,13 +42,12 @@ interface AudioControl {
 }
 
 interface TrackCardProps {
-  controls: AudioControl;
+  controls: AudioControlFunction;
 }
 
 function AudioControl({
   controls: { play, next, previous, shuffle, repeat },
 }: TrackCardProps): JSX.Element {
-  
   return (
     <div className={`${css('audio-control')}`}>
       <button
@@ -96,5 +94,5 @@ function AudioControl({
   );
 }
 
-export type { AudioControl };
+export type { AudioControlFunction };
 export default AudioControl;

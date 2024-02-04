@@ -8,6 +8,11 @@
     'audio-player audio-player audio-player';
   grid-template-rows: auto 1fr auto;
 
+  &>* {
+    min-height: 0;
+    min-width: 0;
+  }
+
   .header {
     grid-area: header;
   }
