@@ -16,6 +16,7 @@ interface AudioControlFunction {
     isPlaying: boolean;
     disabled?: boolean;
     hidden?: boolean;
+    width?: number;
   };
   next?: {
     onNext: () => void;
@@ -65,16 +66,23 @@ function AudioControl({
       >
         <PreviousIcon />
       </button>
-      <button
-        hidden={play === undefined || play.hidden}
-        disabled={play?.disabled}
-        className={`${css('control', 'play-btn', {
-          playing: play?.isPlaying,
-        })}`}
-        onClick={play?.onPlay}
-      >
-        {play?.isPlaying ? <PauseIcon /> : <PlayIcon />}
-      </button>
+      {play && (
+        <button
+          hidden={play.hidden}
+          disabled={play.disabled}
+          className={`${css('control', 'play-btn', {
+            playing: play.isPlaying,
+          })}`}
+          style={
+            play.width && play.width >= 0
+              ? { width: play.width, height: play.width }
+              : undefined
+          }
+          onClick={play.onPlay}
+        >
+          {play.isPlaying ? <PauseIcon /> : <PlayIcon />}
+        </button>
+      )}
       <button
         hidden={next === undefined || next.hidden}
         disabled={next?.disabled}

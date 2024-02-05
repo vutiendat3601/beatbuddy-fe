@@ -1,7 +1,7 @@
 import { Track } from './Track';
 
 interface Playback {
-  track: Track | null;
+  track: Track | undefined;
   currentSec: number;
   isPlaying: boolean;
   volume: number;
@@ -10,7 +10,7 @@ interface Playback {
 const INITIAL_PLAYBACK: Playback = {
   currentSec: 0,
   volume: 0.6,
-  track: null,
+  track: undefined,
   isPlaying: false,
 };
 

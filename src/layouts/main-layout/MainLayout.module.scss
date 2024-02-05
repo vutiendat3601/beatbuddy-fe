@@ -1,12 +1,14 @@
 .main {
   display: grid;
   height: 100dvh;
+  overflow: hidden;
 
   grid-template-areas:
     'header header header'
     'left-sidebar content right-sidebar'
-    'audio-player audio-player audio-player';
+    'footer footer footer';
   grid-template-rows: auto 1fr auto;
+  grid-template-columns: auto 1fr auto;
 
   &>* {
     min-height: 0;
@@ -17,8 +19,13 @@
     grid-area: header;
   }
 
-  .audio-player {
-    grid-area: audio-player;
+  .right-sidebar {
+    grid-area: right-sidebar;
+    width: min(100%, fit-content);
+  }
+
+  .footer {
+    grid-area: footer;
     padding: var(--bs-gutter-x) 0;
   }
 }

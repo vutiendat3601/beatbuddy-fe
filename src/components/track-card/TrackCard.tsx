@@ -4,20 +4,16 @@ import {
   MutableRefObject,
   useEffect,
   useRef,
-  useState,
+  useState
 } from 'react';
 import { ReactComponent as LoveIcon } from '../../assets/icon/love.svg';
 import { Track } from '../../models/Track';
+import AudioControl, {
+  AudioControlFunction,
+} from '../audio-control/AudioControl';
 import style from './TrackCard.module.scss';
-import AudioControl, { AudioControlFunction } from '../audio-control/AudioControl';
 
 const css = classNames.bind(style);
-
-interface TrackCardProps {
-  track: Track | null;
-  controls?: AudioControlFunction;
-  variant: 'default' | 'mobile-player';
-}
 
 interface Trans {
   percent: number;
@@ -29,7 +25,23 @@ const INITIAL_TRANS = {
   ms: 0,
 };
 
-function TrackCard({ track, variant, controls }: TrackCardProps): JSX.Element {
+interface TrackCardProps {
+  thumbnailWidth?: number;
+  highlighted?: boolean;
+  track: Track;
+  controls?: AudioControlFunction;
+  variant: 'default' | 'mobile-player';
+  callToAction?: { action: (track?: Track) => void; icon: JSX.Element };
+}
+
+function TrackCard({
+  thumbnailWidth = 68,
+  highlighted = false,
+  track,
+  variant,
+  controls,
+  callToAction,
+}: TrackCardProps): JSX.Element {
   const [nameTransX, setNameTransX] = useState<Trans>(INITIAL_TRANS);
   const [artistTransX, setArtistTransX] = useState<Trans>(INITIAL_TRANS);
 
@@ -62,7 +74,8 @@ function TrackCard({ track, variant, controls }: TrackCardProps): JSX.Element {
       const scrollWidth = elem.scrollWidth;
       let offset = ((scrollWidth - width) / width) * 100;
       if (offset > 0) {
-        const duration = ++offset * MS_PER_PX;
+        let duration = ++offset * MS_PER_PX;
+        duration = duration > 500 ? duration : 500;
         const transX = { percent: offset, ms: duration };
         callback({ percent: offset, ms: duration });
         timeoutRef.current = setTimeout(() => {
@@ -89,11 +102,18 @@ function TrackCard({ track, variant, controls }: TrackCardProps): JSX.Element {
   }
 
   return (
-    <div className={css('track-card', { [variant]: true })}>
+    <div
+      className={css('track-card', {
+        [variant]: true,
+        highlighted: highlighted,
+      })}
+    >
       <img
         src={track?.thumbnail || ''}
         alt={track?.name}
         className={css('thumbnail')}
+        width={thumbnailWidth}
+        height={thumbnailWidth}
       />
       <div
         className={css('details')}
@@ -153,11 +173,22 @@ function TrackCard({ track, variant, controls }: TrackCardProps): JSX.Element {
       <button className={`d-none d-md-flex ${css('love-btn')}`}>
         {<LoveIcon />}
       </button>
-      {controls && (
-        <div className={css('audio-control')}>
-          <AudioControl controls={controls} />
-        </div>
-      )}
+      <div className={css('action')}>
+        {(() => {
+          if (controls) {
+            return <AudioControl controls={controls} />;
+          } else if (callToAction) {
+            return (
+              <button
+                className={css('cta')}
+                onClick={() => callToAction.action(track)}
+              >
+                {callToAction.icon}
+              </button>
+            );
+          }
+        })()}
+      </div>
     </div>
   );
 }

@@ -2,22 +2,22 @@ import classNames from 'classnames/bind';
 import { useEffect, useRef, useState } from 'react';
 import { ReactComponent as ClearIcon } from '../../assets/icon/clear.svg';
 import { ReactComponent as PlayIcon } from '../../assets/icon/play.svg';
-import { ReactComponent as MenuIcon } from '../../assets/icon/menu.svg';
 import { ReactComponent as SearchIcon } from '../../assets/icon/search.svg';
 import { AudioContextProps } from '../../contexts/AudioContext';
 import useAudioContext from '../../hooks/useAudioContext';
 import { Search } from '../../models/Search';
 import { Track } from '../../models/Track';
 import searchService from '../../services/search-service';
+import TrackCard from '../track-card/TrackCard';
 import style from './SearchBox.module.scss';
+
 const css = classNames.bind(style);
+
 function SearchBox() {
   const [keyword, setKeyword] = useState<string>('');
   const [search, setSearch] = useState<Search>();
   const searchIdRef = useRef<NodeJS.Timeout>();
-  const { audioContext, dispatchAudio }: AudioContextProps = useAudioContext();
-  const { queue, playback } = audioContext;
-  const { track } = playback;
+  const { dispatchAudio }: AudioContextProps = useAudioContext();
 
   const keywordInpRef = useRef<HTMLInputElement>(null);
 
@@ -38,23 +38,21 @@ function SearchBox() {
     setKeyword(e.target.value);
   }
 
-  function handlePlay(targetTrack: Track) {
-    keywordInpRef.current?.focus();
-    const { playedTracks } = queue;
+  function handlePlay(target?: Track): void {
+    if (target) {
+      keywordInpRef.current?.focus();
 
-    let updatedPlayedTracks = [...playedTracks];
-
-    track && updatedPlayedTracks.push(track);
-    let updatedTrack = targetTrack;
-
-    dispatchAudio({
-      type: 'update_session',
-      payload: {
-        playedTracks: updatedPlayedTracks,
-        track: updatedTrack,
-      },
-    });
-    dispatchAudio({ type: 'update_playback', payload: { isPlaying: true } });
+      dispatchAudio({
+        type: 'change_playback_track',
+        payload: {
+          track: { ...target },
+        },
+      });
+      dispatchAudio({
+        type: 'update_playback',
+        payload: { isPlaying: true, currentSec: 0 },
+      });
+    }
   }
   return (
     <div className={css('search-box')}>
@@ -81,19 +79,18 @@ function SearchBox() {
         onClick={() => keywordInpRef.current && keywordInpRef.current.focus()}
       >
         {keyword.length > 0 && (
-          <li key={keyword} className={css('item')}>
-            <a href="#!" className={css('keyword-item')}>
+          <li key={keyword} className={css('item', 'keyword-item')}>
+            <a href="#!" className={css('keyword-link')}>
               <SearchIcon /> {keyword}
             </a>
           </li>
         )}
         {search?.track?.items
           .filter((track) => track.isPlayable)
-          // .filter((_track, index) => index < 5)
           .map((track) => (
             <li className={css('item')} key={track.id}>
               <div className={css('track-details')}>
-                <img
+                {/* <img
                   src={track.thumbnail || ''}
                   alt={track.name}
                   className={css('track-thumbnail')}
@@ -116,9 +113,15 @@ function SearchBox() {
                       </span>
                     ))}
                   </p>
-                </div>
+                </div> */}
+                <TrackCard
+                  thumbnailWidth={48}
+                  track={track}
+                  variant="default"
+                  callToAction={{ action: handlePlay, icon: <PlayIcon /> }}
+                />
               </div>
-              <div className={css('controls')}>
+              {/* <div className={css('controls')}>
                 <button
                   className={`${css('control', 'play-btn')}`}
                   onClick={() => handlePlay(track)}
@@ -128,7 +131,7 @@ function SearchBox() {
                 <button className={`${css('control')}`}>
                   <MenuIcon />
                 </button>
-              </div>
+              </div> */}
             </li>
           ))}
       </ul>

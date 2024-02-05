@@ -1,0 +1,11 @@
+.queue-card {
+    height: 100%;
+    overflow: auto;
+    transition: translate 1s linear;
+}
+
+.queue-card.hidden {
+    translate: 100vw;
+    visibility: hidden;
+    transition: translate 1s linear, visibility 1s linear;
+}

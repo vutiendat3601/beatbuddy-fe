@@ -20,6 +20,23 @@
   --text-desc-font-weight: 400;
 }
 
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #666;
+  border-radius: 9999px;
+
+  &:hover {
+    background: #555;
+  }
+}
+
+*::-webkit-scrollbar-track {
+  border-radius: 9999px;
+}
+
 *,
 ::before,
 ::after {
@@ -72,10 +89,16 @@ button {
   padding: 0;
   cursor: pointer;
   color: #fff;
+
+  &:hover{
+    opacity: 0.9;
+  }
 }
+
 button[hidden] {
   display: none;
 }
+
 button[hidden]>* {
   display: none;
 }

@@ -1,29 +1,31 @@
 import classNames from 'classnames/bind';
 import { useEffect, useRef } from 'react';
-import { ReactComponent as QueueIcon } from '../../../assets/icon/queue.svg';
+import { ReactComponent as QueueIcon } from '../../assets/icon/queue.svg';
 
-import TrackCard from '../../../components/track-card/TrackCard';
-import VolumeControl from '../../../components/volume-control/VolumeControl';
-import { AudioContextProps } from '../../../contexts/AudioContext';
-import useAudioContext from '../../../hooks/useAudioContext';
-import { Playback } from '../../../models/Playback';
-import { INITITAL_QUEUE, Queue } from '../../../models/Queue';
-import { Track } from '../../../models/Track';
-import trackService from '../../../services/track-service';
+import AudioControl from '../../components/audio-control/AudioControl';
+import TrackCard from '../../components/track-card/TrackCard';
+import VolumeControl from '../../components/volume-control/VolumeControl';
+import { AudioContextProps } from '../../contexts/AudioContext';
+import useAudioContext from '../../hooks/useAudioContext';
+import useMainLayoutContext from '../../hooks/useMainLayoutContext';
+import { Playback } from '../../models/Playback';
+import { Queue } from '../../models/Queue';
+import trackService from '../../services/track-service';
 import {
   PLAYBACK_PLAY_START_AFTER_SEC,
   PLAYBACK_UPDATE_INTERVAL_MS,
-} from '../../../shared/GlobalConstant';
-import createHlsPlayer, { HlsPlayer } from '../../../shared/utils/HlsUtil';
-import { getObject, saveObject } from '../../../shared/utils/LocalStorageUtil';
-import formatDurationSec from '../../../shared/utils/TimeUtil';
+} from '../../shared/GlobalConstant';
+import createHlsPlayer, { HlsPlayer } from '../../shared/utils/HlsUtil';
+import { getObject } from '../../shared/utils/LocalStorageUtil';
+import formatDurationSec from '../../shared/utils/TimeUtil';
 import style from './AudioPlayer.module.scss';
-import AudioControl from '../../../components/audio-control/AudioControl';
 
 const css = classNames.bind(style);
 
 function AudioPlayer(): JSX.Element {
   const { audioContext, dispatchAudio }: AudioContextProps = useAudioContext();
+  const { mainLayout, dispatchMainLayout } = useMainLayoutContext();
+  const { queueCard } = mainLayout;
 
   const { queue, playback } = audioContext;
   const { track, currentSec, isPlaying } = playback;
@@ -39,6 +41,18 @@ function AudioPlayer(): JSX.Element {
   useEffect(() => {
     hlsPlayerRef.current = createHlsPlayer('audioPlayer');
   }, []);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (audio) {
+      if (!isPlaying) {
+        !audio.paused && audio.pause();
+      } else if (audio.readyState > 0) {
+        audio.paused && audio.play();
+      }
+    }
+    // handlePlay();
+  }, [isPlaying]);
 
   useEffect(() => {
     let queue = getObject<Queue>('queue');
@@ -76,10 +90,17 @@ function AudioPlayer(): JSX.Element {
   }, [track]);
 
   useEffect(() => {
-    if (queue !== INITITAL_QUEUE) {
-      saveObject('queue', queue);
-    }
-  }, [queue]);
+    dispatchAudio({ type: 'save_queue', payload: {} });
+  }, [queue, dispatchAudio]);
+
+  function savePlaybackInterval() {
+    dispatchAudio({ type: 'save_playback', payload: {} });
+    isSessionSavedRef.current = true;
+    clearTimeout(sessionIdRef.current);
+    sessionIdRef.current = setTimeout(() => {
+      isSessionSavedRef.current = false;
+    }, PLAYBACK_UPDATE_INTERVAL_MS);
+  }
 
   function handlePlay() {
     const audio = audioRef.current;
@@ -107,7 +128,7 @@ function AudioPlayer(): JSX.Element {
       } else {
         audio.currentTime = currentSec;
       }
-      saveObject('queue', queue);
+      dispatchAudio({ type: 'save_queue', payload: {} });
     }
   }
 
@@ -123,15 +144,6 @@ function AudioPlayer(): JSX.Element {
     }
   }
 
-  function savePlayback() {
-    saveObject('playback', { ...playback, isPlaying: false });
-    isSessionSavedRef.current = true;
-    clearTimeout(sessionIdRef.current);
-    sessionIdRef.current = setTimeout(() => {
-      isSessionSavedRef.current = false;
-    }, PLAYBACK_UPDATE_INTERVAL_MS);
-  }
-
   function handleAudioTimeUpdate() {
     const audio = audioRef.current;
     if (audio) {
@@ -140,7 +152,7 @@ function AudioPlayer(): JSX.Element {
         payload: { currentSec: audio.currentTime },
       });
       if (playback.track && !isSessionSavedRef.current) {
-        savePlayback();
+        savePlaybackInterval();
       }
     }
   }
@@ -159,60 +171,22 @@ function AudioPlayer(): JSX.Element {
       // ## Play from start
       audio.currentTime = 0;
     } else {
-      const { playedTracks, tracks } = queue;
-      if (playedTracks.length !== 0) {
-        let updatedPlayedTracks = [...playedTracks];
-        let updatedTracks: Track[] = [...tracks];
-
-        track && updatedTracks.unshift(track);
-        let updatedTrack = updatedPlayedTracks.pop();
-
-        console.log(updatedPlayedTracks);
-        dispatchAudio({
-          type: 'update_session',
-          payload: {
-            playedTracks: updatedPlayedTracks,
-            tracks: updatedTracks,
-            track: updatedTrack,
-          },
-        });
-      }
-      savePlayback();
+      dispatchAudio({
+        type: 'previous',
+        payload: {},
+      });
     }
   }
 
   // ## Next
   function handleNext() {
-    const { playedTracks, tracks } = queue;
-
-    let updatedPlayedTracks = [...playedTracks];
-    let updatedTracks: Track[] = [...tracks];
-
-    track && updatedPlayedTracks.push(track);
-    let updatedTrack = updatedTracks.shift();
-    let isPlaying = true;
-    if (!updatedTrack) {
-      updatedTrack = updatedPlayedTracks.shift();
-      updatedTracks = [...updatedPlayedTracks];
-      updatedPlayedTracks = [];
-      isPlaying = repeatMode !== 'all';
+    dispatchAudio({
+      type: 'next',
+      payload: {},
+    });
+    if (playedTracks.length === 0 && repeatMode !== 'all') {
+      dispatchAudio({ type: 'update_playback', payload: { isPlaying: false } });
     }
-    dispatchAudio({
-      type: 'update_session',
-      payload: {
-        playedTracks: updatedPlayedTracks,
-        tracks: updatedTracks,
-        track: updatedTrack,
-        isPlaying: isPlaying,
-      },
-    });
-    dispatchAudio({
-      type: 'update_playback',
-      payload: {
-        isPlaying,
-      },
-    });
-    savePlayback();
   }
 
   function handleVolumeChange(value: number) {
@@ -241,19 +215,18 @@ function AudioPlayer(): JSX.Element {
       <div className="row">
         <div className="col-12 col-md-5 col-lg-3">
           <div className="d-md-none">
-            <TrackCard
-              variant="mobile-player"
-              track={track}
-              controls={{
-                play: {
-                  isPlaying,
-                  onPlay: handlePlay,
-                },
-              }}
-            />
+            {track && (
+              <TrackCard
+                variant="mobile-player"
+                track={track}
+                controls={{
+                  play: { isPlaying, onPlay: handlePlay },
+                }}
+              />
+            )}
           </div>
           <div className="d-none d-md-block">
-            <TrackCard variant="default" track={track} />
+            {track && <TrackCard variant="default" track={track} />}
           </div>
         </div>
         <div className="d-none d-md-block col-md-7 col-lg-6">
@@ -313,7 +286,12 @@ function AudioPlayer(): JSX.Element {
         <div className="col-lg-3 d-none d-lg-block">
           <div className={css('action')}>
             <div className="utils">
-              <button className={css('queue-btn')}>
+              <button
+                className={css('queue-btn')}
+                onClick={(e: any) =>
+                  dispatchMainLayout({ type: 'toggle_queue', payload: {} })
+                }
+              >
                 <QueueIcon />
               </button>
             </div>

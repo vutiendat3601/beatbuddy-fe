@@ -8,11 +8,11 @@ function Header(): JSX.Element {
   return (
     <header className={css('header')}>
       <div className="row">
-        <div className="col-lg-3"></div>
-        <div className="col-lg-6">
+        <div className="col-12 col-md-3"></div>
+        <div className="col-12 col-md-6">
           <SearchBox />
         </div>
-        <div className="col-lg-3"></div>
+        <div className="col-12 col-md-3"></div>
       </div>
     </header>
   );

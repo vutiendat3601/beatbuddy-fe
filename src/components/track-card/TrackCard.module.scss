@@ -24,36 +24,17 @@
     border-radius: 4px;
     position: relative;
 
-    &.mobile-player {
-        background: #353535;
-        .name, .artist {
-            user-select: none;
-        }
-    }
-
-    &.mobile-player::after {
-        position: absolute;
-        display: block;
-        content: "";
-        height: 4px;
-        bottom: 0;
-        left: 0;
-        border-radius: 9999px;
-        width: var(--current-percent);
-        background: #fff;
-    }
-
     .thumbnail {
         border-radius: 4px;
-        width: 68px;
-        height: 68px;
+        // width: 68px;
+        // height: 68px;
         flex: none;
     }
 
     .details {
         display: flex;
         flex-direction: column;
-        row-gap: 8px;
+        // row-gap: 8px;
         overflow: hidden;
     }
 
@@ -61,14 +42,13 @@
     .artist {
         white-space: nowrap;
         text-overflow: ellipsis;
-        line-height: 1.15;
+        line-height: 1.5em;
     }
 
     .name-value,
     .artist-value {
         display: block;
         translate: 0;
-        line-height: 1.15em;
     }
 
     .name-value.sliding {
@@ -93,33 +73,52 @@
         fill: #43a1d5;
     }
 
-    .love-btn.loved path {
+    .love-callToActionbtn.loved path {
         stroke: #43a1d5;
     }
 
-    .audio-control {
+    .action {
         flex: none;
         margin-left: auto;
+    }
+
+    .cta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background: var(--primary-color);
+        border-radius: 50%;
     }
 }
 
 
-// @keyframes trackNameSliding {
-//     0% {
-//         translate: 0;
-//         // rotate: 0;
-//     }
 
-//     // 25% {
+.track-card.mobile-player {
+    background: #353535;
 
-//     // }
+    .name,
+    .artist {
+        user-select: none;
+    }
+}
 
-//     50% {
-//         --name-trans-x-percent: 268%;
-//     }
+.track-card.mobile-player::after {
+    position: absolute;
+    display: block;
+    content: "";
+    height: 4px;
+    bottom: 0;
+    left: 0;
+    border-radius: 9999px;
+    width: var(--current-percent);
+    background: #fff;
+}
 
-//     100% {
-//         --name-trans-x-percent: 268%;
-//         translate: var(--name-trans-x-percent);
-//     }
-// }
+.track-card.highlighted {
+    .name {
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+}

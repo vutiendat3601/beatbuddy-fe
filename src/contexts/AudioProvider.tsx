@@ -9,7 +9,7 @@ interface AudioProviderProps {
 }
 
 function AudioProvider({ children }: AudioProviderProps): JSX.Element {
-  const [audio, dispatchAudio] = useReducer(audioReducer, {
+  const [audioContext, dispatchAudio] = useReducer(audioReducer, {
     queue: INITITAL_QUEUE,
     playback: INITIAL_PLAYBACK,
   });
@@ -17,7 +17,7 @@ function AudioProvider({ children }: AudioProviderProps): JSX.Element {
   return (
     <AudioContext.Provider
       value={{
-        audioContext: audio,
+        audioContext,
         dispatchAudio,
       }}
     >

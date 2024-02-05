@@ -1,3 +1,5 @@
+@use '../../scss/abstract';
+
 %flexAlignCenter {
   display: flex;
   align-items: center;
@@ -15,7 +17,7 @@
 }
 
 .search-box {
-  --search-box-border-radius: 20px;
+  --search-box-border-radius: 12px;
   position: relative;
   display: flex;
   align-items: center;
@@ -45,7 +47,7 @@
     visibility: hidden;
     scale: 0.95;
     z-index: -1;
-    transition: visibility 0.4s, scale 0.4s;
+    transition: none;
   }
 
   .items.hidden~.cover {
@@ -67,6 +69,7 @@
     border-bottom-left-radius: var(--search-box-border-radius);
     visibility: visible;
     scale: 1;
+    z-index: 1;
     transition: visibility 0.4s, scale 0.4s;
   }
 
@@ -86,7 +89,6 @@
   .item {
     display: flex;
     align-items: center;
-    padding: 4px 12px;
 
     &:hover {
       background: var(--hover-bg-color);
@@ -94,10 +96,13 @@
   }
 
   .keyword-item {
+    padding: 12px;
+  }
+
+  .keyword-link {
     display: flex;
     width: 100%;
     align-items: center;
-    padding: 8px 4px;
     column-gap: 8px;
   }
 
@@ -106,10 +111,7 @@
   }
 
   .track-details {
-    display: flex;
-    align-items: center;
-    column-gap: 8px;
-    flex: 1;
+    width: 100%;
   }
 
   .track-thumbnail {
@@ -148,7 +150,6 @@
       height: 28px;
       border-radius: 50%;
       padding: 0;
-      padding-left: 3px;
       color: var(--primary-color);
       background: #fff;
 
