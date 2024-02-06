@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import { ReactComponent as PlayIcon } from '../../assets/icon/play.svg';
 import style from './TrackDetail.module.scss';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Track } from '../../models/Track';
 import trackService from '../../services/track-service';

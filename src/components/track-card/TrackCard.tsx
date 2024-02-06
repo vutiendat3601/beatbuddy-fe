@@ -6,13 +6,13 @@ import {
   useRef,
   useState,
 } from 'react';
+import { Link } from 'react-router-dom';
 import { ReactComponent as LoveIcon } from '../../assets/icon/love.svg';
 import { Track } from '../../models/Track';
 import AudioControl, {
   AudioControlFunction,
 } from '../audio-control/AudioControl';
 import style from './TrackCard.module.scss';
-import { Link, useNavigate } from 'react-router-dom';
 
 const css = classNames.bind(style);
 
@@ -54,7 +54,6 @@ function TrackCard({
 
   const nameTransXIdRef = useRef<NodeJS.Timeout>();
   const artistTransXIdRef = useRef<NodeJS.Timeout>();
-  const navigate = useNavigate();
 
   function clearTransXIds() {
     setNameTransX(INITIAL_TRANS);

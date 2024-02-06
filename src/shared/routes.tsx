@@ -1,6 +1,5 @@
 import { RouteObject, createBrowserRouter } from 'react-router-dom';
 import TrackDetail from '../pages/track-detail/TrackDetail';
-import path from 'path';
 import MainLayout from '../layouts/main-layout/MainLayout';
 import AudioProvider from '../contexts/AudioProvider';
 import MainLayoutProvider from '../contexts/MainLayoutProvider';
