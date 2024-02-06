@@ -4,7 +4,7 @@ import {
   MutableRefObject,
   useEffect,
   useRef,
-  useState
+  useState,
 } from 'react';
 import { ReactComponent as LoveIcon } from '../../assets/icon/love.svg';
 import { Track } from '../../models/Track';
@@ -12,6 +12,7 @@ import AudioControl, {
   AudioControlFunction,
 } from '../audio-control/AudioControl';
 import style from './TrackCard.module.scss';
+import { Link, useNavigate } from 'react-router-dom';
 
 const css = classNames.bind(style);
 
@@ -31,7 +32,12 @@ interface TrackCardProps {
   track: Track;
   controls?: AudioControlFunction;
   variant: 'default' | 'mobile-player';
-  callToAction?: { action: (track?: Track) => void; icon: JSX.Element };
+  callToAction?: {
+    action: (track?: Track) => void;
+    width?: number;
+    icon: JSX.Element;
+  };
+  loveAction?: { action: (track?: Track) => void; hidden?: boolean };
 }
 
 function TrackCard({
@@ -41,12 +47,14 @@ function TrackCard({
   variant,
   controls,
   callToAction,
+  loveAction,
 }: TrackCardProps): JSX.Element {
   const [nameTransX, setNameTransX] = useState<Trans>(INITIAL_TRANS);
   const [artistTransX, setArtistTransX] = useState<Trans>(INITIAL_TRANS);
 
   const nameTransXIdRef = useRef<NodeJS.Timeout>();
   const artistTransXIdRef = useRef<NodeJS.Timeout>();
+  const navigate = useNavigate();
 
   function clearTransXIds() {
     setNameTransX(INITIAL_TRANS);
@@ -134,18 +142,21 @@ function TrackCard({
               })}
               onMouseOver={handleNameHover}
             >
-              {track?.name}
+              {track.name}
             </span>
           ) : (
-            <a
-              href="#!"
+            <Link
+              to={`/track/${track.id}`}
+              // onClick={() => navigate(`/track/${track.id}`)}
+              // relative="route"
               className={`text-link ${css('name-value', {
                 sliding: nameTransX !== INITIAL_TRANS,
               })}`}
+              replace
               onMouseOver={handleNameHover}
             >
-              {track?.name}
-            </a>
+              {track.name}
+            </Link>
           )}
         </p>
         <p className={css('artist')}>
@@ -155,7 +166,7 @@ function TrackCard({
             })}`}
             onMouseOver={handleArtistHover}
           >
-            {track?.artists.map((artist, index) => (
+            {track.artists.map((artist, index) => (
               <span key={artist.id}>
                 {variant === 'mobile-player' ? (
                   <span className="text-desc">{artist.name}</span>
@@ -170,24 +181,26 @@ function TrackCard({
           </span>
         </p>
       </div>
-      <button className={`d-none d-md-flex ${css('love-btn')}`}>
-        {<LoveIcon />}
-      </button>
+      {loveAction && (
+        <button hidden={loveAction.hidden} className={`${css('love-btn')}`}>
+          <LoveIcon />
+        </button>
+      )}
       <div className={css('action')}>
-        {(() => {
-          if (controls) {
-            return <AudioControl controls={controls} />;
-          } else if (callToAction) {
-            return (
-              <button
-                className={css('cta')}
-                onClick={() => callToAction.action(track)}
-              >
-                {callToAction.icon}
-              </button>
-            );
-          }
-        })()}
+        {callToAction && (
+          <button
+            className={css('cta')}
+            onClick={() => callToAction.action(track)}
+            style={
+              callToAction.width && callToAction.width >= 0
+                ? { width: callToAction.width, height: callToAction.width }
+                : undefined
+            }
+          >
+            {callToAction.icon}
+          </button>
+        )}
+        {controls && <AudioControl controls={controls} />}
       </div>
     </div>
   );

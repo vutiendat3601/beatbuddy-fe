@@ -1,11 +1,52 @@
 .queue-card {
+    background: var(--main-layout-elem-bg-color);
     height: 100%;
-    overflow: auto;
-    transition: translate 1s linear;
+    transition: translate 0.6s linear;
+    border-radius: var(--main-layout-elem-border-radius);
+    // box-shadow: var(--main-layout-elem-shadow);
+
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+
+    padding-bottom: 12px;
+    .search {
+        background: var(--main-layout-elem-bg-color);
+        padding: var(--track-card-padding);
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+}
+
+.queue-tracks {
+    overflow-y: auto;
+    flex: 1;
+
+    .no-result,
+    .seperator {
+        width: calc(100% + var(--track-card-padding) * -2);
+        margin: 0 auto;
+    }
+
+    .no-result {
+        font-size: 1.9rem;
+        line-height: 1.5;
+        text-align: center;
+        margin-top: 20px;
+        font-weight: 600;
+    }
+
+    .seperator {
+        height: 1px;
+        background: #aaa;
+        border-radius: 9999px;
+    }
 }
 
 .queue-card.hidden {
     translate: 100vw;
     visibility: hidden;
-    transition: translate 1s linear, visibility 1s linear;
+    transition: translate 0.8s linear, visibility 0.8s linear;
 }

@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import AudioContext, { AudioContextProps } from '../contexts/AudioContext';
 import MainLayoutContext, {
   MainLayoutContextProps,
 } from '../contexts/MainLayoutContext';

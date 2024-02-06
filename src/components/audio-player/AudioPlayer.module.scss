@@ -17,18 +17,17 @@
 }
 
 .audio-player {
-  // padding: 8px;
-  // border: 1px solid #fff;
-
-  @include abstract.screen(md) {
-    border: none;
-  }
+  background: var(--main-layout-elem-bg-color);
+  border-radius: var(--main-layout-elem-border-radius);
+  // box-shadow: var(--main-layout-elem-shadow);
 }
 
 .controls {
   @extend %flexCenter;
   flex-direction: column;
-  row-gap: 8px
+  row-gap: 8px;
+  padding: 8px;
+  height: 100%;
 }
 
 .controls-progressbar {
@@ -110,6 +109,7 @@
   flex-direction: column;
   row-gap: 8px;
   padding: 12px;
+  height: 100%;
 
   .queue-btn:hover {
     opacity: 0.9;

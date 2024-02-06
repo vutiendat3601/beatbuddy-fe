@@ -1,0 +1,119 @@
+@use '../../scss/abstract';
+
+%flexAlignCenter {
+    display: flex;
+    align-items: center;
+}
+
+%flexContentCenter {
+    display: flex;
+    justify-content: center;
+}
+
+%flexCenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.track-detail {
+    padding: 8px;
+    .head {
+        @extend %flexAlignCenter;
+        flex-direction: column;
+        align-items: flex-start;
+
+        @include abstract.screen(md) {
+            flex-direction: row;
+            align-items: center;
+        }
+    }
+
+    .head .thumbnail {
+        width: min(100%, 400px);
+        margin: 0 auto;
+        border-radius: 12px;
+        @include abstract.screen(md) {
+            margin: 0;
+        }
+        padding: 8px;
+    }
+
+    .name {
+    padding: 8px;
+    }
+
+    .info {
+        margin-top: 8px;
+        @include abstract.screen(md) {
+            margin-top: 0;
+        }
+    }
+
+    .more {
+        font-size: 1.8rem;
+        line-height: 3rem;
+        padding: 8px;
+    }
+
+    .more .prefix-dot {
+        margin-left: 8px;
+        padding-left: 16px;
+        position: relative;
+    }
+
+    .more .prefix-dot::before {
+        content: "";
+        left: 0;
+        top: 50%;
+        translate: 0 -50%;
+        display: block;
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: #fff;
+        border-radius: 50%;
+    }
+}
+
+.info .artists {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 8px;
+}
+.info .artist {
+    .inner {
+        @extend %flexAlignCenter;
+        // column-gap: 8px;
+        width: fit-content;
+    }
+
+    .artist-thumbnail {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+    }
+
+    .artist-name {
+        margin-left: 8px;
+        font-weight: 600;
+        font-size: 1.9rem;
+    }
+}
+
+.action {
+    @extend %flexAlignCenter;
+    margin-top: 12px;
+    padding: 8px;
+
+    .cta {
+        @extend %flexCenter;
+        flex: none;
+        width: 48px;
+        height: 48px;
+        // padding: 12px;
+        border-radius: 50%;
+        background: var(--primary-color);
+    }
+}

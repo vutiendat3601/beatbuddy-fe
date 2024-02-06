@@ -1,7 +1,7 @@
 import { Playback, INITIAL_PLAYBACK } from '../models/Playback';
 import { Queue, INITITAL_QUEUE } from '../models/Queue';
 import { Track } from '../models/Track';
-import { saveObject } from '../shared/utils/LocalStorageUtil';
+import { saveObject } from '../shared/utils/local-storage-util';
 
 interface AudioPlayer {
   queue: Queue;

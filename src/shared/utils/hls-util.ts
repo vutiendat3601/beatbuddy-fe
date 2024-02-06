@@ -31,7 +31,6 @@ function createHlsPlayer(audioElemId: string): HlsPlayer {
     hls,
     isHlsSupported,
     loadSource(src: string) {
-      // if (hls && src) {
       if (isHlsSupported && hls) {
         hls.loadSource(src);
       } else if (audioElem.canPlayType('application/vnd.apple.mpegurl')) {
@@ -39,7 +38,6 @@ function createHlsPlayer(audioElemId: string): HlsPlayer {
           audioElemId
         ) as HTMLAudioElement;
         audioElem.src = src;
-        // }
       }
     },
   };

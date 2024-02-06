@@ -5,6 +5,10 @@ import { ReactComponent as PlayIcon } from '../../assets/icon/play.svg';
 import { Track } from '../../models/Track';
 import TrackCard from '../track-card/TrackCard';
 import style from './QueueCard.module.scss';
+import SearchBox from '../search-box/SearchBox';
+import { Search, SearchResult } from '../../models/Search';
+import { INITIAL_PAGINATION } from '../../models/Pagination';
+import { useState } from 'react';
 
 const css = classNames.bind(style);
 
@@ -16,7 +20,9 @@ function QueueCard({ hidden = false }: QueueCardProps) {
   const { audioContext, dispatchAudio } = useAudioContext();
   const { queue, playback } = audioContext;
   const { playedTracks, tracks } = queue;
-  const { isPlaying } = playback;
+  const { isPlaying, track } = playback;
+  const [filteredTracks, setFilteredTracks] = useState<Track[]>([]);
+  const [isSearching, setSearching] = useState<boolean>(false);
 
   function handlePlay() {
     dispatchAudio({
@@ -52,32 +58,106 @@ function QueueCard({ hidden = false }: QueueCardProps) {
         variant="default"
         key={`${index}${target.id}`}
         track={target}
-        callToAction={{ action: handlePlayInQueue, icon: <PlayIcon /> }}
+        callToAction={{
+          action: handlePlayInQueue,
+          width: 28,
+          icon: <PlayIcon />,
+        }}
+        controls={{ love: { onLove: () => undefined, width: 28 } }}
       />
     );
   }
 
+  async function handleSearch(keyword: string): Promise<Search> {
+    const searchTrack: SearchResult<Track> = {
+      items: [],
+      metadata: INITIAL_PAGINATION,
+    };
+    if (keyword.length > 0) {
+      setSearching(true);
+      const allTracks: Track[] = [...playedTracks, ...tracks];
+      const filteredTracks: Track[] = allTracks.filter((t) => {
+        return t.name.toLowerCase().includes(keyword.toLowerCase());
+      });
+      searchTrack.items = filteredTracks;
+    } else {
+      setSearching(false);
+    }
+    return { track: searchTrack };
+  }
+
+  function handleSearchTrackResult(searchTrackResult: SearchResult<Track>) {
+    setFilteredTracks(searchTrackResult.items);
+  }
+
+  console.log(filteredTracks);
+
+  const QueueTracks: JSX.Element = (
+    <ul className={css('queue-tracks')}>
+      {isSearching ? (
+        <>
+          {track && (
+            <TrackCard
+              thumbnailWidth={48}
+              track={track}
+              variant="default"
+              highlighted
+              controls={{
+                love: { onLove: () => undefined, width: 28, order: 1 },
+                play: {
+                  isPlaying,
+                  onPlay: handlePlay,
+                  width: 28,
+                },
+              }}
+            />
+          )}
+          <div className={css('seperator')}></div>
+          {filteredTracks.length === 0 ? (
+            <p className={css('no-result')}>No result to show.</p>
+          ) : (
+            filteredTracks.map(renderTrack, 'tracks')
+          )}
+        </>
+      ) : (
+        <>
+          {playedTracks.map(renderTrack, 'played_tracks')}
+          {track && (
+            <TrackCard
+              thumbnailWidth={48}
+              track={track}
+              variant="default"
+              highlighted
+              controls={{
+                love: { onLove: () => undefined, width: 28, order: 1 },
+                play: {
+                  isPlaying,
+                  onPlay: handlePlay,
+                  width: 28,
+                },
+              }}
+            />
+          )}
+          {filteredTracks.length === 0 && tracks.map(renderTrack, 'tracks')}
+        </>
+      )}
+    </ul>
+  );
+
   return (
     <div className={css('queue-card', { hidden })}>
-      <ul className="tracks">
-        {playedTracks.map(renderTrack, 'played_tracks')}
-        {playback.track && (
-          <TrackCard
-            thumbnailWidth={48}
-            track={playback.track}
-            variant="default"
-            highlighted
-            controls={{
-              play: {
-                isPlaying,
-                onPlay: handlePlay,
-                width: 32
-              },
-            }}
-          />
-        )}
-        {tracks.map(renderTrack, 'tracks')}
-      </ul>
+      <div className={css('search')}>
+        <SearchBox
+          standalone={false}
+          searchOptions={{
+            onSearch: handleSearch,
+            trackSearch: { onResult: handleSearchTrackResult },
+          }}
+        />
+      </div>
+      {QueueTracks}
+      {/* <ul className={css('queue-tracks')}>
+      </ul> */}
     </div>
   );
 }

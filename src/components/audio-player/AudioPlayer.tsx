@@ -14,22 +14,21 @@ import trackService from '../../services/track-service';
 import {
   PLAYBACK_PLAY_START_AFTER_SEC,
   PLAYBACK_UPDATE_INTERVAL_MS,
-} from '../../shared/GlobalConstant';
-import createHlsPlayer, { HlsPlayer } from '../../shared/utils/HlsUtil';
-import { getObject } from '../../shared/utils/LocalStorageUtil';
-import formatDurationSec from '../../shared/utils/TimeUtil';
+} from '../../shared/global-constant';
+import createHlsPlayer, { HlsPlayer } from '../../shared/utils/hls-util';
+import { getObject } from '../../shared/utils/local-storage-util';
+import { formatDurationSec } from '../../shared/utils/datetime-util';
 import style from './AudioPlayer.module.scss';
 
 const css = classNames.bind(style);
 
 function AudioPlayer(): JSX.Element {
   const { audioContext, dispatchAudio }: AudioContextProps = useAudioContext();
-  const { mainLayout, dispatchMainLayout } = useMainLayoutContext();
-  const { queueCard } = mainLayout;
+  const { dispatchMainLayout } = useMainLayoutContext();
 
   const { queue, playback } = audioContext;
   const { track, currentSec, isPlaying } = playback;
-  const { playedTracks, repeatMode } = queue;
+  const { tracks, playedTracks, repeatMode } = queue;
   // ## useRef
   const hlsPlayerRef = useRef<HlsPlayer>();
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -184,7 +183,7 @@ function AudioPlayer(): JSX.Element {
       type: 'next',
       payload: {},
     });
-    if (playedTracks.length === 0 && repeatMode !== 'all') {
+    if (tracks.length === 0 && repeatMode !== 'all') {
       dispatchAudio({ type: 'update_playback', payload: { isPlaying: false } });
     }
   }
@@ -219,14 +218,21 @@ function AudioPlayer(): JSX.Element {
               <TrackCard
                 variant="mobile-player"
                 track={track}
+                thumbnailWidth={56}
                 controls={{
-                  play: { isPlaying, onPlay: handlePlay },
+                  play: { isPlaying, onPlay: handlePlay, width: 40 },
                 }}
               />
             )}
           </div>
           <div className="d-none d-md-block">
-            {track && <TrackCard variant="default" track={track} />}
+            {track && (
+              <TrackCard
+                variant="default"
+                track={track}
+                loveAction={{ action: () => undefined }}
+              />
+            )}
           </div>
         </div>
         <div className="d-none d-md-block col-md-7 col-lg-6">

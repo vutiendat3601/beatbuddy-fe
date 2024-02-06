@@ -18,7 +18,6 @@ const INITIAL_MAIN_LAYOUT: MainLayout = {
 function mainLayoutReducer(states: MainLayout, action: MainLayoutAction) {
   let queueCard = { ...states.queueCard };
   const { type } = action;
-
   switch (type) {
     case 'toggle_queue':
       queueCard.isHidden = !states.queueCard.isHidden;

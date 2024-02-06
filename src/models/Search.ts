@@ -2,15 +2,14 @@ import { Artist } from './Artist';
 import { Pagination } from './Pagination';
 import { Track } from './Track';
 
-interface Search {
-  track?: {
-    items: Track[];
-    metadata: Pagination;
-  };
-  artist?: {
-    items: Artist[];
-    metadata: Pagination;
-  };
+interface SearchResult<T> {
+  items: T[];
+  metadata: Pagination;
 }
 
-export type { Search };
+interface Search {
+  track?: SearchResult<Track>;
+  artist?: SearchResult<Artist>;
+}
+
+export type { Search, SearchResult };

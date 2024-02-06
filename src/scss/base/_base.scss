@@ -1,3 +1,5 @@
+@use '../abstract';
+
 :root {
   --text-heading-1-font-size: 4.8rem;
   --text-heading-2-font-size: 4rem;
@@ -18,10 +20,23 @@
   --text-button-font-weight: 600;
   --text-label-font-weight: 500;
   --text-desc-font-weight: 400;
+
+  --main-layout-elem-border-radius: 4px;
+
+  --track-card-padding: 8px;
+
+
+  @include abstract.screen(xl) {
+    --track-card-padding: 12px;
+  }
 }
 
 *::-webkit-scrollbar {
-  width: 8px;
+  width: 2px;
+
+  @include abstract.screen(lg) {
+    width: 8px;
+  }
 }
 
 *::-webkit-scrollbar-thumb {
@@ -44,11 +59,17 @@
 }
 
 html {
-  font-size: 62.5%;
+  font-size: 56.25%;
+
+  @include abstract.screen(lg) {
+    font-size: 62.5%;
+  }
+
 }
 
 body {
   background: var(--body-bg-color);
+  background: var(--body-bg-gradient);
   color: var(--text-color);
 
   font-size: 1.6rem;
@@ -59,6 +80,7 @@ body {
   .heading-#{$i} {
     font-size: var(--text-heading-#{$i}-font-size);
     font-weight: var(--text-heading-#{$i}-font-weight);
+    line-height: 1.2;
   }
 }
 
@@ -74,6 +96,7 @@ input {
   border: 0;
   color: inherit;
   font-size: inherit;
+  line-height: inherit;
 }
 
 input[type='range'] {
@@ -90,7 +113,7 @@ button {
   cursor: pointer;
   color: #fff;
 
-  &:hover{
+  &:hover {
     opacity: 0.9;
   }
 }

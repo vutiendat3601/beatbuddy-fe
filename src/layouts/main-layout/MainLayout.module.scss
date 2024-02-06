@@ -1,4 +1,7 @@
-.main {
+@use '../../scss/abstract';
+
+.main-layout {
+  --main-layout-padding: 8px;
   display: grid;
   height: 100dvh;
   overflow: hidden;
@@ -8,7 +11,17 @@
     'left-sidebar content right-sidebar'
     'footer footer footer';
   grid-template-rows: auto 1fr auto;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 2fr 1fr;
+  padding: var(--main-layout-padding);
+  gap: 4px;
+
+  @include abstract.screen(md) {
+    --main-layout-padding: 4px;
+  }
+
+  @include abstract.screen(xl) {
+    grid-template-columns: auto 1fr 400px;
+  }
 
   &>* {
     min-height: 0;
@@ -17,15 +30,40 @@
 
   .header {
     grid-area: header;
+    z-index: 10;
   }
 
+  .content {
+    grid-area: 2 / 1 / 2 / 4;
+    z-index: 5;
+    overflow-y: auto;
+
+
+
+    &.queue-card-shown {
+      z-index: 0;
+      @include abstract.screen(xl) {
+        grid-area: content;
+      }
+    }
+  }
+
+
   .right-sidebar {
-    grid-area: right-sidebar;
-    width: min(100%, fit-content);
+    // grid-area: right-sidebar;
+    grid-area: 2 / 1 / 2 / 4;
+    width: 100%;
+
+    @include abstract.screen(lg) {
+      grid-area: right-sidebar;
+    }
+
+    &.queue-card-shown {
+      z-index: 10;
+    }
   }
 
   .footer {
     grid-area: footer;
-    padding: var(--bs-gutter-x) 0;
   }
 }

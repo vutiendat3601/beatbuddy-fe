@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-
+import { ReactComponent as LoveIcon } from '../../assets/icon/love.svg';
 import { ReactComponent as NextIcon } from '../../assets/icon/next.svg';
 import { ReactComponent as PauseIcon } from '../../assets/icon/pause.svg';
 import { ReactComponent as PlayIcon } from '../../assets/icon/play.svg';
@@ -11,6 +11,13 @@ import style from './AudioControl.module.scss';
 const css = classNames.bind(style);
 
 interface AudioControlFunction {
+  love?: {
+    onLove: () => void;
+    disabled?: boolean;
+    hidden?: boolean;
+    width?: number;
+    order?: number;
+  };
   play?: {
     onPlay: () => void;
     isPlaying: boolean;
@@ -47,10 +54,19 @@ interface TrackCardProps {
 }
 
 function AudioControl({
-  controls: { play, next, previous, shuffle, repeat },
+  controls: { love, play, next, previous, shuffle, repeat },
 }: TrackCardProps): JSX.Element {
   return (
     <div className={`${css('audio-control')}`}>
+      {love && (
+        <button
+          hidden={love.hidden}
+          className={`${css('control')}`}
+          style={love.order !== undefined ? { order: love.order } : undefined}
+        >
+          <LoveIcon />
+        </button>
+      )}
       <button
         hidden={shuffle === undefined || shuffle?.hidden}
         disabled={shuffle?.disabled}
