@@ -33,7 +33,7 @@
     z-index: 10;
 
     &:focus-within {
-      z-index: 100;
+      z-index: 30;
     }
   }
 
@@ -41,6 +41,7 @@
     grid-area: 2 / 1 / 2 / 4;
     z-index: 5;
     overflow-y: auto;
+    transition: z-index 3s linear;
     &.queue-card-shown {
       z-index: 0;
       @include abstract.screen(xl) {
@@ -51,7 +52,6 @@
 
 
   .right-sidebar {
-    // grid-area: right-sidebar;
     grid-area: 2 / 1 / 2 / 4;
     width: 100%;
 
