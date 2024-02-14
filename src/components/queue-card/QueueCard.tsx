@@ -1,14 +1,14 @@
 import classNames from 'classnames/bind';
 import useAudioContext from '../../hooks/useAudioContext';
 
+import { memo, useCallback, useRef, useState } from 'react';
 import { ReactComponent as PlayIcon } from '../../assets/icon/play.svg';
+import { INITIAL_PAGINATION } from '../../models/Pagination';
+import { Search, SearchResult } from '../../models/Search';
 import { Track } from '../../models/Track';
+import SearchBox from '../search-box/SearchBox';
 import TrackCard from '../track-card/TrackCard';
 import style from './QueueCard.module.scss';
-import SearchBox from '../search-box/SearchBox';
-import { Search, SearchResult } from '../../models/Search';
-import { INITIAL_PAGINATION } from '../../models/Pagination';
-import { memo, useCallback, useRef, useState } from 'react';
 
 const css = classNames.bind(style);
 
@@ -24,6 +24,12 @@ function QueueCard({ hidden = false }: QueueCardProps) {
   const [filteredTracks, setFilteredTracks] = useState<Track[]>([]);
   const [isSearching, setSearching] = useState<boolean>(false);
 
+  const trackSearchRef = useRef({
+    onResult: (searchTrackResult: SearchResult<Track>) => {
+      setFilteredTracks(searchTrackResult.items);
+    },
+  });
+
   function handlePlay() {
     dispatchAudio({
       type: 'update_playback',
@@ -32,17 +38,17 @@ function QueueCard({ hidden = false }: QueueCardProps) {
   }
 
   function renderTrack(
-    this: 'played_tracks' | 'tracks',
+    list: 'played_tracks' | 'tracks',
     target: Track,
     index: number
   ) {
-    const trackIn = this;
-    function handlePlayInQueue(this: 'played_tracks' | 'tracks') {
-      function play(this: 'played_tracks' | 'tracks') {
+    function handlePlayInQueue() {
+      function play() {
+        setSearching(false);
         dispatchAudio({
           type: 'play_in_queue',
           payload: {
-            playInQueue: { in: this, index },
+            playInQueue: { in: list, index },
           },
         });
         dispatchAudio({
@@ -50,7 +56,7 @@ function QueueCard({ hidden = false }: QueueCardProps) {
           payload: { isPlaying: true },
         });
       }
-      play.call(trackIn);
+      play();
     }
     return (
       <TrackCard
@@ -64,7 +70,7 @@ function QueueCard({ hidden = false }: QueueCardProps) {
           icon: <PlayIcon />,
         }}
         controls={{ love: { onClick: () => undefined, width: 28 } }}
-        menu={{ items: [{ name: 'cs', onClick: () => undefined }] }}
+        // menu={{ items: [{ name: 'cs', onClick: () => undefined }] }}
       />
     );
   }
@@ -95,12 +101,6 @@ function QueueCard({ hidden = false }: QueueCardProps) {
     [playedTracks, tracks]
   );
 
-  const trackSearchRef = useRef({
-    onResult: (searchTrackResult: SearchResult<Track>) => {
-      setFilteredTracks(searchTrackResult.items);
-    },
-  });
-
   const QueueTracks: JSX.Element = (
     <ul className={css('queue-tracks')}>
       {isSearching ? (
@@ -126,12 +126,14 @@ function QueueCard({ hidden = false }: QueueCardProps) {
           {filteredTracks.length === 0 ? (
             <p className={css('no-result')}>No result to show.</p>
           ) : (
-            filteredTracks.map(renderTrack, 'tracks')
+            filteredTracks.map((t, index) => renderTrack('tracks', t, index))
           )}
         </>
       ) : (
         <>
-          {playedTracks.map(renderTrack, 'played_tracks')}
+          {playedTracks.map((t, index) =>
+            renderTrack('played_tracks', t, index)
+          )}
           {track && (
             <div className={css('current-track')}>
               <TrackCard
@@ -150,7 +152,7 @@ function QueueCard({ hidden = false }: QueueCardProps) {
               />
             </div>
           )}
-          {tracks.map(renderTrack, 'tracks')}
+          {tracks.map((t, index) => renderTrack('tracks', t, index))}
         </>
       )}
     </ul>

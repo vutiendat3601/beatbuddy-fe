@@ -63,7 +63,6 @@ function SearchBox({
   }, [keyword, onSearch]);
 
   useEffect(() => {
-    console.log('re-render');
     trackSearch && search.track && trackSearch.onResult(search.track);
     artistSearch && search.artist && artistSearch.onResult(search.artist);
   }, [search, artistSearch, trackSearch]);

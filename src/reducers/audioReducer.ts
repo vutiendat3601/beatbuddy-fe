@@ -64,6 +64,7 @@ function audioReducer(states: AudioPlayer, action: AudioPlayerAction) {
       if (payload.playInQueue) {
         states.playback.track && playedTracks.push(states.playback.track);
         const { index } = payload.playInQueue;
+        console.log(`idx ${index} in ${payload.playInQueue.in}`);
         switch (payload.playInQueue.in) {
           case 'played_tracks':
             track = states.queue.playedTracks[index];

@@ -22,7 +22,7 @@
   align-items: center;
   background: var(--search-box-bg-color);
   border-radius: var(--search-box-border-radius);
-  padding: 0 var(--search-box-padding);
+  padding: calc(var(--search-box-padding) * 0.5) var(--search-box-padding);
     
   .keyword-inp {
     flex: 1;
