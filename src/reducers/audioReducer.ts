@@ -68,7 +68,6 @@ function audioReducer(states: AudioPlayer, action: AudioPlayerAction) {
           case 'played_tracks':
             track = states.queue.playedTracks[index];
             let tailPlayedTracks = playedTracks.slice(index + 1);
-            console.log('tailPlayedTracks', tailPlayedTracks);
             playedTracks = playedTracks.slice(0, index);
             tracks = [...tailPlayedTracks, ...tracks];
             break;

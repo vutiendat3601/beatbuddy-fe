@@ -8,6 +8,8 @@ import {
 } from 'react';
 import { Link } from 'react-router-dom';
 import { ReactComponent as LoveIcon } from '../../assets/icon/love.svg';
+import { ReactComponent as MenuIcon } from '../../assets/icon/menu.svg';
+
 import { Track } from '../../models/Track';
 import AudioControl, {
   AudioControlFunction,
@@ -26,6 +28,16 @@ const INITIAL_TRANS = {
   ms: 0,
 };
 
+interface MenuItem {
+  name: string;
+  onClick: () => void;
+  disabled?: boolean;
+  hidden?: boolean;
+}
+
+interface Menu {
+  items: MenuItem[];
+}
 interface TrackCardProps {
   thumbnailWidth?: number;
   highlighted?: boolean;
@@ -38,6 +50,7 @@ interface TrackCardProps {
     icon: JSX.Element;
   };
   loveAction?: { action: (track?: Track) => void; hidden?: boolean };
+  menu?: Menu;
 }
 
 function TrackCard({
@@ -48,9 +61,11 @@ function TrackCard({
   controls,
   callToAction,
   loveAction,
+  menu,
 }: TrackCardProps): JSX.Element {
   const [nameTransX, setNameTransX] = useState<Trans>(INITIAL_TRANS);
   const [artistTransX, setArtistTransX] = useState<Trans>(INITIAL_TRANS);
+  const [isMenuShown, setMenuShown] = useState<boolean>(false);
 
   const nameTransXIdRef = useRef<NodeJS.Timeout>();
   const artistTransXIdRef = useRef<NodeJS.Timeout>();
@@ -146,12 +161,9 @@ function TrackCard({
           ) : (
             <Link
               to={`/track/${track.id}`}
-              // onClick={() => navigate(`/track/${track.id}`)}
-              // relative="route"
               className={`text-link ${css('name-value', {
                 sliding: nameTransX !== INITIAL_TRANS,
               })}`}
-              replace
               onMouseOver={handleNameHover}
             >
               {track.name}
@@ -200,6 +212,23 @@ function TrackCard({
           </button>
         )}
         {controls && <AudioControl controls={controls} />}
+        {menu && (
+          <div className={css('menu')}>
+            <button
+              className={css('menu-toggle')}
+              onClick={() => setMenuShown((shown) => !shown)}
+            >
+              <MenuIcon />
+            </button>
+            <ul className={css('menu-items', { shown: isMenuShown })}>
+              {menu.items.map(({ name, onClick }, index) => (
+                <li className={css('menu-item')} onClick={onClick} key={index}>
+                  {name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );

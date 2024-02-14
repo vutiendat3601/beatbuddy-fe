@@ -24,6 +24,7 @@
     align-items: center;
     padding: var(--track-card-padding);
     border-radius: 4px;
+    overflow: hidden;
     position: relative;
 
     .thumbnail {
@@ -91,6 +92,22 @@
         border-radius: 50%;
         margin-left: 8px;
         margin-right: 8px;
+    }
+
+    .menu {
+        position: relative;
+    }
+    .menu-items{
+        display: none;
+        position: absolute;
+        background: var(--track-card-menu-bg-color);
+        min-width: 120px;
+    }
+    .menu-items.shown {
+        display: block;
+    }
+    .menu-item {
+
     }
 }
 

@@ -43,6 +43,13 @@
         background: #aaa;
         border-radius: 9999px;
     }
+    .current-track {
+        background: var(--main-layout-elem-bg-color);
+        position: sticky;
+        top: 0;
+        bottom: 0;
+        z-index: 1;
+    }
 }
 
 .queue-card.hidden {

@@ -64,6 +64,7 @@ function QueueCard({ hidden = false }: QueueCardProps) {
           icon: <PlayIcon />,
         }}
         controls={{ love: { onLove: () => undefined, width: 28 } }}
+        menu={{ items: [{ name: 'cs', onClick: () => undefined }] }}
       />
     );
   }
@@ -89,8 +90,6 @@ function QueueCard({ hidden = false }: QueueCardProps) {
   function handleSearchTrackResult(searchTrackResult: SearchResult<Track>) {
     setFilteredTracks(searchTrackResult.items);
   }
-
-  console.log(filteredTracks);
 
   const QueueTracks: JSX.Element = (
     <ul className={css('queue-tracks')}>
@@ -123,20 +122,22 @@ function QueueCard({ hidden = false }: QueueCardProps) {
         <>
           {playedTracks.map(renderTrack, 'played_tracks')}
           {track && (
-            <TrackCard
-              thumbnailWidth={48}
-              track={track}
-              variant="default"
-              highlighted
-              controls={{
-                love: { onLove: () => undefined, width: 28, order: 1 },
-                play: {
-                  isPlaying,
-                  onPlay: handlePlay,
-                  width: 28,
-                },
-              }}
-            />
+            <div className={css('current-track')}>
+              <TrackCard
+                thumbnailWidth={48}
+                track={track}
+                variant="default"
+                highlighted
+                controls={{
+                  love: { onLove: () => undefined, width: 28, order: 1 },
+                  play: {
+                    isPlaying,
+                    onPlay: handlePlay,
+                    width: 28,
+                  },
+                }}
+              />
+            </div>
           )}
           {filteredTracks.length === 0 && tracks.map(renderTrack, 'tracks')}
         </>
@@ -156,8 +157,6 @@ function QueueCard({ hidden = false }: QueueCardProps) {
         />
       </div>
       {QueueTracks}
-      {/* <ul className={css('queue-tracks')}>
-      </ul> */}
     </div>
   );
 }

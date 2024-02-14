@@ -50,6 +50,7 @@ function SearchBox({
   const keywordInpRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    clearTimeout(searchIdRef.current);
     searchIdRef.current = setTimeout(() => {
       async function search() {
         if (onSearch) {
