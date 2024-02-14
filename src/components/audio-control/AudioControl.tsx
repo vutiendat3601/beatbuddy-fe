@@ -6,43 +6,52 @@ import { ReactComponent as PlayIcon } from '../../assets/icon/play.svg';
 import { ReactComponent as PreviousIcon } from '../../assets/icon/previous.svg';
 import { ReactComponent as RepeatIcon } from '../../assets/icon/repeat.svg';
 import { ReactComponent as ShuffleIcon } from '../../assets/icon/shuffle.svg';
+import { ReactComponent as QueueIcon } from '../../assets/icon/queue.svg';
+
 import style from './AudioControl.module.scss';
 
 const css = classNames.bind(style);
 
 interface AudioControlFunction {
+  queue?: {
+    onClick: () => void;
+    disabled?: boolean;
+    hidden?: boolean;
+    width?: number;
+    order?: number;
+  };
   love?: {
-    onLove: () => void;
+    onClick: () => void;
     disabled?: boolean;
     hidden?: boolean;
     width?: number;
     order?: number;
   };
   play?: {
-    onPlay: () => void;
+    onClick: () => void;
     isPlaying: boolean;
     disabled?: boolean;
     hidden?: boolean;
     width?: number;
   };
   next?: {
-    onNext: () => void;
+    onClick: () => void;
     disabled?: boolean;
     hidden?: boolean;
   };
   previous?: {
-    onPrevious: () => void;
+    onClick: () => void;
     disabled?: boolean;
     hidden?: boolean;
   };
   shuffle?: {
-    onShuffle: () => void;
+    onClick: () => void;
     isShuffled: boolean;
     disabled?: boolean;
     hidden?: boolean;
   };
   repeat?: {
-    onRepeat: () => void;
+    onClick: () => void;
     repeatMode: 'once' | 'all' | 'none';
     disabled?: boolean;
     hidden?: boolean;
@@ -54,10 +63,20 @@ interface TrackCardProps {
 }
 
 function AudioControl({
-  controls: { love, play, next, previous, shuffle, repeat },
+  controls: { queue, love, play, next, previous, shuffle, repeat },
 }: TrackCardProps): JSX.Element {
   return (
     <div className={`${css('audio-control')}`}>
+      {queue && (
+        <button
+          hidden={queue.hidden}
+          className={`${css('control')}`}
+          onClick={queue.onClick}
+          style={queue.order !== undefined ? { order: queue.order } : undefined}
+        >
+          <QueueIcon />
+        </button>
+      )}
       {love && (
         <button
           hidden={love.hidden}
@@ -67,21 +86,25 @@ function AudioControl({
           <LoveIcon />
         </button>
       )}
-      <button
-        hidden={shuffle === undefined || shuffle?.hidden}
-        disabled={shuffle?.disabled}
-        className={`${css('control')}`}
-      >
-        <ShuffleIcon />
-      </button>
-      <button
-        hidden={previous === undefined || previous.hidden}
-        className={`${css('control')}`}
-        disabled={previous?.disabled}
-        onClick={previous?.onPrevious}
-      >
-        <PreviousIcon />
-      </button>
+      {shuffle && (
+        <button
+          hidden={shuffle === undefined || shuffle?.hidden}
+          disabled={shuffle?.disabled}
+          className={`${css('control')}`}
+        >
+          <ShuffleIcon />
+        </button>
+      )}
+      {previous && (
+        <button
+          hidden={previous === undefined || previous.hidden}
+          className={`${css('control')}`}
+          disabled={previous?.disabled}
+          onClick={previous?.onClick}
+        >
+          <PreviousIcon />
+        </button>
+      )}
       {play && (
         <button
           hidden={play.hidden}
@@ -94,26 +117,30 @@ function AudioControl({
               ? { width: play.width, height: play.width }
               : undefined
           }
-          onClick={play.onPlay}
+          onClick={play.onClick}
         >
           {play.isPlaying ? <PauseIcon /> : <PlayIcon />}
         </button>
       )}
-      <button
-        hidden={next === undefined || next.hidden}
-        disabled={next?.disabled}
-        className={`${css('control')}`}
-        onClick={next?.onNext}
-      >
-        <NextIcon />
-      </button>
-      <button
-        hidden={repeat === undefined || repeat.hidden}
-        disabled={repeat?.disabled}
-        className={`${css('control')}`}
-      >
-        <RepeatIcon />
-      </button>
+      {next && (
+        <button
+          hidden={next === undefined || next.hidden}
+          disabled={next.disabled}
+          className={`${css('control')}`}
+          onClick={next.onClick}
+        >
+          <NextIcon />
+        </button>
+      )}
+      {repeat && (
+        <button
+          hidden={repeat === undefined || repeat.hidden}
+          disabled={repeat.disabled}
+          className={`${css('control')}`}
+        >
+          <RepeatIcon />
+        </button>
+      )}
     </div>
   );
 }

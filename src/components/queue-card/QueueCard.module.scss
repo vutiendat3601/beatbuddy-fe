@@ -1,9 +1,10 @@
+@use '../../scss/abstract';
+
 .queue-card {
     background: var(--main-layout-elem-bg-color);
     height: 100%;
     transition: translate 0.6s linear;
     border-radius: var(--main-layout-elem-border-radius);
-    // box-shadow: var(--main-layout-elem-shadow);
 
     overflow: hidden;
 
@@ -11,6 +12,14 @@
     flex-direction: column;
 
     padding-bottom: 12px;
+
+    transition: translate 0.4s linear,
+        visibility 0.4s linear;
+
+    @include abstract.screen(xl) {
+        transition: translate 0.8s linear, visibility 0.8s linear;
+    }
+
     .search {
         background: var(--main-layout-elem-bg-color);
         padding: var(--track-card-padding);
@@ -43,6 +52,7 @@
         background: #aaa;
         border-radius: 9999px;
     }
+
     .current-track {
         background: var(--main-layout-elem-bg-color);
         position: sticky;
@@ -55,5 +65,4 @@
 .queue-card.hidden {
     translate: 100vw;
     visibility: hidden;
-    transition: translate 0.8s linear, visibility 0.8s linear;
 }

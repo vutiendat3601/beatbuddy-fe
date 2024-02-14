@@ -8,7 +8,7 @@ import style from './QueueCard.module.scss';
 import SearchBox from '../search-box/SearchBox';
 import { Search, SearchResult } from '../../models/Search';
 import { INITIAL_PAGINATION } from '../../models/Pagination';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 const css = classNames.bind(style);
 
@@ -63,33 +63,40 @@ function QueueCard({ hidden = false }: QueueCardProps) {
           width: 28,
           icon: <PlayIcon />,
         }}
-        controls={{ love: { onLove: () => undefined, width: 28 } }}
+        controls={{ love: { onClick: () => undefined, width: 28 } }}
         menu={{ items: [{ name: 'cs', onClick: () => undefined }] }}
       />
     );
   }
 
-  async function handleSearch(keyword: string): Promise<Search> {
-    const searchTrack: SearchResult<Track> = {
-      items: [],
-      metadata: INITIAL_PAGINATION,
-    };
-    if (keyword.length > 0) {
-      setSearching(true);
-      const allTracks: Track[] = [...playedTracks, ...tracks];
-      const filteredTracks: Track[] = allTracks.filter((t) => {
-        return t.name.toLowerCase().includes(keyword.toLowerCase());
-      });
-      searchTrack.items = filteredTracks;
-    } else {
-      setSearching(false);
-    }
-    return { track: searchTrack };
-  }
+  const handleSearch = useCallback(
+    async (keyword: string): Promise<Search> => {
+      const searchTrack: SearchResult<Track> = {
+        items: [],
+        metadata: INITIAL_PAGINATION,
+      };
+      if (keyword.length > 0) {
+        setSearching(true);
+        const allTracks: Track[] = [...playedTracks, ...tracks];
+        const filteredTracks: Track[] = allTracks.filter((t) => {
+          return t.name.toLowerCase().includes(keyword.toLowerCase());
+        });
+        searchTrack.items = filteredTracks;
+      } else {
+        setSearching(false);
+      }
+      return { track: searchTrack };
+    },
+    [playedTracks, tracks]
+  );
 
-  function handleSearchTrackResult(searchTrackResult: SearchResult<Track>) {
-    setFilteredTracks(searchTrackResult.items);
-  }
+  const handleSearchTrackResult = useCallback(
+    (searchTrackResult: SearchResult<Track>) => {
+      console.log(searchTrackResult);
+      setFilteredTracks(searchTrackResult.items);
+    },
+    []
+  );
 
   const QueueTracks: JSX.Element = (
     <ul className={css('queue-tracks')}>
@@ -102,10 +109,10 @@ function QueueCard({ hidden = false }: QueueCardProps) {
               variant="default"
               highlighted
               controls={{
-                love: { onLove: () => undefined, width: 28, order: 1 },
+                love: { onClick: () => undefined, width: 28, order: 1 },
                 play: {
                   isPlaying,
-                  onPlay: handlePlay,
+                  onClick: handlePlay,
                   width: 28,
                 },
               }}
@@ -129,17 +136,17 @@ function QueueCard({ hidden = false }: QueueCardProps) {
                 variant="default"
                 highlighted
                 controls={{
-                  love: { onLove: () => undefined, width: 28, order: 1 },
+                  love: { onClick: () => undefined, width: 28, order: 1 },
                   play: {
                     isPlaying,
-                    onPlay: handlePlay,
+                    onClick: handlePlay,
                     width: 28,
                   },
                 }}
               />
             </div>
           )}
-          {filteredTracks.length === 0 && tracks.map(renderTrack, 'tracks')}
+          {tracks.map(renderTrack, 'tracks')}
         </>
       )}
     </ul>

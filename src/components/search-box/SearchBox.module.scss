@@ -26,10 +26,6 @@
   border-radius: var(--search-box-border-radius);
   padding: 0 var(--search-box-padding);
 
-  &:focus-within {
-    z-index: 100;
-  }
-
   .keyword-inp {
     flex: 1;
     padding: var(--search-box-padding);
@@ -41,8 +37,6 @@
   .clear-btn {
     padding: calc(var(--search-box-padding) * 0.5);
   }
-
-
 }
 
 .search-box.standalone {

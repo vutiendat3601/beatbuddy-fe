@@ -103,6 +103,8 @@ input[type='range'] {
   background: transparent;
   height: 8px;
   accent-color: var(--primary-color);
+  outline: none;
+  border: none;
 }
 
 button {

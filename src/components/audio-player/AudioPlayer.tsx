@@ -220,7 +220,14 @@ function AudioPlayer(): JSX.Element {
                 track={track}
                 thumbnailWidth={56}
                 controls={{
-                  play: { isPlaying, onPlay: handlePlay, width: 40 },
+                  queue: {
+                    onClick: () =>
+                      dispatchMainLayout({
+                        type: 'toggle_queue',
+                        payload: {},
+                      }),
+                  },
+                  play: { isPlaying, onClick: handlePlay, width: 40 },
                 }}
               />
             )}
@@ -242,24 +249,24 @@ function AudioPlayer(): JSX.Element {
                 controls={{
                   play: {
                     isPlaying,
-                    onPlay: handlePlay,
+                    onClick: handlePlay,
                   },
                   shuffle: {
                     isShuffled: false,
-                    onShuffle: handleShuffle,
+                    onClick: handleShuffle,
                   },
                   next: {
-                    onNext: handleNext,
+                    onClick: handleNext,
                   },
                   previous: {
-                    onPrevious: handlePrevious,
+                    onClick: handlePrevious,
                     disabled: audio
                       ? playedTracks.length === 0 &&
                         audio.currentTime <= PLAYBACK_PLAY_START_AFTER_SEC
                       : false,
                   },
                   repeat: {
-                    onRepeat: handleRepeat,
+                    onClick: handleRepeat,
                     repeatMode,
                   },
                 }}

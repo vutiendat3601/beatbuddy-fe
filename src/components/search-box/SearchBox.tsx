@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { ReactComponent as ClearIcon } from '../../assets/icon/clear.svg';
 import { ReactComponent as PlayIcon } from '../../assets/icon/play.svg';
 import { ReactComponent as SearchIcon } from '../../assets/icon/search.svg';
@@ -137,7 +137,7 @@ function SearchBox({
                       width: 28,
                       icon: <PlayIcon />,
                     }}
-                    controls={{ love: { onLove: () => undefined } }}
+                    controls={{ love: { onClick: () => undefined } }}
                   />
                 </div>
               </li>
@@ -148,4 +148,4 @@ function SearchBox({
     </div>
   );
 }
-export default SearchBox;
+export default memo(SearchBox);
