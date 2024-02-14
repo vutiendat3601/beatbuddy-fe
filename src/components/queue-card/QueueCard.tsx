@@ -103,22 +103,24 @@ function QueueCard({ hidden = false }: QueueCardProps) {
       {isSearching ? (
         <>
           {track && (
-            <TrackCard
-              thumbnailWidth={48}
-              track={track}
-              variant="default"
-              highlighted
-              controls={{
-                love: { onClick: () => undefined, width: 28, order: 1 },
-                play: {
-                  isPlaying,
-                  onClick: handlePlay,
-                  width: 28,
-                },
-              }}
-            />
+            <div className={css('current-track')}>
+              <TrackCard
+                thumbnailWidth={48}
+                track={track}
+                variant="default"
+                highlighted
+                controls={{
+                  love: { onClick: () => undefined, width: 28, order: 1 },
+                  play: {
+                    isPlaying,
+                    onClick: handlePlay,
+                    width: 28,
+                  },
+                }}
+              />
+            </div>
           )}
-          <div className={css('seperator')}></div>
+          {/* <div className={css('seperator')}></div> */}
           {filteredTracks.length === 0 ? (
             <p className={css('no-result')}>No result to show.</p>
           ) : (
@@ -153,7 +155,7 @@ function QueueCard({ hidden = false }: QueueCardProps) {
   );
 
   return (
-    <div className={css('queue-card', { hidden })}>
+    <div className={css('queue-card', { hidden, searching: isSearching })}>
       <div className={css('search')}>
         <SearchBox
           standalone={false}

@@ -25,9 +25,13 @@
 
   --track-card-padding: 8px;
 
+  --search-box-border-radius: 8px;
+  --search-box-padding: 8px;
 
   @include abstract.screen(xl) {
     --track-card-padding: 12px;
+    --search-box-border-radius: 12px;
+    --search-box-padding: 12px;
   }
 }
 

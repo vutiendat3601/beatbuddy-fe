@@ -62,6 +62,25 @@
     }
 }
 
+.queue-card.searching {
+    .current-track {
+        position: sticky;
+
+        &::after {
+            content: "";
+            display: block;
+            bottom: 0;
+            left: var(--track-card-padding);
+            right: var(--track-card-padding);
+            position: absolute;
+            // width: calc(100% + var(--track-card-padding) * -2);
+            height: 1px;
+            background: #aaa;
+            border-radius: 9999px;
+        }
+    }
+}
+
 .queue-card.hidden {
     translate: 100vw;
     visibility: hidden;

@@ -17,18 +17,16 @@
 }
 
 .search-box {
-  --search-box-border-radius: 12px;
-  --search-box-padding: 12px;
   position: relative;
   display: flex;
   align-items: center;
   background: var(--search-box-bg-color);
   border-radius: var(--search-box-border-radius);
   padding: 0 var(--search-box-padding);
-
+    
   .keyword-inp {
     flex: 1;
-    padding: var(--search-box-padding);
+    padding: 8px;
     font-size: 1.6rem;
     background: transparent;
     position: relative;
