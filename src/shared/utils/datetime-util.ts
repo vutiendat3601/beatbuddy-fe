@@ -12,7 +12,7 @@ function formatDurationSec(durationSec: number, hasHour = false) {
 
 function formatIsoDate(isoDate: string, separator: string = '/'): string {
   const date = new Date(isoDate);
-  return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+  return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 }
 
 export { formatIsoDate, formatDurationSec };

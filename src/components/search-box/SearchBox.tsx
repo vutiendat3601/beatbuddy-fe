@@ -63,11 +63,10 @@ function SearchBox({
   }, [keyword, onSearch]);
 
   useEffect(() => {
-    if (!standalone) {
-      trackSearch && search.track && trackSearch.onResult(search.track);
-      artistSearch && search.artist && artistSearch.onResult(search.artist);
-    }
-  }, [search, artistSearch, trackSearch, standalone]);
+    console.log('re-render');
+    trackSearch && search.track && trackSearch.onResult(search.track);
+    artistSearch && search.artist && artistSearch.onResult(search.artist);
+  }, [search, artistSearch, trackSearch]);
 
   function handleKeywordChange(e: any) {
     clearTimeout(searchIdRef.current);

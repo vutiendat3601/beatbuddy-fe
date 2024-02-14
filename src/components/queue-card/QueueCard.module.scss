@@ -33,8 +33,7 @@
     overflow-y: auto;
     flex: 1;
 
-    .no-result,
-    .seperator {
+    .no-result {
         width: calc(100% + var(--track-card-padding) * -2);
         margin: 0 auto;
     }

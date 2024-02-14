@@ -31,6 +31,7 @@
   .header {
     grid-area: header;
     z-index: 10;
+
     &:focus-within {
       z-index: 100;
     }
@@ -40,12 +41,8 @@
     grid-area: 2 / 1 / 2 / 4;
     z-index: 5;
     overflow-y: auto;
-
-
-
     &.queue-card-shown {
       z-index: 0;
-
       @include abstract.screen(xl) {
         grid-area: content;
       }

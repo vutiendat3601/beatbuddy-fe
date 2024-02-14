@@ -8,7 +8,7 @@ import style from './QueueCard.module.scss';
 import SearchBox from '../search-box/SearchBox';
 import { Search, SearchResult } from '../../models/Search';
 import { INITIAL_PAGINATION } from '../../models/Pagination';
-import { useCallback, useState } from 'react';
+import { memo, useCallback, useRef, useState } from 'react';
 
 const css = classNames.bind(style);
 
@@ -79,7 +79,12 @@ function QueueCard({ hidden = false }: QueueCardProps) {
         setSearching(true);
         const allTracks: Track[] = [...playedTracks, ...tracks];
         const filteredTracks: Track[] = allTracks.filter((t) => {
-          return t.name.toLowerCase().includes(keyword.toLowerCase());
+          const q = keyword.toLowerCase();
+          const artistNames = t.artists.reduce(
+            (names, a) => names.concat(` ${a.name.toLowerCase()}`),
+            ''
+          );
+          return t.name.toLowerCase().includes(q) || artistNames.includes(q);
         });
         searchTrack.items = filteredTracks;
       } else {
@@ -90,13 +95,11 @@ function QueueCard({ hidden = false }: QueueCardProps) {
     [playedTracks, tracks]
   );
 
-  const handleSearchTrackResult = useCallback(
-    (searchTrackResult: SearchResult<Track>) => {
-      console.log(searchTrackResult);
+  const trackSearchRef = useRef({
+    onResult: (searchTrackResult: SearchResult<Track>) => {
       setFilteredTracks(searchTrackResult.items);
     },
-    []
-  );
+  });
 
   const QueueTracks: JSX.Element = (
     <ul className={css('queue-tracks')}>
@@ -120,7 +123,6 @@ function QueueCard({ hidden = false }: QueueCardProps) {
               />
             </div>
           )}
-          {/* <div className={css('seperator')}></div> */}
           {filteredTracks.length === 0 ? (
             <p className={css('no-result')}>No result to show.</p>
           ) : (
@@ -161,7 +163,7 @@ function QueueCard({ hidden = false }: QueueCardProps) {
           standalone={false}
           searchOptions={{
             onSearch: handleSearch,
-            trackSearch: { onResult: handleSearchTrackResult },
+            trackSearch: trackSearchRef.current,
           }}
         />
       </div>
@@ -169,5 +171,4 @@ function QueueCard({ hidden = false }: QueueCardProps) {
     </div>
   );
 }
-
-export default QueueCard;
+export default memo(QueueCard);

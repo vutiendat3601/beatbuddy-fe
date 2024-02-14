@@ -15,6 +15,7 @@ import AudioControl, {
   AudioControlFunction,
 } from '../audio-control/AudioControl';
 import style from './TrackCard.module.scss';
+import useMainLayoutContext from '../../hooks/useMainLayoutContext';
 
 const css = classNames.bind(style);
 
@@ -69,6 +70,7 @@ function TrackCard({
 
   const nameTransXIdRef = useRef<NodeJS.Timeout>();
   const artistTransXIdRef = useRef<NodeJS.Timeout>();
+  const { dispatchMainLayout } = useMainLayoutContext();
 
   function clearTransXIds() {
     setNameTransX(INITIAL_TRANS);
@@ -165,6 +167,9 @@ function TrackCard({
                 sliding: nameTransX !== INITIAL_TRANS,
               })}`}
               onMouseOver={handleNameHover}
+              onClick={() =>
+                dispatchMainLayout({ type: 'toggle_queue', payload: {} })
+              }
             >
               {track.name}
             </Link>
