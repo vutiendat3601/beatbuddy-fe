@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/static/css/main.75f463e8.css",
+    "main.css": "/static/css/main.70c3259a.css",
     "main.js": "/static/js/main.2487084b.js",
     "static/js/787.b4a74039.chunk.js": "/static/js/787.b4a74039.chunk.js",
     "static/media/AsapSemiExpanded-SemiBoldItalic.woff": "/static/media/AsapSemiExpanded-SemiBoldItalic.c5aeffada93b2cce8e19.woff",
@@ -197,12 +197,12 @@
     "static/media/clear.svg": "/static/media/clear.9b8170bb2a56912b8889997975ddd661.svg",
     "static/media/search.svg": "/static/media/search.5086c96ff227f3338ab00ba290e2e340.svg",
     "static/media/pause.svg": "/static/media/pause.244dbcc89f8e98b6bbf88260cfe894c8.svg",
-    "main.75f463e8.css.map": "/static/css/main.75f463e8.css.map",
+    "main.70c3259a.css.map": "/static/css/main.70c3259a.css.map",
     "main.2487084b.js.map": "/static/js/main.2487084b.js.map",
     "787.b4a74039.chunk.js.map": "/static/js/787.b4a74039.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.75f463e8.css",
+    "static/css/main.70c3259a.css",
     "static/js/main.2487084b.js"
   ]
 }
