@@ -7,15 +7,12 @@ import {
   useState,
 } from 'react';
 import { Link } from 'react-router-dom';
-import { ReactComponent as LoveIcon } from '../../assets/icon/love.svg';
-import { ReactComponent as MenuIcon } from '../../assets/icon/menu.svg';
-
+import { ReactComponent as ThreeDotIcon } from '../../assets/icon/three-dot.svg';
+import trackThumbFallbackIcon from '../../assets/img/track-thumb-fallback.png';
 import { Track } from '../../models/Track';
-import AudioControl, {
-  AudioControlFunction,
-} from '../audio-control/AudioControl';
+import { formatDurationSec } from '../../shared/utils/datetime-util';
+import TrackAction, { TrackActionFunction } from '../track-action/TrackAction';
 import style from './TrackCard.module.scss';
-import useMainLayoutContext from '../../hooks/useMainLayoutContext';
 
 const css = classNames.bind(style);
 
@@ -36,6 +33,8 @@ interface MenuItem {
   hidden?: boolean;
 }
 
+type Element = 'love' | 'duration' | 'menu' | 'cta';
+
 interface Menu {
   items: MenuItem[];
 }
@@ -43,26 +42,30 @@ interface TrackCardProps {
   thumbnailWidth?: number;
   highlighted?: boolean;
   track: Track;
-  controls?: AudioControlFunction;
-  variant: 'default' | 'mobile-player';
+  controls?: TrackActionFunction;
+  disabledLink?: boolean;
+  hoverHighlight?: boolean;
   callToAction?: {
     action: (track?: Track) => void;
     width?: number;
     icon: JSX.Element;
   };
-  loveAction?: { action: (track?: Track) => void; hidden?: boolean };
   menu?: Menu;
+  hiddenElements?: Element[];
+  onLinkClick?: () => void;
 }
 
 function TrackCard({
   thumbnailWidth = 68,
   highlighted = false,
   track,
-  variant,
+  disabledLink = false,
   controls,
   callToAction,
-  loveAction,
+  hoverHighlight = true,
   menu,
+  hiddenElements = [],
+  onLinkClick = () => undefined,
 }: TrackCardProps): JSX.Element {
   const [nameTransX, setNameTransX] = useState<Trans>(INITIAL_TRANS);
   const [artistTransX, setArtistTransX] = useState<Trans>(INITIAL_TRANS);
@@ -70,7 +73,6 @@ function TrackCard({
 
   const nameTransXIdRef = useRef<NodeJS.Timeout>();
   const artistTransXIdRef = useRef<NodeJS.Timeout>();
-  const { dispatchMainLayout } = useMainLayoutContext();
 
   function clearTransXIds() {
     setNameTransX(INITIAL_TRANS);
@@ -128,17 +130,20 @@ function TrackCard({
   return (
     <div
       className={css('track-card', {
-        [variant]: true,
         highlighted: highlighted,
+        'hover-highlight': hoverHighlight,
       })}
     >
-      <img
-        src={track?.thumbnail || ''}
-        alt={track?.name}
-        className={css('thumbnail')}
-        width={thumbnailWidth}
-        height={thumbnailWidth}
-      />
+      <div>
+        <img
+          className={css('thumbnail')}
+          src={track?.thumbnail || trackThumbFallbackIcon || ''}
+          alt=""
+          width={thumbnailWidth}
+          height={thumbnailWidth}
+          onError={undefined}
+        />
+      </div>
       <div
         className={css('details')}
         style={
@@ -151,7 +156,7 @@ function TrackCard({
         }
       >
         <p className={css('name')}>
-          {variant === 'mobile-player' ? (
+          {disabledLink ? (
             <span
               className={css('name-value', {
                 sliding: nameTransX !== INITIAL_TRANS,
@@ -163,13 +168,14 @@ function TrackCard({
           ) : (
             <Link
               to={`/track/${track.id}`}
+              onClick={(e: any) => {
+                e.stopPropagation();
+                onLinkClick();
+              }}
               className={`text-link ${css('name-value', {
                 sliding: nameTransX !== INITIAL_TRANS,
               })}`}
               onMouseOver={handleNameHover}
-              onClick={() =>
-                dispatchMainLayout({ type: 'toggle_queue', payload: {} })
-              }
             >
               {track.name}
             </Link>
@@ -182,14 +188,21 @@ function TrackCard({
             })}`}
             onMouseOver={handleArtistHover}
           >
-            {track.artists.map((artist, index) => (
+            {track.artists?.map((artist, index) => (
               <span key={artist.id}>
-                {variant === 'mobile-player' ? (
+                {disabledLink ? (
                   <span className="text-desc">{artist.name}</span>
                 ) : (
-                  <a href="#!" className="text-link text-desc">
+                  <Link
+                    onClick={(e: any) => {
+                      e.stopPropagation();
+                      onLinkClick();
+                    }}
+                    to={`/artist/${artist.id}`}
+                    className="text-link text-desc"
+                  >
                     {artist.name}
-                  </a>
+                  </Link>
                 )}
                 {index !== track.artists.length - 1 && ', '}
               </span>
@@ -197,42 +210,34 @@ function TrackCard({
           </span>
         </p>
       </div>
-      {loveAction && (
-        <button hidden={loveAction.hidden} className={`${css('love-btn')}`}>
-          <LoveIcon />
-        </button>
-      )}
-      <div className={css('action')}>
-        {callToAction && (
-          <button
-            className={css('cta')}
-            onClick={() => callToAction.action(track)}
-            style={
-              callToAction.width && callToAction.width >= 0
-                ? { width: callToAction.width, height: callToAction.width }
-                : undefined
-            }
-          >
-            {callToAction.icon}
-          </button>
-        )}
-        {controls && <AudioControl controls={controls} />}
-        {menu && (
-          <div className={css('menu')}>
+      <div className={css('more')}>
+        <div className={css('action')}>
+          {callToAction && (
             <button
-              className={css('menu-toggle')}
-              onClick={() => setMenuShown((shown) => !shown)}
+              className={css('cta')}
+              onClick={() => callToAction.action(track)}
+              style={
+                callToAction.width && callToAction.width >= 0
+                  ? { width: callToAction.width, height: callToAction.width }
+                  : undefined
+              }
             >
-              <MenuIcon />
+              {callToAction.icon}
             </button>
-            <ul className={css('menu-items', { shown: isMenuShown })}>
-              {menu.items.map(({ name, onClick }, index) => (
-                <li className={css('menu-item')} onClick={onClick} key={index}>
-                  {name}
-                </li>
-              ))}
-            </ul>
-          </div>
+          )}
+          {controls && (
+            <div className={css('controls')}>
+              <TrackAction controls={controls} />
+            </div>
+          )}
+        </div>
+        {!hiddenElements.includes('duration') && <p className={`text-label ${css('duration')}`}>
+          {formatDurationSec(track.durationSec)}
+        </p>}
+        {!hiddenElements.includes('menu') && (
+          <button className={css('menu-btn')}>
+            <ThreeDotIcon className={css('three-dot')} />
+          </button>
         )}
       </div>
     </div>

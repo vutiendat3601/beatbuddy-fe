@@ -1,0 +1,86 @@
+@use '../../scss/abstract';
+
+.track-action {
+    --control-btn-max-width: 48px;
+    height: 100%;
+    @include abstract.flexCenter;
+
+    &-top {
+        @include abstract.flexCenter;
+        column-gap: 16px;
+        width: 100%;
+    }
+
+    .control {
+        @include abstract.flexCenter;
+        color: #fff;
+        flex: none;
+        background: transparent;
+        padding-left: 8px;
+        padding-right: 8px;
+
+        &[hidden] {
+            margin: 0;
+            padding: 0;
+        }
+
+        &:hover {
+            opacity: 0.9;
+        }
+
+        &:disabled,
+        &[disabled] {
+            color: var(--disabled-color);
+        }
+    }
+
+
+    .play-btn {
+        @include abstract.flexCenter;
+        background: #fff;
+        border-radius: 50%;
+        color: #000;
+        width: 48px;
+        height: 48px;
+
+        &:disabled,
+        &[disabled] {
+            background: var(--disabled-color);
+        }
+
+        @include abstract.screen(md) {
+            width: 32px;
+            height: 32px;
+        }
+    }
+
+    .repeat-btn {
+
+        color: #777;
+
+        &.once {
+
+            color: #fff;
+            position: relative;
+
+            &::before {
+                content: "1";
+                position: absolute;
+                display: inline;
+                inset: 2px;
+            }
+        }
+
+        &.all {
+            color: #fff;
+        }
+    }
+
+    .shuffle-btn {
+        color: #777;
+
+        &.shuffled {
+            color: #fff;
+        }
+    }
+}

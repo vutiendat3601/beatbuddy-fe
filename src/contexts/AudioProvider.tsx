@@ -1,8 +1,8 @@
-import { useReducer } from 'react';
-import audioReducer from '../reducers/audioReducer';
-import { INITIAL_PLAYBACK } from '../models/Playback';
-import { INITITAL_QUEUE } from '../models/Queue';
+import { useEffect, useReducer } from 'react';
+import { INITIAL_PLAYBACK, Playback } from '../models/Playback';
+import audioReducer, { initPlayback } from '../reducers/audioReducer';
 import AudioContext from './AudioContext';
+import { getObject } from '../shared/utils/local-storage-util';
 
 interface AudioProviderProps {
   children: any;
@@ -10,9 +10,15 @@ interface AudioProviderProps {
 
 function AudioProvider({ children }: AudioProviderProps): JSX.Element {
   const [audioContext, dispatchAudio] = useReducer(audioReducer, {
-    queue: INITITAL_QUEUE,
     playback: INITIAL_PLAYBACK,
   });
+
+  useEffect(() => {
+    let playback = getObject<Playback>('playback');
+    if (playback) {
+      initPlayback(dispatchAudio, playback);
+    }
+  }, []);
 
   return (
     <AudioContext.Provider

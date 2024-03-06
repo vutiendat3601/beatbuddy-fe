@@ -10,4 +10,8 @@ function getObject<T>(key: string): T | undefined {
   }
 }
 
-export { saveObject, getObject };
+function removeObject(key: string) {
+  localStorage.removeItem(key);
+}
+
+export { saveObject, getObject, removeObject };

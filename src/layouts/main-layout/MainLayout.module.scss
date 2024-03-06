@@ -2,8 +2,19 @@
 
 .main-layout {
   --main-layout-padding: 8px;
-  display: grid;
+  --content-row-area: 2 / 1 / 2 / 4;
   height: 100dvh;
+
+  @include abstract.screen(md) {
+    --main-layout-padding: 16px;
+  }
+
+  padding: var(--main-layout-padding);
+}
+
+.main-layout-inner {
+  display: grid;
+  height: 100%;
   overflow: hidden;
 
   grid-template-areas:
@@ -12,7 +23,7 @@
     'footer footer footer';
   grid-template-rows: auto 1fr auto;
   grid-template-columns: auto 2fr 1fr;
-  padding: var(--main-layout-padding);
+  // padding: var(--main-layout-padding);
   gap: 4px;
 
   @include abstract.screen(md) {
@@ -30,41 +41,59 @@
 
   .header {
     grid-area: header;
-    z-index: 10;
-
-    &:focus-within {
-      z-index: 30;
-    }
+    transition: z-index 3s linear;
   }
 
   .content {
-    grid-area: 2 / 1 / 2 / 4;
-    z-index: 5;
+    grid-area: var(--content-row-area);
+    z-index: 0;
     overflow-y: auto;
+    // margin: 8px 0;
     transition: z-index 3s linear;
-    &.queue-card-shown {
-      z-index: 0;
-      @include abstract.screen(xl) {
-        grid-area: content;
-      }
-    }
   }
 
 
-  .right-sidebar {
-    grid-area: 2 / 1 / 2 / 4;
-    width: 100%;
+  .queue {
+    grid-area: var(--content-row-area);
+    visibility: hidden;
+    translate: 100vw;
+    z-index: 10;
+    transition: z-index 3s linear, translate 0.25s linear;
 
     @include abstract.screen(lg) {
       grid-area: right-sidebar;
-    }
-
-    &.queue-card-shown {
-      z-index: 10;
     }
   }
 
   .footer {
     grid-area: footer;
   }
+
+  .navbar {
+    margin-top: 2px;
+  }
+}
+
+.main-layout.queue-focused {
+  .queue {
+    visibility: visible;
+    translate: 0;
+  }
+
+  .content {
+    @include abstract.screen(lg) {
+      grid-area: content;
+    }
+  }
+}
+
+.main-layout.content-focused {
+  .content {
+    visibility: visible;
+  }
+}
+
+.queue-card.hidden {
+  translate: 100vw;
+  visibility: hidden;
 }

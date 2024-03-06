@@ -1,21 +1,5 @@
 @use '../../scss/abstract';
 
-%flexAlignCenter {
-    display: flex;
-    align-items: center;
-}
-
-%flexContentCenter {
-    display: flex;
-    justify-content: center;
-}
-
-%flexCenter {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .track-card {
     --name-trans-x-percent: calc(100% * -1);
 
@@ -75,43 +59,91 @@
         stroke: #43a1d5;
     }
 
-    .action {
-        flex: none;
-        display: flex;
-        align-items: center;
-        margin-left: auto;
-    }
+
 
     .cta {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        @include abstract.flexCenter;
         width: 32px;
         height: 32px;
         background: var(--primary-color);
         border-radius: 50%;
-        margin-left: 8px;
-        margin-right: 8px;
+
+        @include abstract.screen(lg) {
+            // visibility: hidden;
+            display: none;
+        }
     }
 
-    .menu {
-        position: relative;
+    .controls {
+        @include abstract.screen(lg) {
+            // visibility: hidden;
+            display: none;
+        }
     }
-    .menu-items{
-        display: none;
-        position: absolute;
-        background: var(--track-card-menu-bg-color);
-        min-width: 120px;
-    }
-    .menu-items.shown {
-        display: block;
-    }
-    .menu-item {
 
+    // .menu {
+    //     position: relative;
+    // }
+
+    // .menu-items {
+    //     display: none;
+    //     position: absolute;
+    //     background: var(--track-card-menu-bg-color);
+    //     min-width: 120px;
+    // }
+
+    // .menu-items.shown {
+    //     display: block;
+    // }
+
+    .more {
+        flex: none;
+        @include abstract.flexAlignCenter;
+        column-gap: 8px;
+        margin-left: auto;
+        height: 100%;
+
+        .action {
+            @include abstract.flexAlignCenter;
+        }
+
+        .three-dot {
+            rotate: 90deg;
+
+            @include abstract.screen(lg) {
+                rotate: 0deg;
+            }
+        }
+    }
+
+    .menu-btn {
+        @include abstract.flexAlignCenter;
+        height: 100%;
+
+        @include abstract.screen(lg) {
+            visibility: hidden;
+        }
     }
 }
 
+.track-card:hover {
 
+    .menu-btn {
+        visibility: visible;
+    }
+
+    .cta {
+        display: flex;
+    }
+
+    .controls {
+        display: block;
+    }
+}
+
+.track-card.hover-highlight:hover {
+    background: var(--hover-bg-color);
+}
 
 .track-card.mobile-player {
     background: #353535;

@@ -1,6 +1,6 @@
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import mainLayoutReducer, {
-    INITIAL_MAIN_LAYOUT,
+  INITIAL_MAIN_LAYOUT,
 } from '../reducers/mainLayoutReducer';
 import MainLayoutContext from './MainLayoutContext';
 
@@ -13,6 +13,16 @@ function MainLayoutProvider({ children }: MainLayoutProps): JSX.Element {
     mainLayoutReducer,
     INITIAL_MAIN_LAYOUT
   );
+
+  useEffect(() => {
+    // function listenWindowResize() {
+    //   dispatchMainLayout({ type: 'screen_resized', payload: {} });
+    // }
+    // window.addEventListener('resize', listenWindowResize);
+    // return () => {
+    //   window.removeEventListener('resize', listenWindowResize);
+    // };
+  }, []);
 
   return (
     <MainLayoutContext.Provider

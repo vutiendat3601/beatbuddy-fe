@@ -1,21 +1,5 @@
 @use '../../scss/abstract';
 
-%flexAlignCenter {
-  display: flex;
-  align-items: center;
-}
-
-%flexContentCenter {
-  display: flex;
-  justify-content: center;
-}
-
-%flexCenter {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .audio-player {
   background: var(--main-layout-elem-bg-color);
   border-radius: var(--main-layout-elem-border-radius);
@@ -23,7 +7,7 @@
 }
 
 .controls {
-  @extend %flexCenter;
+  @include abstract.flexCenter;
   flex-direction: column;
   row-gap: 8px;
   padding: 8px;
@@ -31,7 +15,7 @@
 }
 
 .controls-progressbar {
-  @extend %flexCenter;
+  @include abstract.flexCenter;
   width: 100%;
 
   .start-time {
@@ -104,7 +88,7 @@
 }
 
 .action {
-  @extend %flexContentCenter;
+  @include abstract.flexContentCenter;
   align-items: flex-end;
   flex-direction: column;
   row-gap: 8px;

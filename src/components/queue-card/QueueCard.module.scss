@@ -3,7 +3,6 @@
 .queue-card {
     background: var(--main-layout-elem-bg-color);
     height: 100%;
-    transition: translate 0.6s linear;
     border-radius: var(--main-layout-elem-border-radius);
 
     overflow: hidden;
@@ -13,12 +12,7 @@
 
     padding-bottom: 12px;
 
-    transition: translate 0.4s linear,
-        visibility 0.4s linear;
-
-    @include abstract.screen(xl) {
-        transition: translate 0.8s linear, visibility 0.8s linear;
-    }
+    transition: translate 0.4s linear, visibility 0.4s linear;
 
     .search {
         background: var(--main-layout-elem-bg-color);
@@ -27,6 +21,16 @@
         top: 0;
         z-index: 1;
     }
+
+    .no-queue {
+        @include abstract.flexCenter;
+        height: 100%;
+
+        .message {
+            text-align: center;
+        }
+    }
+
 }
 
 .queue-tracks {
@@ -40,7 +44,7 @@
 
     .no-result {
         font-size: 1.9rem;
-        line-height: 1.5;
+        line-height: 1.8;
         text-align: center;
         margin-top: 20px;
         font-weight: 600;
@@ -80,7 +84,3 @@
     }
 }
 
-.queue-card.hidden {
-    translate: 100vw;
-    visibility: hidden;
-}

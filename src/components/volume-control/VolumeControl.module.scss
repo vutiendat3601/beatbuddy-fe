@@ -1,29 +1,15 @@
-%flexAlignCenter {
-    display: flex;
-    align-items: center;
-}
-
-%flexContentCenter {
-    display: flex;
-    justify-content: center;
-}
-
-%flexCenter {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+@use '../../scss/abstract';
 
 .volume {
-    @extend %flexCenter;
-    column-gap: 4px;
-  }
+  @include abstract.flexCenter;
+  column-gap: 4px;
+}
 
-  .volume .icon {
-    display: flex;
-    align-items: center;
-  }
+.volume .icon {
+  display: flex;
+  align-items: center;
+}
 
-  .volume .value {
-    width: 100px;
-  }
+.volume .value {
+  width: 100px;
+}

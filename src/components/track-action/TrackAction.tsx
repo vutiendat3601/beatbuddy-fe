@@ -4,15 +4,15 @@ import { ReactComponent as NextIcon } from '../../assets/icon/next.svg';
 import { ReactComponent as PauseIcon } from '../../assets/icon/pause.svg';
 import { ReactComponent as PlayIcon } from '../../assets/icon/play.svg';
 import { ReactComponent as PreviousIcon } from '../../assets/icon/previous.svg';
+import { ReactComponent as QueueIcon } from '../../assets/icon/queue.svg';
 import { ReactComponent as RepeatIcon } from '../../assets/icon/repeat.svg';
 import { ReactComponent as ShuffleIcon } from '../../assets/icon/shuffle.svg';
-import { ReactComponent as QueueIcon } from '../../assets/icon/queue.svg';
 
-import style from './AudioControl.module.scss';
+import style from './TrackAction.module.scss';
 
 const css = classNames.bind(style);
 
-interface AudioControlFunction {
+interface TrackActionFunction {
   queue?: {
     onClick: () => void;
     disabled?: boolean;
@@ -59,14 +59,14 @@ interface AudioControlFunction {
 }
 
 interface TrackCardProps {
-  controls: AudioControlFunction;
+  controls: TrackActionFunction;
 }
 
-function AudioControl({
+function TrackAction({
   controls: { queue, love, play, next, previous, shuffle, repeat },
 }: TrackCardProps): JSX.Element {
   return (
-    <div className={`${css('audio-control')}`}>
+    <div className={`${css('track-action')}`}>
       {queue && (
         <button
           hidden={queue.hidden}
@@ -90,7 +90,10 @@ function AudioControl({
         <button
           hidden={shuffle === undefined || shuffle?.hidden}
           disabled={shuffle?.disabled}
-          className={`${css('control')}`}
+          onClick={shuffle.onClick}
+          className={`${css('control', 'shuffle-btn', {
+            shuffled: shuffle.isShuffled,
+          })}`}
         >
           <ShuffleIcon />
         </button>
@@ -136,7 +139,10 @@ function AudioControl({
         <button
           hidden={repeat === undefined || repeat.hidden}
           disabled={repeat.disabled}
-          className={`${css('control')}`}
+          className={`${css('control', 'repeat-btn', {
+            [repeat.repeatMode]: true,
+          })}`}
+          onClick={repeat.onClick}
         >
           <RepeatIcon />
         </button>
@@ -145,5 +151,5 @@ function AudioControl({
   );
 }
 
-export type { AudioControlFunction };
-export default AudioControl;
+export type { TrackActionFunction };
+export default TrackAction;

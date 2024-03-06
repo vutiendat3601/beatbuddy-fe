@@ -1,33 +1,66 @@
+import { getScreenWidth, screens } from '../shared/utils/responsive-util';
+
+type FocusType = 'header' | 'queue' | 'content';
+
 interface MainLayout {
-  queueCard: {
-    isHidden: boolean;
-  };
+  focused: FocusType;
 }
 
-interface MainLayoutPayload {}
+interface MainLayoutPayload {
+  targetFocus?: FocusType;
+}
+
+type MainLayoutActionType = 'change_focus';
 
 interface MainLayoutAction {
-  type: 'toggle_queue';
+  type: MainLayoutActionType;
+
   payload: MainLayoutPayload;
 }
 
 const INITIAL_MAIN_LAYOUT: MainLayout = {
-  queueCard: { isHidden: false },
+  focused: 'content',
 };
 
 function mainLayoutReducer(states: MainLayout, action: MainLayoutAction) {
-  let queueCard = { ...states.queueCard };
-  const { type } = action;
+  const { type, payload } = action;
   switch (type) {
-    case 'toggle_queue':
-      queueCard.isHidden = !states.queueCard.isHidden;
-      return { ...states, queueCard };
+    case 'change_focus':
+      if (payload.targetFocus) {
+        states.focused = payload.targetFocus;
+        return { ...states };
+      }
+      break;
     default:
       break;
   }
   return states;
 }
 
-export { INITIAL_MAIN_LAYOUT };
+function autoChangeFocus(
+  dispatchMainLayout: (value: MainLayoutAction) => void,
+  targetFocus: FocusType,
+  breakpoint: number = screens.lg,
+  isSmaller: boolean = true
+) {
+  const screenWidth = getScreenWidth();
+  if (isSmaller) {
+    screenWidth < breakpoint && changeFocus(dispatchMainLayout, targetFocus);
+  } else {
+    screenWidth >= breakpoint && changeFocus(dispatchMainLayout, targetFocus);
+  }
+}
+
+function changeFocus(
+  dispatchMainLayout: (value: MainLayoutAction) => void,
+  targetFocus: FocusType
+) {
+  dispatchMainLayout({
+    type: 'change_focus',
+    payload: { targetFocus },
+  });
+}
+
+export { INITIAL_MAIN_LAYOUT, autoChangeFocus, changeFocus };
 export type { MainLayout, MainLayoutAction, MainLayoutPayload };
 export default mainLayoutReducer;

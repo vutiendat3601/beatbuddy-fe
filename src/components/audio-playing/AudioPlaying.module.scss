@@ -1,0 +1,82 @@
+
+
+.controls {
+    @include abstract.flexCenter;
+    flex-direction: column;
+    row-gap: 8px;
+    padding: 8px;
+    height: 100%;
+  }
+  
+  .controls-progressbar {
+    @include abstract.flexCenter;
+    width: 100%;
+  
+    .start-time {
+      text-align: right;
+    }
+  
+    .end-time {
+      text-align: left;
+    }
+  
+    .progress {
+      flex: 1;
+      margin: 0 8px;
+      position: relative;
+      flex: 1;
+      height: 6px;
+      width: 100%;
+      background: #666;
+      border-radius: 9999px;
+    }
+  
+    .progress::before {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      border-radius: 9999px;
+      content: '';
+      display: block;
+      width: var(--current-percent);
+      background: #fff;
+    }
+  
+    .progress:hover::before {
+      background: var(--primary-color);
+    }
+  
+    .progress:hover .progress-seek {
+      visibility: visible;
+    }
+  
+    .progress:hover .progress-value {
+      background: var(--primary-color);
+    }
+  
+    .progress-seek {
+      background: transparent;
+      appearance: none;
+      -webkit-appearance: none;
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -2px;
+      width: calc(100% + 4px);
+      border-radius: 9999px;
+      height: 100%;
+      visibility: hidden;
+      z-index: 1;
+    }
+  
+    .progress-seek::-webkit-slider-thumb {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      background: var(--primary-color);
+      border-radius: 50%;
+    }
+  }

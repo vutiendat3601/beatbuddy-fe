@@ -5,28 +5,32 @@ import { ReactComponent as PlayIcon } from '../../assets/icon/play.svg';
 import { ReactComponent as SearchIcon } from '../../assets/icon/search.svg';
 import { AudioContextProps } from '../../contexts/AudioContext';
 import useAudioContext from '../../hooks/useAudioContext';
-import { Search, SearchResult } from '../../models/Search';
+import { Search, Pagination } from '../../models/Search';
 import { Track } from '../../models/Track';
 import searchService from '../../services/search-service';
 import TrackCard from '../track-card/TrackCard';
 import style from './SearchBox.module.scss';
 import { Artist } from '../../models/Artist';
+import { useOidc } from '@axa-fr/react-oidc';
+import { changeFocus } from '../../reducers/mainLayoutReducer';
+import useMainLayoutContext from '../../hooks/useMainLayoutContext';
 
 const css = classNames.bind(style);
 
 interface SearchOption {
   onSearch?: (keyword: string) => Promise<Search>;
   trackSearch?: {
-    onResult: (searchResult: SearchResult<Track>) => void;
+    onResult: (searchResult: Pagination<Track>) => void;
   };
   artistSearch?: {
-    onResult: (searchResult: SearchResult<Artist>) => void;
+    onResult: (searchResult: Pagination<Artist>) => void;
   };
 }
 
 interface SearchBoxProps {
   standalone?: boolean;
   searchOptions?: SearchOption;
+  placeholder?: string;
 }
 
 const INITIAL_SEARCH: SearchOption = {
@@ -41,12 +45,15 @@ const INITIAL_SEARCH: SearchOption = {
 function SearchBox({
   standalone = true,
   searchOptions: { onSearch, trackSearch, artistSearch } = INITIAL_SEARCH,
+  placeholder,
 }: SearchBoxProps) {
   const [keyword, setKeyword] = useState<string>('');
   const [search, setSearch] = useState<Search>({});
+  const [resultHidden, setResultHidden] = useState(false);
   const searchIdRef = useRef<NodeJS.Timeout>();
   const { dispatchAudio }: AudioContextProps = useAudioContext();
-
+  const { isAuthenticated } = useOidc();
+  const { dispatchMainLayout } = useMainLayoutContext();
   const keywordInpRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -88,15 +95,21 @@ function SearchBox({
       });
     }
   }
+  function changeKeywordInputFocus(focused: boolean = true) {
+    keywordInpRef.current && keywordInpRef.current.focus();
+  }
   return (
-    <div className={css('search-box', { standalone })}>
+    <div
+      className={css('search-box', { standalone })}
+      onClick={() => setResultHidden(false)}
+    >
       <SearchIcon className={css('icon')} />
       <input
         ref={keywordInpRef}
         className={css('keyword-inp')}
         type="text"
         name="keyword"
-        placeholder="Search for track, artist"
+        placeholder={placeholder || 'Search for track, artist or playlist'}
         value={keyword}
         onChange={handleKeywordChange}
       />
@@ -110,9 +123,9 @@ function SearchBox({
       {standalone && (
         <ul
           className={css('items', {
-            hidden: keyword.length === 0,
+            hidden: keyword.length === 0 || resultHidden,
           })}
-          onClick={() => keywordInpRef.current && keywordInpRef.current.focus()}
+          onClick={(e: any) => changeKeywordInputFocus()}
         >
           {keyword.length > 0 && (
             <li key={keyword} className={css('item', 'keyword-item')}>
@@ -121,25 +134,35 @@ function SearchBox({
               </a>
             </li>
           )}
-          {search?.track?.items
-            .filter((track) => track.isPlayable)
-            .map((track) => (
-              <li className={css('item')} key={track.id}>
-                <div className={css('track-details')}>
-                  <TrackCard
-                    thumbnailWidth={48}
-                    track={track}
-                    variant="default"
-                    callToAction={{
-                      action: handlePlay,
-                      width: 28,
-                      icon: <PlayIcon />,
-                    }}
-                    controls={{ love: { onClick: () => undefined } }}
-                  />
-                </div>
-              </li>
-            ))}
+          {search?.track?.items.map((track) => (
+            <li className={css('item')} key={track.id}>
+              <div className={css('track-details')}>
+                <TrackCard
+                  thumbnailWidth={48}
+                  track={track}
+                  callToAction={
+                    isAuthenticated && track.isPlayable
+                      ? {
+                          action: handlePlay,
+                          width: 28,
+                          icon: <PlayIcon />,
+                        }
+                      : undefined
+                  }
+                  controls={{
+                    love: {
+                      onClick: () => undefined,
+                      hidden: !isAuthenticated,
+                    },
+                  }}
+                  onLinkClick={() => {
+                    changeFocus(dispatchMainLayout, 'content');
+                    setResultHidden(true);
+                  }}
+                />
+              </div>
+            </li>
+          ))}
         </ul>
       )}
       <div className={css('cover')}></div>

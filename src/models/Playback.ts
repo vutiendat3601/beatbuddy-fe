@@ -1,19 +1,51 @@
 import { Track } from './Track';
 
-interface Playback {
+interface PlaybackState {
   track: Track | undefined;
   currentSec: number;
   isPlaying: boolean;
   volume: number;
 }
 
-const INITIAL_PLAYBACK: Playback = {
-  currentSec: 0,
-  volume: 0.6,
-  track: undefined,
-  isPlaying: false,
+type RepeatMode = 'once' | 'all' | 'none';
+
+interface Queue {
+  playedTracks: Track[];
+  waitingTracks: Track[];
+  originals: {
+    playedTracks: Track[];
+    waitingTracks: Track[];
+  };
+  repeatMode: RepeatMode;
+  isShuffled: boolean;
+}
+
+interface Playback {
+  state: PlaybackState;
+  queue: Queue;
+}
+
+const INITITAL_QUEUE: Queue = {
+  playedTracks: [],
+  waitingTracks: [],
+  originals: {
+    playedTracks: [],
+    waitingTracks: [],
+  },
+  isShuffled: false,
+  repeatMode: 'none',
 };
 
-export type { Playback };
+const INITIAL_PLAYBACK: Playback = {
+  state: {
+    track: undefined,
+    volume: 0.6,
+    currentSec: 0,
+    isPlaying: false,
+  },
+  queue: INITITAL_QUEUE,
+};
 
-export { INITIAL_PLAYBACK };
+export { INITIAL_PLAYBACK, INITITAL_QUEUE };
+
+export type { Playback, PlaybackState, Queue, RepeatMode };

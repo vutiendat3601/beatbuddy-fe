@@ -1,0 +1,36 @@
+@use '../../scss/abstract';
+
+.user-detail {
+
+    .head {
+        @include abstract.flexAlignCenter;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        .avatar {
+            flex: none;
+            border-radius: 50%;
+            min-width: 0;
+            width: 96px;
+            height: 96px;
+            padding: 8px;
+
+            // @include abstract.screen()
+        }
+
+        .base {
+            @include abstract.flexAlignCenter;
+        }
+
+        .sign-out-btn {
+            height: fit-content;
+            // @include abstract.screen(xs) {
+            //     order: 1;
+            // }
+        }
+    }
+
+
+
+
+}

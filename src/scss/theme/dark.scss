@@ -1,13 +1,13 @@
 html.dark {
   --body-bg-color: rgb(29, 29, 29);
-  --body-bg-gradient: linear-gradient(0deg, rgba(29,29,29,1) 13%, rgba(18,18,18,1) 41%, rgba(31,31,31,1) 65%, rgba(42,42,42,1) 86%);
+  --body-bg-gradient: linear-gradient(0deg, rgba(29, 29, 29, 1) 13%, rgba(18, 18, 18, 1) 41%, rgba(31, 31, 31, 1) 65%, rgba(42, 42, 42, 1) 86%);
   --text-color: #fff;
-  --primary-color: #43a1d5;
   --text-desc-color: #efefef;
   --disabled-color: #666666;
+  --off-color: #555;
   --search-box-bg-color: #222;
   --hover-bg-color: #2f2f2f;
-  --main-layout-elem-bg-color: #1f1f1f;
+  --main-layout-elem-bg-color: #282828;
   --main-layout-elem-shadow: 1px 1px rgba(1, 2, 3, 0.4);
   --track-card-menu-bg-color: #2f2f2f;
 }

@@ -1,34 +1,49 @@
+import { useOidc } from '@axa-fr/react-oidc';
 import classNames from 'classnames/bind';
-import { ReactComponent as PlayIcon } from '../../assets/icon/play.svg';
-import style from './TrackDetail.module.scss';
-import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { ReactComponent as PlayIcon } from '../../assets/icon/play.svg';
+import CtaNotification from '../../components/cta-notification/CtaNotification';
+import useAudioContext from '../../hooks/useAudioContext';
 import { Track } from '../../models/Track';
+import {
+  changePlaybackTrack,
+  updatePlaybackStates,
+} from '../../reducers/audioReducer';
 import trackService from '../../services/track-service';
 import {
   formatDurationSec,
   formatIsoDate,
 } from '../../shared/utils/datetime-util';
-import useAudioContext from '../../hooks/useAudioContext';
+import style from './TrackDetail.module.scss';
 
 const css = classNames.bind(style);
 
 function TrackDetail(): JSX.Element {
+  const [playedInQueue, setPlayedInQueue] = useState<boolean>(false);
   const [track, setTrack] = useState<Track>();
-  const params = useParams();
   const { dispatchAudio } = useAudioContext();
-
+  const { isAuthenticated } = useOidc();
+  const params = useParams();
+  const navigate = useNavigate();
   useEffect(() => {
     async function getTrack(trackId: string) {
-      const track = await trackService.getTrack(trackId);
+      const track = (await trackService.getTrack(trackId)) as Track;
       track && setTrack(track);
     }
     params.trackId && getTrack(params.trackId);
   }, [params.trackId]);
 
+  useEffect(() => {
+    setPlayedInQueue(false);
+  }, [track]);
+
   function handlePlay() {
-    dispatchAudio({ type: 'change_playback_track', payload: { track } });
-    dispatchAudio({ type: 'update_playback', payload: { isPlaying: true } });
+    if (track && !playedInQueue) {
+      changePlaybackTrack(dispatchAudio, track);
+      updatePlaybackStates(dispatchAudio, { isPlaying: true });
+      setPlayedInQueue(true);
+    }
   }
 
   return track ? (
@@ -44,7 +59,7 @@ function TrackDetail(): JSX.Element {
           <ul className={css('artists')}>
             {track.artists.map((artist) => (
               <li key={artist.id} className={css('artist')}>
-                <a href="#!" className="text-link">
+                <Link to={`/artist/${artist.id}`} className="text-link">
                   <div className={css('inner')}>
                     <img
                       src={artist.thumbnail || ''}
@@ -53,7 +68,7 @@ function TrackDetail(): JSX.Element {
                     />
                     <span className={css('artist-name')}>{artist.name}</span>
                   </div>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -67,11 +82,23 @@ function TrackDetail(): JSX.Element {
           </p>
         </div>
       </header>
-      <div className={css('action')}>
-        <button className={css('cta')} onClick={handlePlay}>
-          <PlayIcon />
-        </button>
-      </div>
+      {isAuthenticated ? (
+        <div className={css('action')}>
+          <button
+            className={css('cta')}
+            onClick={handlePlay}
+            disabled={playedInQueue}
+          >
+            <PlayIcon />
+          </button>
+        </div>
+      ) : (
+        <CtaNotification
+          message={`Sign in to listen ${track.name}.`}
+          actionName="Sign in"
+          action={() => navigate('/auth/sign-in')}
+        />
+      )}
     </section>
   ) : (
     <p>Track not found!</p>

@@ -1,0 +1,27 @@
+@use '../../scss/abstract';
+
+.home {
+    .element-title {
+        // margin-left: 6px;
+    }
+
+    .element-items {
+        margin-top: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        overflow: hidden;
+        justify-content: center;
+    }
+
+    .element-item {
+        width: 33.3333%;
+
+        @include abstract.screen(md) {
+            width: 25%;
+        }
+
+        @include abstract.screen(lg) {
+            width: 16.6666%;
+        }
+    }
+}

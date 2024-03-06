@@ -1,43 +1,34 @@
 @use '../../scss/abstract';
 
-%flexAlignCenter {
-  display: flex;
-  align-items: center;
-}
-
-%flexContentCenter {
-  display: flex;
-  justify-content: center;
-}
-
-%flexCenter {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .search-box {
   position: relative;
   display: flex;
   align-items: center;
   background: var(--search-box-bg-color);
   border-radius: var(--search-box-border-radius);
-  padding: calc(var(--search-box-padding) * 0.5) var(--search-box-padding);
-    
+  padding: var(--search-box-padding-y) var(--search-box-padding-x);
+
   .keyword-inp {
+    position: relative;
     flex: 1;
     padding: 8px;
     font-size: 1.6rem;
     background: transparent;
-    position: relative;
+
+    line-height: 1.8;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .clear-btn {
-    padding: calc(var(--search-box-padding) * 0.5);
+    padding: var(--search-box-padding);
   }
 }
 
 .search-box.standalone {
+  
   .keyword-inp:not(:focus)~.items:not(:hover),
   .keyword-inp:not(:focus)~.items:not(:hover)~.cover {
     display: none;
@@ -97,7 +88,7 @@
   }
 
   .keyword-item {
-    padding: var(--search-box-padding);
+    padding: 10px var(--search-box-padding-x);
   }
 
   .keyword-link {
@@ -139,10 +130,10 @@
 
 
   .controls {
-    @extend %flexAlignCenter;
+    @include abstract.flexAlignCenter;
 
     .control {
-      @extend %flexCenter;
+      @include abstract.flexCenter;
       padding: 12px;
     }
 

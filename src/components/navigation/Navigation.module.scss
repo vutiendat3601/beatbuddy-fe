@@ -1,0 +1,30 @@
+@use '../../scss/abstract';
+
+.nav {
+    @include abstract.flexAlignCenter;
+    width: 100%;
+
+    .nav-link {
+        @include abstract.flexCenter;
+        border-radius: 4px;
+        padding: 8px 12px;
+
+        &:hover {
+            background: var(--hover-bg-color);
+        }
+    }
+
+    .user-pic {
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+    }
+}
+
+.nav.evenly {
+    justify-content: space-evenly;
+}
+
+.nav.rl {
+    justify-content: flex-end;
+}

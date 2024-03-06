@@ -12,7 +12,7 @@ interface MainLayoutContextProps {
 
 const MainLayoutContext = createContext<MainLayoutContextProps>({
   mainLayout: INITIAL_MAIN_LAYOUT,
-  dispatchMainLayout: (value: any) => {},
+  dispatchMainLayout: (_value: any) => {},
 });
 
 export type { MainLayoutContextProps };

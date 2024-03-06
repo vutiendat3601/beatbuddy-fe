@@ -1,6 +1,7 @@
 @use '../abstract';
 
 :root {
+  --primary-color: #43a1d5;
   --text-heading-1-font-size: 4.8rem;
   --text-heading-2-font-size: 4rem;
   --text-heading-3-font-size: 3.3rem;
@@ -24,14 +25,18 @@
   --main-layout-elem-border-radius: 4px;
 
   --track-card-padding: 8px;
+  --artist-card-padding: 16px;
 
   --search-box-border-radius: 8px;
-  --search-box-padding: 8px;
+  --search-box-padding-x: 12px;
+  --search-box-padding-y: 2px;
+
+  @include abstract.screen(md) {
+    --search-box-padding-x: 16px;
+    --artist-card-padding: 12px;
+  }
 
   @include abstract.screen(xl) {
-    --track-card-padding: 12px;
-    --search-box-border-radius: 12px;
-    --search-box-padding: 12px;
   }
 }
 
@@ -85,6 +90,7 @@ body {
     font-size: var(--text-heading-#{$i}-font-size);
     font-weight: var(--text-heading-#{$i}-font-weight);
     line-height: 1.2;
+    user-select: none;
   }
 }
 
@@ -139,6 +145,7 @@ button[disabled] {
 }
 
 .text-label {
+  user-select: none;
   font-size: var(--text-label-font-size);
   font-weight: var(--text-label-font-weight);
 }
@@ -155,4 +162,21 @@ button[disabled] {
 
 .text-link:hover {
   text-decoration-line: underline;
+}
+
+.btn {
+  background: var(--primary-color);
+  border-radius: 9999px;
+  display: flex;
+  min-width: 100px;
+  width: fit-content;
+  padding: 8px 12px;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-button-font-size);
+  font-weight: var(--text-button-font-weight);
+}
+
+.btn:hover {
+  text-decoration-line: none;
 }

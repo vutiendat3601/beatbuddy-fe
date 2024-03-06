@@ -1,8 +1,22 @@
+@use '../../../scss/abstract';
+
 .header {
   --header-padding: 4px;
 
-  padding: var(--header-padding);
-  z-index: 10;
+  padding: var(--header-padding) 0;
   border-radius: var(--main-layout-elem-border-radius);
   // box-shadow: var(--main-layout-elem-shadow);
+  &:focus-within * {
+    z-index: 30;
+  }
+}
+
+.header-left {
+  @include abstract.flexAlignCenter;
+  column-gap: 12px;
+}
+
+.header-right {
+  @include abstract.flexAlignCenter;
+  column-gap: 12px;
 }
