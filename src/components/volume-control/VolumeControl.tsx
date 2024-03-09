@@ -22,7 +22,7 @@ function VolumeControl() {
       if (volume > 0) {
         updatePlaybackStates(dispatchAudio, { volume });
       } else {
-        updatePlaybackStates(dispatchAudio, { volume: 50 });
+        updatePlaybackStates(dispatchAudio, { volume: 0.6 });
       }
     }
   }, [dispatchAudio, muted, volume]);
