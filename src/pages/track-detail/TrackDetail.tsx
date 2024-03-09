@@ -1,9 +1,8 @@
 import { useOidc } from '@axa-fr/react-oidc';
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { ReactComponent as PlayIcon } from '../../assets/icon/play.svg';
-import CtaNotification from '../../components/cta-notification/CtaNotification';
 import useAudioContext from '../../hooks/useAudioContext';
 import { Track } from '../../models/Track';
 import {
@@ -25,7 +24,6 @@ function TrackDetail(): JSX.Element {
   const { dispatchAudio } = useAudioContext();
   const { isAuthenticated } = useOidc();
   const params = useParams();
-  const navigate = useNavigate();
   useEffect(() => {
     async function getTrack(trackId: string) {
       const track = (await trackService.getTrack(trackId)) as Track;
@@ -82,7 +80,7 @@ function TrackDetail(): JSX.Element {
           </p>
         </div>
       </header>
-      {isAuthenticated ? (
+      {isAuthenticated && (
         <div className={css('action')}>
           <button
             className={css('cta')}
@@ -92,12 +90,6 @@ function TrackDetail(): JSX.Element {
             <PlayIcon />
           </button>
         </div>
-      ) : (
-        <CtaNotification
-          message={`Sign in to listen ${track.name}.`}
-          actionName="Sign in"
-          action={() => navigate('/auth/sign-in')}
-        />
       )}
     </section>
   ) : (

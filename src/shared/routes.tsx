@@ -11,6 +11,7 @@ import PlaylistDetail from '../pages/playlist-detail/PlaylistDetail';
 import TrackDetail from '../pages/track-detail/TrackDetail';
 import UserDetail from '../pages/user-detail/UserDetail';
 import Playing from '../pages/playing/Playing';
+import SearchDetail from '../pages/search-detail/SearchDetail';
 
 const ROUTES: RouteObject[] = [
   {
@@ -46,6 +47,10 @@ const ROUTES: RouteObject[] = [
             <PlaylistDetail />
           </OidcSecure>
         ),
+      },
+      {
+        path: 'search',
+        element: <SearchDetail />,
       },
       {
         path: 'user',

@@ -4,6 +4,28 @@
   background: var(--main-layout-elem-bg-color);
   border-radius: var(--main-layout-elem-border-radius);
   // box-shadow: var(--main-layout-elem-shadow);
+
+  .utils {
+    @include abstract.flexAlignCenter;
+    column-gap: 8px;
+  }
+
+  .action {
+    @include abstract.flexContentCenter;
+    align-items: flex-end;
+    flex-direction: column;
+    row-gap: 8px;
+    padding: 12px;
+    height: 100%;
+
+    .queue-btn:hover {
+      opacity: 0.9;
+    }
+
+    .queue-btn svg {
+      color: var(--primary-color);
+    }
+  }
 }
 
 .controls {
@@ -17,6 +39,11 @@
 .controls-progressbar {
   @include abstract.flexCenter;
   width: 100%;
+
+  .start-time,
+  .end-time {
+    user-select: none;
+  }
 
   .start-time {
     text-align: right;
@@ -33,7 +60,7 @@
     flex: 1;
     height: 6px;
     width: 100%;
-    background: #666;
+    background: var(--off-color);
     border-radius: 9999px;
   }
 
@@ -46,7 +73,7 @@
     content: '';
     display: block;
     width: var(--current-percent);
-    background: #fff;
+    background: var(--on-color);
   }
 
   .progress:hover::before {
@@ -75,31 +102,5 @@
     height: 100%;
     visibility: hidden;
     z-index: 1;
-  }
-
-  .progress-seek::-webkit-slider-thumb {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 12px;
-    height: 12px;
-    background: var(--primary-color);
-    border-radius: 50%;
-  }
-}
-
-.action {
-  @include abstract.flexContentCenter;
-  align-items: flex-end;
-  flex-direction: column;
-  row-gap: 8px;
-  padding: 12px;
-  height: 100%;
-
-  .queue-btn:hover {
-    opacity: 0.9;
-  }
-
-  .queue-btn svg {
-    color: var(--primary-color);
   }
 }

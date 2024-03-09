@@ -1,6 +1,7 @@
 import classNames from 'classnames/bind';
 import { ReactComponent as LoveIcon } from '../../assets/icon/love.svg';
 import { ReactComponent as NextIcon } from '../../assets/icon/next.svg';
+import { ReactComponent as LyricsIcon } from '../../assets/icon/lyrics.svg';
 import { ReactComponent as PauseIcon } from '../../assets/icon/pause.svg';
 import { ReactComponent as PlayIcon } from '../../assets/icon/play.svg';
 import { ReactComponent as PreviousIcon } from '../../assets/icon/previous.svg';
@@ -13,7 +14,7 @@ import style from './TrackAction.module.scss';
 const css = classNames.bind(style);
 
 interface TrackActionFunction {
-  queue?: {
+  lyrics?: {
     onClick: () => void;
     disabled?: boolean;
     hidden?: boolean;
@@ -56,6 +57,13 @@ interface TrackActionFunction {
     disabled?: boolean;
     hidden?: boolean;
   };
+  queue?: {
+    onClick: () => void;
+    disabled?: boolean;
+    hidden?: boolean;
+    width?: number;
+    order?: number;
+  };
 }
 
 interface TrackCardProps {
@@ -63,18 +71,17 @@ interface TrackCardProps {
 }
 
 function TrackAction({
-  controls: { queue, love, play, next, previous, shuffle, repeat },
+  controls: { lyrics, queue, love, play, next, previous, shuffle, repeat },
 }: TrackCardProps): JSX.Element {
   return (
     <div className={`${css('track-action')}`}>
-      {queue && (
+      {lyrics && (
         <button
-          hidden={queue.hidden}
+          hidden={lyrics.hidden}
           className={`${css('control')}`}
-          onClick={queue.onClick}
-          style={queue.order !== undefined ? { order: queue.order } : undefined}
+          style={lyrics.order !== undefined ? { order: lyrics.order } : undefined}
         >
-          <QueueIcon />
+          <LyricsIcon />
         </button>
       )}
       {love && (
@@ -145,6 +152,16 @@ function TrackAction({
           onClick={repeat.onClick}
         >
           <RepeatIcon />
+        </button>
+      )}
+      {queue && (
+        <button
+          hidden={queue.hidden}
+          className={`${css('control')}`}
+          onClick={queue.onClick}
+          style={queue.order !== undefined ? { order: queue.order } : undefined}
+        >
+          <QueueIcon />
         </button>
       )}
     </div>

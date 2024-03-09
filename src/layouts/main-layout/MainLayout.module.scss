@@ -4,7 +4,6 @@
   --main-layout-padding: 8px;
   --content-row-area: 2 / 1 / 2 / 4;
   height: 100dvh;
-
   @include abstract.screen(md) {
     --main-layout-padding: 16px;
   }

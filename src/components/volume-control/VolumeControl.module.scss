@@ -3,13 +3,59 @@
 .volume {
   @include abstract.flexCenter;
   column-gap: 4px;
-}
 
-.volume .icon {
-  display: flex;
-  align-items: center;
-}
+  .icon {
+    display: flex;
+    align-items: center;
+  }
 
-.volume .value {
-  width: 100px;
+  .value {
+    position: relative;
+
+    height: 6px;
+
+    width: 100px;
+    background: var(--off-color);
+
+    &,
+    &>* {
+      border-radius: 9999px;
+    }
+
+    &::before {
+      position: absolute;
+      border-radius: 9999px;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      content: '';
+      display: block;
+      width: var(--current-percent);
+      background: var(--on-color);
+    }
+
+    &:hover::before {
+      background: var(--primary-color);
+    }
+
+    &:hover .value-changer {
+      visibility: visible;
+    }
+
+    .value-changer {
+      background: transparent;
+      appearance: none;
+      -webkit-appearance: none;
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -2px;
+      width: calc(100% + 4px);
+      border-radius: 9999px;
+      height: 100%;
+      visibility: hidden;
+      z-index: 1;
+    }
+  }
 }

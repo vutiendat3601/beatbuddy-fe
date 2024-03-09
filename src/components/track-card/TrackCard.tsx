@@ -45,6 +45,7 @@ interface TrackCardProps {
   controls?: TrackActionFunction;
   disabledLink?: boolean;
   hoverHighlight?: boolean;
+  playingProgress?: boolean;
   callToAction?: {
     action: (track?: Track) => void;
     width?: number;
@@ -63,13 +64,14 @@ function TrackCard({
   controls,
   callToAction,
   hoverHighlight = true,
+  playingProgress = false,
   menu,
   hiddenElements = [],
   onLinkClick = () => undefined,
 }: TrackCardProps): JSX.Element {
   const [nameTransX, setNameTransX] = useState<Trans>(INITIAL_TRANS);
   const [artistTransX, setArtistTransX] = useState<Trans>(INITIAL_TRANS);
-  const [isMenuShown, setMenuShown] = useState<boolean>(false);
+  // const [isMenuShown, setMenuShown] = useState<boolean>(false);
 
   const nameTransXIdRef = useRef<NodeJS.Timeout>();
   const artistTransXIdRef = useRef<NodeJS.Timeout>();
@@ -132,6 +134,7 @@ function TrackCard({
       className={css('track-card', {
         highlighted: highlighted,
         'hover-highlight': hoverHighlight,
+        'playing-progress': playingProgress,
       })}
     >
       <div>
@@ -231,9 +234,11 @@ function TrackCard({
             </div>
           )}
         </div>
-        {!hiddenElements.includes('duration') && <p className={`text-label ${css('duration')}`}>
-          {formatDurationSec(track.durationSec)}
-        </p>}
+        {!hiddenElements.includes('duration') && (
+          <p className={`text-label ${css('duration')}`}>
+            {formatDurationSec(track.durationSec)}
+          </p>
+        )}
         {!hiddenElements.includes('menu') && (
           <button className={css('menu-btn')}>
             <ThreeDotIcon className={css('three-dot')} />

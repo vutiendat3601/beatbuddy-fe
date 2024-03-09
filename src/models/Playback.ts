@@ -3,7 +3,9 @@ import { Track } from './Track';
 interface PlaybackState {
   track: Track | undefined;
   currentSec: number;
+  totalSec: number;
   isPlaying: boolean;
+  seekedSec: number;
   volume: number;
 }
 
@@ -23,6 +25,7 @@ interface Queue {
 interface Playback {
   state: PlaybackState;
   queue: Queue;
+  ownerId: string | null;
 }
 
 const INITITAL_QUEUE: Queue = {
@@ -41,9 +44,12 @@ const INITIAL_PLAYBACK: Playback = {
     track: undefined,
     volume: 0.6,
     currentSec: 0,
+    totalSec: 0,
     isPlaying: false,
+    seekedSec: -1,
   },
   queue: INITITAL_QUEUE,
+  ownerId: null,
 };
 
 export { INITIAL_PLAYBACK, INITITAL_QUEUE };

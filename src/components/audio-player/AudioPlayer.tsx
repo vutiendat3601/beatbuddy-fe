@@ -1,202 +1,51 @@
 import classNames from 'classnames/bind';
-import { useEffect, useRef } from 'react';
+import { ReactComponent as LyricsIcon } from '../../assets/icon/lyrics.svg';
 import { ReactComponent as QueueIcon } from '../../assets/icon/queue.svg';
 
 import TrackCard from '../../components/track-card/TrackCard';
-import VolumeControl from '../../components/volume-control/VolumeControl';
-import { AudioContextProps } from '../../contexts/AudioContext';
 import useAudioContext from '../../hooks/useAudioContext';
 import useMainLayoutContext from '../../hooks/useMainLayoutContext';
 import {
-  changePlayingState,
   changeRepeatMode,
   nextTrack,
   previousTrack,
-  savePlayback,
+  togglePlayState,
   toggleShuffle,
   updatePlaybackStates,
 } from '../../reducers/audioReducer';
 import { changeFocus } from '../../reducers/mainLayoutReducer';
-import trackService from '../../services/track-service';
-import {
-  PLAYBACK_PLAY_START_AFTER_SEC,
-  PLAYBACK_UPDATE_INTERVAL_MS,
-} from '../../shared/global-constant';
+import { PLAYBACK_PLAY_START_AFTER_SEC } from '../../shared/global-constant';
 import { formatDurationSec } from '../../shared/utils/datetime-util';
-import createHlsPlayer, { HlsPlayer } from '../../shared/utils/hls-util';
-import style from './AudioPlayer.module.scss';
+import { getScreenWidth, screens } from '../../shared/utils/responsive-util';
 import TrackAction from '../track-action/TrackAction';
+import VolumeControl from '../volume-control/VolumeControl';
+import style from './AudioPlayer.module.scss';
 
 const css = classNames.bind(style);
 
 function AudioPlayer(): JSX.Element {
-  const { audioContext, dispatchAudio }: AudioContextProps = useAudioContext();
   const {
     dispatchMainLayout,
     mainLayout: { focused },
   } = useMainLayoutContext();
-
   const {
-    playback: { state: playbackState, queue },
-  } = audioContext;
-  const { track, currentSec, isPlaying } = playbackState;
-  const { waitingTracks, playedTracks, repeatMode, isShuffled } = queue;
+    dispatchAudio,
+    audioContext: { playback },
+  } = useAudioContext();
+  const {
+    // queue,
+    queue: { isShuffled, playedTracks, waitingTracks, repeatMode },
+    state: playbackState,
+  } = playback;
 
-  // ## useRef
-  const hlsPlayerRef = useRef<HlsPlayer>();
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const sessionIdRef = useRef<ReturnType<typeof setTimeout>>();
-  const isSessionSavedRef = useRef<boolean>(false);
-  const audio = audioRef.current;
-
-  useEffect(() => {
-    hlsPlayerRef.current = createHlsPlayer('audioPlayer');
-  }, []);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (audio) {
-      if (isPlaying) {
-        audio.readyState > 0 && audio.paused && audio.play();
-      } else {
-        !audio.paused && audio.pause();
-      }
-    }
-  }, [isPlaying]);
-
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      clearTimeout(sessionIdRef.current);
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [dispatchAudio]);
-
-  useEffect(() => {
-    async function getStream() {
-      const hlsPlayer = hlsPlayerRef.current;
-      if (track && hlsPlayer) {
-        const data = await trackService.getStream(track.id);
-        const kbps128s = data.links.kbps128;
-        if (kbps128s) {
-          hlsPlayer.loadSource(kbps128s[0]);
-        }
-      }
-    }
-    getStream();
-  }, [track]);
-
-  useEffect(() => {
-    savePlayback(dispatchAudio);
-  }, [queue, dispatchAudio]);
-
-  function savePlaybackInterval() {
-    savePlayback(dispatchAudio);
-    isSessionSavedRef.current = true;
-    clearTimeout(sessionIdRef.current);
-    sessionIdRef.current = setTimeout(() => {
-      isSessionSavedRef.current = false;
-    }, PLAYBACK_UPDATE_INTERVAL_MS);
-  }
-
-  function handlePlay() {
-    const audio = audioRef.current;
-    if (audio) {
-      if (audio.paused) {
-        audio.play();
-        changePlayingState(dispatchAudio, true);
-      } else {
-        audio.pause();
-        changePlayingState(dispatchAudio, false);
-      }
-    }
-  }
-
-  function handleAudioLoadedMetadata() {
-    const audio = audioRef.current;
-    if (audio) {
-      if (isPlaying) {
-        audio.play();
-      } else {
-        audio.currentTime = currentSec;
-      }
-      savePlayback(dispatchAudio);
-    }
-  }
-
-  function handleAudioEnd() {
-    if (audio) {
-      const { repeatMode } = queue;
-      audio.currentTime = 0;
-      if (repeatMode !== 'once') {
-        handleNext();
-      } else {
-        audio.play();
-      }
-    }
-  }
-
-  function handleAudioTimeUpdate() {
-    const audio = audioRef.current;
-    if (audio) {
-      updatePlaybackStates(dispatchAudio, { currentSec: audio.currentTime });
-      if (playbackState.track && !isSessionSavedRef.current) {
-        savePlaybackInterval();
-      }
-    }
-  }
-
-  function handleSeek(e: any) {
-    const audio = audioRef.current;
-    if (audio) {
-      audio.currentTime = e.target.value;
-    }
-  }
-  // ## Previous
-  function handlePrevious() {
-    const audio = audioRef.current;
-
-    if (audio && audio.currentTime > PLAYBACK_PLAY_START_AFTER_SEC) {
-      // ## Play from start
-      audio.currentTime = 0;
-    } else {
-      previousTrack(dispatchAudio);
-    }
-  }
-
-  // ## Next
-  function handleNext() {
-    nextTrack(dispatchAudio);
-    if (waitingTracks.length === 0 && repeatMode !== 'all') {
-      updatePlaybackStates(dispatchAudio, { isPlaying: false });
-    }
-  }
-
-  function handleVolumeChange(value: number) {
-    updatePlaybackStates(dispatchAudio, { volume: value });
-  }
-  // console.log(queue);
-  function handleShuffle() {
-    toggleShuffle(dispatchAudio);
-  }
-
-  function handleRepeat() {
-    changeRepeatMode(dispatchAudio);
-  }
+  const { isPlaying, track, currentSec, totalSec } = playbackState;
 
   return (
     <div
       className={css('audio-player')}
       style={
         {
-          '--current-percent':
-            audio && audio.duration
-              ? `${(audio.currentTime / audio.duration) * 100}%`
-              : `0`,
+          '--current-percent': `${(currentSec / totalSec) * 100}%`,
         } as React.CSSProperties
       }
     >
@@ -209,6 +58,7 @@ function AudioPlayer(): JSX.Element {
                 track={track}
                 thumbnailWidth={56}
                 disabledLink
+                playingProgress
                 controls={{
                   queue: {
                     onClick: () =>
@@ -217,7 +67,11 @@ function AudioPlayer(): JSX.Element {
                         focused === 'queue' ? 'content' : 'queue'
                       ),
                   },
-                  play: { isPlaying, onClick: handlePlay, width: 40 },
+                  play: {
+                    isPlaying,
+                    onClick: () => togglePlayState(dispatchAudio),
+                    width: 40,
+                  },
                 }}
                 hiddenElements={['menu', 'duration']}
               />
@@ -238,60 +92,83 @@ function AudioPlayer(): JSX.Element {
             <div className={css('controls-top')}>
               <TrackAction
                 controls={{
+                  lyrics: {
+                    onClick: () => undefined,
+                    hidden: getScreenWidth() >= screens.lg,
+                  },
                   shuffle: {
                     isShuffled: isShuffled,
-                    onClick: handleShuffle,
+                    onClick: () => toggleShuffle(dispatchAudio),
                   },
                   play: {
                     isPlaying,
-                    onClick: handlePlay,
+                    onClick: () => togglePlayState(dispatchAudio),
                     disabled: !playbackState.track,
                   },
                   next: {
-                    onClick: handleNext,
+                    onClick: () => nextTrack(dispatchAudio),
                     disabled: waitingTracks.length === 0,
                   },
                   previous: {
-                    onClick: handlePrevious,
-                    disabled: audio
-                      ? playedTracks.length === 0 &&
-                        audio.currentTime <= PLAYBACK_PLAY_START_AFTER_SEC
-                      : false,
+                    onClick: () => {
+                      if (currentSec > 6) {
+                        updatePlaybackStates(dispatchAudio, { seekedSec: 0 });
+                      } else {
+                        previousTrack(dispatchAudio);
+                      }
+                    },
+                    disabled:
+                      playedTracks.length === 0 &&
+                      currentSec <= PLAYBACK_PLAY_START_AFTER_SEC,
                   },
                   repeat: {
-                    onClick: handleRepeat,
+                    onClick: () => changeRepeatMode(dispatchAudio),
                     repeatMode,
+                  },
+                  queue: {
+                    onClick: () =>
+                      changeFocus(
+                        dispatchMainLayout,
+                        focused === 'queue' ? 'content' : 'queue'
+                      ),
+                    hidden: getScreenWidth() >= screens.lg,
                   },
                 }}
               />
             </div>
             <div className={css('controls-progressbar')}>
               <p className={`text-label ${css('start-time')}`}>
-                {audio
-                  ? formatDurationSec(Math.floor(audio.currentTime), false)
-                  : '0:00'}
+                {formatDurationSec(Math.floor(currentSec), false)}
               </p>
               <div className={css('progress')}>
                 <input
                   className={css('progress-seek')}
                   type="range"
                   min={0}
-                  max={audio && audio.duration ? audio.duration : 0}
-                  value={audio ? audio.currentTime : 0}
-                  onChange={handleSeek}
+                  max={totalSec}
+                  value={currentSec}
+                  onChange={(e: any) => {
+                    updatePlaybackStates(dispatchAudio, {
+                      seekedSec: e.target.value,
+                    });
+                  }}
                 />
               </div>
               <p className={`text-label ${css('end-time')}`}>
-                {audio && audio.duration
-                  ? formatDurationSec(Math.floor(audio.duration), false)
-                  : '0:00'}
+                {formatDurationSec(Math.floor(totalSec), false)}
               </p>
             </div>
           </div>
         </div>
         <div className="col-lg-3 d-none d-lg-block">
           <div className={css('action')}>
-            <div className="utils">
+            <div className={css('utils')}>
+              <button
+                className={css('lyrics-btn')}
+                onClick={(e: any) => undefined}
+              >
+                <LyricsIcon />
+              </button>
               <button
                 className={css('queue-btn')}
                 onClick={(e: any) =>
@@ -304,22 +181,10 @@ function AudioPlayer(): JSX.Element {
                 <QueueIcon />
               </button>
             </div>
-            <VolumeControl
-              onVolumeChange={handleVolumeChange}
-              mediaElemRef={audioRef}
-            />
+            <VolumeControl />
           </div>
         </div>
       </div>
-      <audio
-        id="audioPlayer"
-        ref={audioRef}
-        hidden
-        preload="auto"
-        onLoadedMetadata={handleAudioLoadedMetadata}
-        onTimeUpdate={handleAudioTimeUpdate}
-        onEnded={handleAudioEnd}
-      ></audio>
     </div>
   );
 }

@@ -2,7 +2,6 @@ import { useOidc } from '@axa-fr/react-oidc';
 import classNames from 'classnames/bind';
 import { Outlet, useNavigate } from 'react-router-dom';
 import AudioPlayer from '../../components/audio-player/AudioPlayer';
-import CtaNotification from '../../components/cta-notification/CtaNotification';
 import Navigation from '../../components/navigation/Navigation';
 import QueueCard from '../../components/queue-card/QueueCard';
 import useAudioContext from '../../hooks/useAudioContext';
@@ -10,6 +9,7 @@ import useMainLayoutContext from '../../hooks/useMainLayoutContext';
 import { isAudioContextAvailale } from '../../reducers/audioReducer';
 import style from './MainLayout.module.scss';
 import Header from './header/Header';
+import CtaNotification from '../../components/cta-notification/CtaNotification';
 
 const css = classNames.bind(style);
 
@@ -17,11 +17,11 @@ function MainLayout(): JSX.Element {
   const {
     mainLayout: { focused },
   } = useMainLayoutContext();
+  const navigate = useNavigate();
   const { isAuthenticated } = useOidc();
   const {
     audioContext: { playback },
   } = useAudioContext();
-  const navigate = useNavigate();
   return (
     <div
       className={css('main-layout', {
@@ -42,13 +42,17 @@ function MainLayout(): JSX.Element {
           {isAuthenticated && <QueueCard />}
         </aside>
         <footer className={css('footer')}>
-          {isAuthenticated && isAudioContextAvailale(playback) && (
-            <AudioPlayer />
-          )}
-          {isAuthenticated && (
-            <div className={`d-md-none ${css('navbar')}`}>
-              <Navigation evenly />
-            </div>
+          {isAuthenticated ? (
+            isAudioContextAvailale(playback) && (
+              <>
+                <AudioPlayer />
+                <div className={`d-md-none ${css('navbar')}`}>
+                  <Navigation evenly />
+                </div>
+              </>
+            )
+          ) : (
+            <CtaNotification message="Sign in to listen to music." actionName='Sign in' action={()=> navigate('/auth/sign-in')} />
           )}
         </footer>
       </div>

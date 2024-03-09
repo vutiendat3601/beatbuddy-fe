@@ -56,11 +56,11 @@
 
     .repeat-btn {
 
-        color: #777;
+        color: var(--off-color);
 
         &.once {
 
-            color: #fff;
+            color: var(--on-color);
             position: relative;
 
             &::before {
@@ -72,7 +72,7 @@
         }
 
         &.all {
-            color: #fff;
+            color: var(--on-color);
         }
     }
 
@@ -80,7 +80,7 @@
         color: #777;
 
         &.shuffled {
-            color: #fff;
+            color: var(--on-color);
         }
     }
 }

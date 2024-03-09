@@ -2,7 +2,7 @@ import {
   INITIAL_PLAYBACK,
   Playback,
   Queue,
-  RepeatMode,
+  RepeatMode
 } from '../models/Playback';
 import { Track } from '../models/Track';
 import { saveObject } from '../shared/utils/local-storage-util';
@@ -27,6 +27,9 @@ interface AudioPayload {
   isPlaying?: boolean;
   volume?: number;
   playInQueue?: PlayInQueue;
+  totalSec?: number;
+  seekedSec?: number;
+  ownerId?: string;
 }
 
 interface AudioPlayerAction {
@@ -37,6 +40,7 @@ interface AudioPlayerAction {
     | 'change_playback_track'
     | 'play_in_queue'
     | 'init'
+    | 'play_state'
     | 'seek'
     | 'previous'
     | 'next'
@@ -59,21 +63,28 @@ function audioReducer(states: AudioPlayer, action: AudioPlayerAction) {
   let waitingTracks = [...queue.waitingTracks];
   switch (type) {
     case 'save_playback':
-      playbackState.isPlaying = false;
-      playback.state = playbackState;
       saveObject('playback', playback);
+      break;
+    case 'init':
+      if (payload.playback) {
+        console.log('payload.playback', payload.playback);
+        playback = payload.playback;
+        playback.state.isPlaying = false;
+        playback.state.seekedSec = -1;
+        return { ...states, playback };
+      }
       break;
     case 'play_playlist':
       if (payload.waitingTracks) {
         queue.playedTracks = [];
         waitingTracks = [...payload.waitingTracks];
         queue.isShuffled && waitingTracks.sort(() => Math.random() - 0.5);
-        
+
         playbackState.track = waitingTracks[0];
         queue.waitingTracks = waitingTracks.slice(1);
         queue.originals = {
-          playedTracks: queue.playedTracks,
-          waitingTracks: queue.waitingTracks,
+          playedTracks: [...queue.playedTracks],
+          waitingTracks: [...queue.waitingTracks],
         };
 
         playbackState.isPlaying = true;
@@ -134,16 +145,25 @@ function audioReducer(states: AudioPlayer, action: AudioPlayerAction) {
       }
       break;
     case 'update_playback':
-      if (payload.currentSec) {
+      if (payload.currentSec !== undefined) {
         playbackState.currentSec = payload.currentSec;
+      }
+      if (payload.seekedSec !== undefined && payload.seekedSec >= 0) {
+        playbackState.seekedSec = payload.seekedSec;
+      }
+      if (payload.totalSec !== undefined) {
+        playbackState.totalSec = payload.totalSec;
       }
       if (payload.isPlaying !== undefined) {
         playbackState.isPlaying = payload.isPlaying;
       }
-      if (payload.volume && payload.volume >= 0 && payload.volume <= 1) {
+      if (
+        payload.volume !== undefined &&
+        payload.volume >= 0 &&
+        payload.volume <= 1
+      ) {
         playbackState.volume = payload.volume;
       }
-
       playback.state = playbackState;
       return { ...states, playback };
     case 'repeat':
@@ -155,13 +175,10 @@ function audioReducer(states: AudioPlayer, action: AudioPlayerAction) {
 
       playback.queue = queue;
       return { ...states, playback };
-    case 'init':
-      if (payload.playback) {
-        playback = payload.playback;
-        playback.state.isPlaying = false;
-        return { ...states, playback };
-      }
-      break;
+    case 'play_state':
+      playbackState.isPlaying = !playbackState.isPlaying;
+      playback.state = playbackState;
+      return { ...states, playback };
     case 'previous':
       if (playedTracks.length > 0) {
         playbackState.track && waitingTracks.unshift(playbackState.track);
@@ -183,6 +200,7 @@ function audioReducer(states: AudioPlayer, action: AudioPlayerAction) {
         playbackState.track && playedTracks.push(playbackState.track);
         playbackState.track = waitingTracks.shift();
       } else {
+        playbackState.isPlaying = queue.repeatMode === 'all';
         waitingTracks = playedTracks;
         playedTracks = [];
         playbackState.track = waitingTracks.shift();
@@ -205,7 +223,6 @@ function audioReducer(states: AudioPlayer, action: AudioPlayerAction) {
       } else {
         playedTracks.sort(() => Math.random() - 0.5);
         waitingTracks.sort(() => Math.random() - 0.5);
-        console.log(playedTracks);
         queue.isShuffled = true;
       }
 
@@ -255,7 +272,13 @@ function savePlayback(dispatchAudio: (value: AudioPlayerAction) => void) {
 
 function updatePlaybackStates(
   dispatchAudio: (value: AudioPlayerAction) => void,
-  playbackState: { currentSec?: number; isPlaying?: boolean; volume?: number }
+  playbackState: {
+    currentSec?: number;
+    isPlaying?: boolean;
+    seekedSec?: number;
+    volume?: number;
+    totalSec?: number;
+  }
 ) {
   dispatchAudio({ type: 'update_playback', payload: { ...playbackState } });
 }
@@ -308,20 +331,20 @@ function toggleShuffle(dispatchAudio: (value: AudioPlayerAction) => void) {
   dispatchAudio({ type: 'shuffle', payload: {} });
 }
 
+function togglePlayState(dispatchAudio: (value: AudioPlayerAction) => void) {
+  dispatchAudio({ type: 'play_state', payload: {} });
+}
+
 export {
   INITIAL_AUDIO_CONTEXT,
   changePlaybackTrack,
-  changePlayingState,
-  initPlayback,
+  changePlayingState, changeRepeatMode, initPlayback,
   isAudioContextAvailale,
   nextTrack,
   playInQueue,
   playPlaylist,
   previousTrack,
-  savePlayback,
-  updatePlaybackStates,
-  changeRepeatMode,
-  toggleShuffle,
+  savePlayback, togglePlayState, toggleShuffle, updatePlaybackStates
 };
 export type { AudioPayload, AudioPlayer, AudioPlayerAction };
 export default audioReducer;

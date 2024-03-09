@@ -148,13 +148,10 @@
 .track-card.mobile-player {
     background: #353535;
 
-    .name,
-    .artist {
-        user-select: none;
-    }
+    
 }
 
-.track-card.mobile-player::after {
+.track-card.playing-progress::after {
     position: absolute;
     display: block;
     content: "";

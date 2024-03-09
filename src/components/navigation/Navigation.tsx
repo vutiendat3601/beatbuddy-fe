@@ -38,24 +38,26 @@ function Navigation({
       <Link to="/" className={css('nav-link')} onClick={focusContent}>
         {location.pathname === '/' ? <HomeSolidIcon /> : <HomeIcon />}
       </Link>
-      <Link to="/library" className={css('nav-link')} onClick={focusContent}>
-        {isAuthenticated &&
-          (location.pathname === '/library' ? (
+      {isAuthenticated && (
+        <Link to="/library" className={css('nav-link')} onClick={focusContent}>
+          {location.pathname === '/library' ? (
             <LibrarySolidIcon />
           ) : (
             <LibraryIcon />
-          ))}
-      </Link>
-      <Link to="/user" className={css('nav-link')} onClick={focusContent}>
-        {isAuthenticated &&
-          (oidcUser?.picture ? (
+          )}
+        </Link>
+      )}
+      {isAuthenticated && (
+        <Link to="/user" className={css('nav-link')} onClick={focusContent}>
+          {oidcUser?.picture ? (
             <img className={css('user-pic')} src={oidcUser.picture} alt="" />
           ) : location.pathname === '/user' ? (
             <UserSolidIcon />
           ) : (
             <UserIcon />
-          ))}
-      </Link>
+          )}
+        </Link>
+      )}
     </nav>
   );
 }

@@ -1,21 +1,20 @@
+import { useOidc } from '@axa-fr/react-oidc';
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { ReactComponent as PlayIcon } from '../../assets/icon/play.svg';
 import { ReactComponent as VerifiedIcon } from '../../assets/icon/verified.svg';
 import TrackCard from '../../components/track-card/TrackCard';
 import useAudioContext from '../../hooks/useAudioContext';
 import { Artist } from '../../models/Artist';
 import { Track } from '../../models/Track';
-import artistService from '../../services/artist-service';
-import style from './ArtistDetail.module.scss';
-import { useOidc } from '@axa-fr/react-oidc';
-import CtaNotification from '../../components/cta-notification/CtaNotification';
 import {
   changePlaybackTrack,
   playPlaylist,
   updatePlaybackStates,
 } from '../../reducers/audioReducer';
+import artistService from '../../services/artist-service';
+import style from './ArtistDetail.module.scss';
 
 const css = classNames.bind(style);
 
@@ -25,7 +24,6 @@ function ArtistDetail(): JSX.Element {
   const params = useParams();
   const { dispatchAudio } = useAudioContext();
   const { isAuthenticated } = useOidc();
-  const navigate = useNavigate();
   useEffect(() => {
     async function getArtist(artistId: string) {
       const artist = await artistService.getArtist(artistId);
@@ -87,13 +85,6 @@ function ArtistDetail(): JSX.Element {
                 </div>
               )}
             </div>
-            {!isAuthenticated && (
-              <CtaNotification
-                message={`Sign in to listen ${artist.name}'s top tracks.`}
-                actionName="Sign in"
-                action={() => navigate('/auth/sign-in')}
-              />
-            )}
             <ul className={`${css('top-tracks')}`}>
               {topTracks.map((t, index) => (
                 <li key={t.id} className={`${css('top-track')}`}>
