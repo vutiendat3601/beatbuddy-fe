@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import style from './Library.module.scss';
 import { useState } from 'react';
-import { Playlist } from '../../models/Playlist';
+import { Playlist } from '../../schemas/Playlist';
 import { Link } from 'react-router-dom';
 import ArtistCard from '../../components/artist-card/ArtistCard';
 

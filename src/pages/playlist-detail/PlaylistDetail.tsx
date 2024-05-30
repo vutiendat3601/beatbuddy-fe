@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { Playlist } from '../../models/Playlist';
+import { Playlist } from '../../schemas/Playlist';
 import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import style from './PlaylistDetail.module.scss';

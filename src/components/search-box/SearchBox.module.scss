@@ -28,9 +28,8 @@
 }
 
 .search-box.standalone {
-  
-  .keyword-inp:not(:focus)~.items:not(:hover),
-  .keyword-inp:not(:focus)~.items:not(:hover)~.cover {
+  .keyword-inp:not(:focus) ~ .items:not(:hover),
+  .keyword-inp:not(:focus) ~ .items:not(:hover) ~ .cover {
     display: none;
     transition: none;
   }
@@ -42,7 +41,7 @@
     transition: none;
   }
 
-  .items.hidden~.cover {
+  .items.hidden ~ .cover {
     visibility: hidden;
     transition: visibility 0.3s;
   }
@@ -65,7 +64,6 @@
     transition: visibility 0.4s, scale 0.4s;
   }
 
-
   .cover {
     background: var(--search-box-bg-color);
     position: absolute;
@@ -78,9 +76,10 @@
     transition: visibility 0.1s;
   }
 
-  .item {
+  .track-item {
     display: flex;
     align-items: center;
+    width: 100%;
 
     &:hover {
       background: var(--hover-bg-color);
@@ -128,7 +127,6 @@
     padding: 2px 0;
   }
 
-
   .controls {
     @include abstract.flexAlignCenter;
 
@@ -150,5 +148,15 @@
         color: #0f0f0f;
       }
     }
+  }
+}
+
+.artist-items {
+  width: 100%;
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  .artist-item {
+    width: 33.3333%;
   }
 }

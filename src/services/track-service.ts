@@ -1,4 +1,4 @@
-import { Track, TrackStream } from '../models/Track';
+import { Track, TrackStream } from '../schemas/Track';
 import { bbapi } from '../shared/utils/axios';
 
 const trackService = {

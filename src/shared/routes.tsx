@@ -33,11 +33,11 @@ const ROUTES: RouteObject[] = [
         element: <Library />,
       },
       {
-        path: 'track/:trackId',
+        path: 'track/:id',
         element: <TrackDetail />,
       },
       {
-        path: 'artist/:artistId',
+        path: 'artist/:id',
         element: <ArtistDetail />,
       },
       {

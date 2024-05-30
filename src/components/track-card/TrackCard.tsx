@@ -9,7 +9,7 @@ import {
 import { Link } from 'react-router-dom';
 import { ReactComponent as ThreeDotIcon } from '../../assets/icon/three-dot.svg';
 import trackThumbFallbackIcon from '../../assets/img/track-thumb-fallback.png';
-import { Track } from '../../models/Track';
+import { Track } from '../../schemas/Track';
 import { formatDurationSec } from '../../shared/utils/datetime-util';
 import TrackAction, { TrackActionFunction } from '../track-action/TrackAction';
 import style from './TrackCard.module.scss';
@@ -44,7 +44,7 @@ interface TrackCardProps {
   track: Track;
   controls?: TrackActionFunction;
   disabledLink?: boolean;
-  hoverHighlight?: boolean;
+  hoverHighlighted?: boolean;
   playingProgress?: boolean;
   callToAction?: {
     action: (track?: Track) => void;
@@ -63,7 +63,7 @@ function TrackCard({
   disabledLink = false,
   controls,
   callToAction,
-  hoverHighlight = true,
+  hoverHighlighted = true,
   playingProgress = false,
   menu,
   hiddenElements = [],
@@ -133,7 +133,7 @@ function TrackCard({
     <div
       className={css('track-card', {
         highlighted: highlighted,
-        'hover-highlight': hoverHighlight,
+        'hover-highlight': hoverHighlighted,
         'playing-progress': playingProgress,
       })}
     >
@@ -218,7 +218,7 @@ function TrackCard({
           {callToAction && (
             <button
               className={css('cta')}
-              onClick={() => callToAction.action(track)}
+              onClick={(e) => callToAction.action(track)}
               style={
                 callToAction.width && callToAction.width >= 0
                   ? { width: callToAction.width, height: callToAction.width }

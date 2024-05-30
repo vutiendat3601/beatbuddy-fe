@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ReactComponent as PlayIcon } from '../../assets/icon/play.svg';
 import useAudioContext from '../../hooks/useAudioContext';
-import { Track } from '../../models/Track';
+import { Track } from '../../schemas/Track';
 import {
   changePlaybackTrack,
   updatePlaybackStates,
@@ -15,6 +15,7 @@ import {
   formatIsoDate,
 } from '../../shared/utils/datetime-util';
 import style from './TrackDetail.module.scss';
+import catalogService from '../../services/catalog-service';
 
 const css = classNames.bind(style);
 
@@ -25,12 +26,10 @@ function TrackDetail(): JSX.Element {
   const { isAuthenticated } = useOidc();
   const params = useParams();
   useEffect(() => {
-    async function getTrack(trackId: string) {
-      const track = (await trackService.getTrack(trackId)) as Track;
-      track && setTrack(track);
+    if (params.id) {
+      catalogService.getTrack(params.id).then((track) => setTrack(track));
     }
-    params.trackId && getTrack(params.trackId);
-  }, [params.trackId]);
+  }, [params.id]);
 
   useEffect(() => {
     setPlayedInQueue(false);

@@ -6,39 +6,34 @@ import { ReactComponent as PlayIcon } from '../../assets/icon/play.svg';
 import { ReactComponent as VerifiedIcon } from '../../assets/icon/verified.svg';
 import TrackCard from '../../components/track-card/TrackCard';
 import useAudioContext from '../../hooks/useAudioContext';
-import { Artist } from '../../models/Artist';
-import { Track } from '../../models/Track';
 import {
   changePlaybackTrack,
   playPlaylist,
   updatePlaybackStates,
 } from '../../reducers/audioReducer';
-import artistService from '../../services/artist-service';
+import { Artist } from '../../schemas/Artist';
+import Pagination from '../../schemas/Pagination2';
+import { Track } from '../../schemas/Track';
+import catalogService from '../../services/catalog-service';
 import style from './ArtistDetail.module.scss';
 
 const css = classNames.bind(style);
 
 function ArtistDetail(): JSX.Element {
   const [artist, setArtist] = useState<Artist>();
-  const [topTracks, setTopTracks] = useState<Track[]>();
+  const [popularTrackPage, setPopularTrackPage] = useState<Pagination<Track>>();
   const params = useParams();
   const { dispatchAudio } = useAudioContext();
   const { isAuthenticated } = useOidc();
   useEffect(() => {
-    async function getArtist(artistId: string) {
-      const artist = await artistService.getArtist(artistId);
-      artist && setArtist(artist);
+    if (params.id) {
+      catalogService.getArtist(params.id).then((artist) => setArtist(artist));
+      catalogService
+        .getArtistPopularTracks(params.id)
+        .then((trackPage) => setPopularTrackPage(trackPage));
     }
-    async function getArtistTopTracks(artistId: string) {
-      const tracks = await artistService.getTopTracks(artistId);
-      tracks && setTopTracks(tracks);
-    }
-    const artistId = params.artistId;
-    if (artistId) {
-      getArtist(artistId);
-      getArtistTopTracks(artistId);
-    }
-  }, [params.artistId]);
+  }, [params.id]);
+
   function handlePlay(target?: Track): void {
     if (target) {
       changePlaybackTrack(dispatchAudio, target);
@@ -49,12 +44,16 @@ function ArtistDetail(): JSX.Element {
   return artist ? (
     <section className={css('artist-detail')}>
       <div className={`${css('background')}`}>
-        <img
-          className={`${css('background-img')}`}
-          style={{ objectFit: artist.backgroundImg ? 'cover' : 'contain' }}
-          src={artist.backgroundImg || artist.thumbnail || ''}
-          alt=""
-        />
+        {artist.background || artist.thumbnail ? (
+          <img
+            className={`${css('background-img')}`}
+            style={{ objectFit: artist.background ? 'cover' : 'contain' }}
+            src={artist.background || artist.thumbnail || ''}
+            alt=""
+          />
+        ) : (
+          <></>
+        )}
         <div className={css('info')}>
           <h1 className={`heading-1 ${css('name')}`}>{artist.name}</h1>
           <div className={css('verified')}>
@@ -68,17 +67,19 @@ function ArtistDetail(): JSX.Element {
       </div>
 
       <div className={`${css('content')}`}>
-        {topTracks && (
+        {popularTrackPage && (
           <section className={`${css('element')}`}>
             <div className={css('element-head')}>
               <h2 className={`heading-2 ${css('element-title')}`}>
-                Top Tracks
+                Popular Tracks
               </h2>
               {isAuthenticated && (
                 <div className={css('action')}>
                   <button
                     className={css('cta')}
-                    onClick={() => playPlaylist(dispatchAudio, topTracks)}
+                    onClick={() =>
+                      playPlaylist(dispatchAudio, popularTrackPage.items)
+                    }
                   >
                     <PlayIcon />
                   </button>
@@ -86,7 +87,7 @@ function ArtistDetail(): JSX.Element {
               )}
             </div>
             <ul className={`${css('top-tracks')}`}>
-              {topTracks.map((t, index) => (
+              {popularTrackPage.items.map((t, index) => (
                 <li key={t.id} className={`${css('top-track')}`}>
                   <p className={`text-label ${css('top-value')}`}>
                     {index + 1}

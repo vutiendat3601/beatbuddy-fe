@@ -1,14 +1,14 @@
 import { useOidc, useOidcUser } from '@axa-fr/react-oidc';
 import { useEffect, useReducer, useRef, useState } from 'react';
-import { INITIAL_PLAYBACK, Playback } from '../models/Playback';
 import audioReducer, {
   initPlayback,
   nextTrack,
   savePlayback,
   updatePlaybackStates,
 } from '../reducers/audioReducer';
+import { INITIAL_PLAYBACK, Playback } from '../schemas/Playback';
+import audioService from '../services/audio-service';
 import playbackService from '../services/playback-service';
-import trackService from '../services/track-service';
 import { PLAYBACK_UPDATE_INTERVAL_MS } from '../shared/global-constant';
 import createHlsPlayer, { HlsPlayer } from '../shared/utils/hls-util';
 import { getObject } from '../shared/utils/local-storage-util';
@@ -48,7 +48,8 @@ function AudioProvider({ children }: AudioProviderProps): JSX.Element {
 
   useEffect(() => {
     async function getUserPlayback() {
-      let serverPlayback = await playbackService.getUserPlayback();
+      // let serverPlayback = await playbackService.getUserPlayback();
+      let serverPlayback = false;
       if (serverPlayback) {
         initPlayback(dispatchAudio, serverPlayback);
       } else {
@@ -59,7 +60,6 @@ function AudioProvider({ children }: AudioProviderProps): JSX.Element {
       }
     }
     if (oidcUser && ownerId !== oidcUser.sub) {
-      console.log('oidcUser', oidcUser);
       getUserPlayback();
     }
   }, [oidcUser, ownerId]);
@@ -81,7 +81,6 @@ function AudioProvider({ children }: AudioProviderProps): JSX.Element {
 
   useEffect(() => {
     const audio = audioRef.current;
-    console.log('volume', volume);
     if (audio) {
       audio.volume = volume;
       audio.muted = audio.volume <= 0.01;
@@ -111,17 +110,24 @@ function AudioProvider({ children }: AudioProviderProps): JSX.Element {
   }, [dispatchAudio]);
 
   useEffect(() => {
-    async function getStream() {
-      const hlsPlayer = hlsPlayerRef.current;
-      if (track && hlsPlayer) {
-        const data = await trackService.getStream(track.id);
-        const kbps128s = data.links.kbps128;
-        if (kbps128s) {
-          hlsPlayer.loadSource(kbps128s[0]);
-        }
-      }
+    const hlsPlayer = hlsPlayerRef.current;
+    if (isAuthenticated && track && hlsPlayer) {
+      audioService.getAudioFile(track?.audioFileIds[0]).then((audioFile) => {
+        hlsPlayer.loadSource(audioFile.uris[0]);
+      });
     }
-    isAuthenticated && getStream();
+
+    // async function getStream() {
+    //   const hlsPlayer = hlsPlayerRef.current;
+    //   if (track && hlsPlayer) {
+    //     const data = await trackService.getStream(track.id);
+    //     const kbps128s = data.links.kbps128;
+    //     if (kbps128s) {
+    //       hlsPlayer.loadSource(kbps128s[0]);
+    //     }
+    //   }
+    // }
+    // isAuthenticated && getStream();
   }, [track, isAuthenticated]);
 
   useEffect(() => {
@@ -170,7 +176,7 @@ function AudioProvider({ children }: AudioProviderProps): JSX.Element {
       if (audio) {
         updatePlaybackStates(dispatchAudio, { currentSec: audio.currentTime });
         if (playbackState.track && !isSessionSavedRef.current) {
-          savePlaybackInterval();
+          // savePlaybackInterval();
         }
       }
     }

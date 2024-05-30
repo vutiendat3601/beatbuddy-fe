@@ -1,4 +1,4 @@
-import { Playback, Queue, PlaybackState } from '../models/Playback';
+import { Playback, Queue, PlaybackState } from '../schemas/Playback';
 import { bbapi } from '../shared/utils/axios';
 
 const playbackService = {

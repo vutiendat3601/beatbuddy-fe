@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 
-import { Playlist } from '../../models/Playlist';
+import { Playlist } from '../../schemas/Playlist';
 import style from './PlaylistCard.module.scss';
 
 const css = classNames.bind(style);

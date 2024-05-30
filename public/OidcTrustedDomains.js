@@ -5,20 +5,20 @@
 // Domains used by OIDC server must be also declared here
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const trustedDomains = {
-    default: ['https://beatbuddy.io.vn/api', 'https://datvutech.io.vn'],
-    config_classic: ['https://beatbuddy.io.vn/api'],
-    config_without_silent_login: ['https://beatbuddy.io.vn/api'],
-    config_without_refresh_token: ['https://beatbuddy.io.vn/api'],
-    config_without_refresh_token_silent_login: ['https://beatbuddy.io.vn/api'],
+    default: ['https://api.beatbuddy.io.vn', 'https://auth.beatbuddy.io.vn'],
+    config_classic: ['https://api.beatbuddy.io.vn'],
+    config_without_silent_login: ['https://api.beatbuddy.io.vn'],
+    config_without_refresh_token: ['https://api.beatbuddy.io.vn'],
+    config_without_refresh_token_silent_login: ['https://api.beatbuddy.io.vn'],
     config_google: ['https://oauth2.googleapis.com', 'https://openidconnect.googleapis.com'],
-    config_with_hash: ['https://beatbuddy.io.vn/api'],
+    config_with_hash: ['https://api.beatbuddy.io.vn'],
 };
 
 // Service worker will continue to give access token to the JavaScript client
 // Ideal to hide refresh token from client JavaScript, but to retrieve access_token for some
 // scenarios which require it. For example, to send it via websocket connection.
 trustedDomains.config_show_access_token = { 
-    domains: ['https://beatbuddy.io.vn/api'], 
+    domains: ['https://api.beatbuddy.io.vn'], 
     showAccessToken: true,
     // convertAllRequestsToCorsExceptNavigate: false,
     // setAccessTokenToNavigateRequests: true,
@@ -26,6 +26,6 @@ trustedDomains.config_show_access_token = {
 
 // This example defines domains used by OIDC server separately from domains to which access tokens will be injected.
 trustedDomains.config_separate_oidc_access_token_domains = {
-    oidcDomains: ['https://beatbuddy.io.vn/api'],
-    accessTokenDomains: ['https://beatbuddy.io.vn/api'],
+    oidcDomains: ['https://api.beatbuddy.io.vn'],
+    accessTokenDomains: ['https://api.beatbuddy.io.vn'],
 };
