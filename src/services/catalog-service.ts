@@ -7,7 +7,7 @@ import authService from './auth-service';
 const API_V1_URL = process.env.REACT_APP_API_V1_URL;
 
 const catalogClient = axios.create({
-  baseURL: `${API_V1_URL}/catalog`,
+  baseURL: `${API_V1_URL}`,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ const catalogService = {
     size: number = 30
   ): Promise<Pagination<Artist>> {
     const resp = await catalogClient.get(
-      `/feed/popular-artists?page=${page}&size=${size}`
+      `/catalog/feed/popular-artists?page=${page}&size=${size}`
     );
     return await resp.data;
   },
@@ -40,7 +40,7 @@ const catalogService = {
     size: number = 30
   ): Promise<Pagination<Track>> {
     const resp = await catalogClient.get(
-      `/feed/popular-tracks?page=${page}&size=${size}`
+      `/catalog/feed/popular-tracks?page=${page}&size=${size}`
     );
     return await resp.data;
   },
@@ -69,7 +69,7 @@ const catalogService = {
     size: number = 10
   ): Promise<Search> {
     const resp = await catalogClient.get(
-      `/search?query=${query}&types=${types.join(
+      `/catalog/search?query=${query}&types=${types.join(
         ','
       )}&page=${page}&size=${size}`
     );
