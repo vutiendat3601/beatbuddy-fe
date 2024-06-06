@@ -2,9 +2,9 @@ import {
   INITIAL_PLAYBACK,
   Playback,
   Queue,
-  RepeatMode
-} from '../models/Playback';
-import { Track } from '../models/Track';
+  RepeatMode,
+} from '../schemas/Playback';
+import { Track } from '../schemas/Track';
 import { saveObject } from '../shared/utils/local-storage-util';
 
 interface AudioPlayer {
@@ -67,7 +67,6 @@ function audioReducer(states: AudioPlayer, action: AudioPlayerAction) {
       break;
     case 'init':
       if (payload.playback) {
-        console.log('payload.playback', payload.playback);
         playback = payload.playback;
         playback.state.isPlaying = false;
         playback.state.seekedSec = -1;
@@ -338,13 +337,18 @@ function togglePlayState(dispatchAudio: (value: AudioPlayerAction) => void) {
 export {
   INITIAL_AUDIO_CONTEXT,
   changePlaybackTrack,
-  changePlayingState, changeRepeatMode, initPlayback,
+  changePlayingState,
+  changeRepeatMode,
+  initPlayback,
   isAudioContextAvailale,
   nextTrack,
   playInQueue,
   playPlaylist,
   previousTrack,
-  savePlayback, togglePlayState, toggleShuffle, updatePlaybackStates
+  savePlayback,
+  togglePlayState,
+  toggleShuffle,
+  updatePlaybackStates,
 };
 export type { AudioPayload, AudioPlayer, AudioPlayerAction };
 export default audioReducer;

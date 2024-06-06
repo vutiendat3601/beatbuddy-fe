@@ -1,26 +1,44 @@
+import { useOidc } from '@axa-fr/react-oidc';
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ReactComponent as PlayIcon } from '../../assets/icon/play.svg';
 import ArtistCard from '../../components/artist-card/ArtistCard';
-import { Artist } from '../../models/Artist';
-import artistService from '../../services/artist-service';
+import TrackCard from '../../components/track-card/TrackCard';
+import useAudioContext from '../../hooks/useAudioContext';
+import {
+  changePlaybackTrack,
+  updatePlaybackStates,
+} from '../../reducers/audioReducer';
+import { Artist } from '../../schemas/Artist';
+import Pagination from '../../schemas/Pagination2';
+import { Track } from '../../schemas/Track';
+import catalogService from '../../services/catalog-service';
 import style from './Home.module.scss';
-
 const css = classNames.bind(style);
 
 function Home() {
   // const [popularPlaylists, setPopularPlaylists] = useState<Playlist[]>();
-  const [popularArtists, setPopularArtists] = useState<Artist[]>();
+  const [popularArtistPage, setPopularArtistPage] =
+    useState<Pagination<Artist>>();
+  const { isAuthenticated } = useOidc();
+  const [popularTrackPage, setPopularTrackPage] = useState<Pagination<Track>>();
 
+  const { dispatchAudio } = useAudioContext();
   useEffect(() => {
-    async function getPopularArtists() {
-      const pageArtistResp = await artistService.getPopularArtists(0, 12);
-      const artists: Artist[] = pageArtistResp.items || [];
-      setPopularArtists(artists);
-    }
-    getPopularArtists();
+    catalogService
+      .getPopularArtists(1, 12)
+      .then((artistPage) => setPopularArtistPage(artistPage));
+    catalogService
+      .getPopularTracks(1, 12)
+      .then((trackPage) => setPopularTrackPage(trackPage));
   }, []);
-
+  function handlePlay(target?: Track): void {
+    if (target) {
+      changePlaybackTrack(dispatchAudio, target);
+      updatePlaybackStates(dispatchAudio, { isPlaying: true, currentSec: 0 });
+    }
+  }
   return (
     <div className={`${css('home')}`}>
       {/* {popularPlaylists && (
@@ -37,16 +55,41 @@ function Home() {
           </div>
         </section>
       )} */}
-      {popularArtists && (
+      {popularTrackPage && (
+        <section className={`${css('element')}`}>
+          <h2 className={`heading-2 ${css('element-title')}`}>
+            Popular Tracks
+          </h2>
+          <ul className={`${css('element-items')}`}>
+            {popularTrackPage.items.map((t) => (
+              <li key={t.id} className={`${css('element-horizontal-item')}`}>
+                <TrackCard
+                  track={t}
+                  callToAction={
+                    isAuthenticated && t.isPlayable
+                      ? {
+                          action: handlePlay,
+                          width: 28,
+                          icon: <PlayIcon />,
+                        }
+                      : undefined
+                  }
+                />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {popularArtistPage && (
         <section className={`${css('element')}`}>
           <h2 className={`heading-2 ${css('element-title')}`}>
             Popular Artists
           </h2>
           <ul className={`${css('element-items')}`}>
-            {popularArtists.map((a) => (
-              <li key={a.id} className={`${css('element-item')}`}>
+            {popularArtistPage.items.map((a) => (
+              <li key={a.id} className={`${css('element-vertical-item')}`}>
                 <Link to={`/artist/${a.id}`}>
-                  <ArtistCard artist={a} widthPercent={100} />
+                  <ArtistCard artist={a} />
                 </Link>
               </li>
             ))}

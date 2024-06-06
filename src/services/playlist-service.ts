@@ -1,4 +1,4 @@
-import { Playlist } from '../models/Playlist';
+import { Playlist } from '../schemas/Playlist';
 import { bbapi } from '../shared/utils/axios';
 
 const playlistService = {

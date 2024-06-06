@@ -5,5 +5,4 @@ function SignIn(): JSX.Element {
   let to = params.get('to');
   return <Navigate to={to ? to : '/'} />;
 }
-
 export default SignIn;

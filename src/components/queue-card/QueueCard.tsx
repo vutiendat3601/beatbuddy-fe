@@ -4,9 +4,9 @@ import useAudioContext from '../../hooks/useAudioContext';
 import { memo, useCallback, useRef, useState } from 'react';
 import { ReactComponent as PlayIcon } from '../../assets/icon/play.svg';
 import useMainLayoutContext from '../../hooks/useMainLayoutContext';
-import { INITIAL_PAGINATION } from '../../models/Pagination';
-import { Pagination, Search } from '../../models/Search';
-import { Track } from '../../models/Track';
+import { INITIAL_PAGINATION } from '../../schemas/Pagination';
+import { Pagination, Search } from '../../schemas/Search';
+import { Track } from '../../schemas/Track';
 import { playInQueue, updatePlaybackStates } from '../../reducers/audioReducer';
 import { autoChangeFocus } from '../../reducers/mainLayoutReducer';
 import { screens } from '../../shared/utils/responsive-util';
@@ -173,8 +173,8 @@ function QueueCard() {
             <SearchBox
               standalone={false}
               searchOptions={{
-                onSearch: handleSearch,
-                trackSearch: trackSearchRef.current,
+                // onSearch: handleSearch,
+                // trackSearch: trackSearchRef.current,
               }}
               placeholder="Search for track"
             />

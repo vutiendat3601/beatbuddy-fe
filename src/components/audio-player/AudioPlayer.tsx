@@ -54,7 +54,7 @@ function AudioPlayer(): JSX.Element {
           <div className="d-md-none">
             {track && (
               <TrackCard
-                hoverHighlight={false}
+                hoverHighlighted={false}
                 track={track}
                 thumbnailWidth={56}
                 disabledLink
@@ -80,7 +80,7 @@ function AudioPlayer(): JSX.Element {
           <div className="d-none d-md-block">
             {track && (
               <TrackCard
-                hoverHighlight={false}
+                hoverHighlighted={false}
                 track={track}
                 hiddenElements={['menu', 'duration']}
               />

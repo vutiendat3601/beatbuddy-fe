@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { INITIAL_PLAYBACK } from '../models/Playback';
+import { INITIAL_PLAYBACK } from '../schemas/Playback';
 import { AudioPlayer, AudioPlayerAction } from '../reducers/audioReducer';
 
 interface AudioContextProps {

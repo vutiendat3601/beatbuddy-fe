@@ -1,15 +1,17 @@
 interface Artist {
   id: string;
+  urn: string;
   name: string;
+  isVerified: boolean;
+  isPublic: boolean;
   realName: string | null;
   birthDate: string | null;
   description: string | null;
   nationality: string | null;
   biography: string | null;
   thumbnail: string | null;
-  backgroundImg: string | null;
-  isVerified: boolean;
-  isPublic: boolean;
+  background: string | null;
+  totalLikes: number;
 }
 
 export type { Artist };

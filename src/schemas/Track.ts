@@ -2,14 +2,17 @@ import { Artist } from './Artist';
 
 interface Track {
   id: string;
+  urn: string;
   name: string;
-  isPublic: boolean;
+  durationSec: number;
   description: string | null;
   releasedDate: string | null;
-  durationSec: number;
   thumbnail: string | null;
+  isPublic: boolean;
   isPlayable: boolean;
+  totalLikes: number;
   artists: Artist[];
+  audioFileIds: string[];
 }
 
 interface TrackStream {

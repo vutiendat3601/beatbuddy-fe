@@ -1,6 +1,6 @@
-import { Artist } from '../models/Artist';
-import { Pagination } from '../models/Pagination';
-import { Track } from '../models/Track';
+import { Artist } from '../schemas/Artist';
+import { Pagination } from '../schemas/Pagination';
+import { Track } from '../schemas/Track';
 import { bbapi } from '../shared/utils/axios';
 
 const artistService = {

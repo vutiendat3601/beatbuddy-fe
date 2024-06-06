@@ -1,4 +1,4 @@
-import { Search } from '../models/Search';
+import { Search } from '../schemas/Search';
 import { bbapi } from '../shared/utils/axios';
 
 const searchService = {

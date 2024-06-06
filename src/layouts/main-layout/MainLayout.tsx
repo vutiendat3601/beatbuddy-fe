@@ -34,7 +34,6 @@ function MainLayout(): JSX.Element {
         </header>
         <div
           className={css('content')}
-          // onClick={() => changeFocus(dispatchMainLayout, 'content')}
         >
           <Outlet />
         </div>
